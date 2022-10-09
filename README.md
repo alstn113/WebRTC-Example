@@ -1,5 +1,5 @@
 # Learn WebRTC
 
-### Client: Next.js
+### Client: Next.js // Typescript
 
-### Server: Actix Web
+### Server: Actix Web // Rust
