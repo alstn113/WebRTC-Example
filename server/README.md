@@ -1,5 +1,5 @@
 # Server
 
-## nest.js - typescript
+## nestjs // typescript
 
-## actix-web - rust
+## actix-web // rust
