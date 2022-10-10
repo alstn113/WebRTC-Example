@@ -130,6 +130,15 @@ dependencies = [
 
 [[package]]
 name = "actix-web"
+version = "0.1.0"
+dependencies = [
+ "actix-web 4.2.1",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "actix-web"
 version = "4.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d48f7b6534e06c7bfc72ee91db7917d4af6afe23e7d223b51e68fffbb21e96b9"
@@ -778,15 +787,6 @@ name = "regex-syntax"
 version = "0.6.27"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a3f87b73ce11b1619a3c6332f45341e0047173771e8b8b73f87bfeefb7b56244"
-
-[[package]]
-name = "rust"
-version = "0.1.0"
-dependencies = [
- "actix-web",
- "serde",
- "serde_json",
-]
 
 [[package]]
 name = "rustc_version"
