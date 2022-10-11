@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 
 import configuration from '~/config/configuration';
+import { PrismaModule } from '~/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import configuration from '~/config/configuration';
       isGlobal: true,
       load: [configuration],
     }),
+    PrismaModule,
   ],
   providers: [
     {
