@@ -23,19 +23,20 @@ export class EventsGateway
   private logger = new Logger('EventsGateway');
 
   afterInit() {
-    this.logger.log('Init');
-  }
-
-  handleDisconnect(client: Socket) {
-    this.logger.log(`Client Disconnected : ${client.id}`);
+    this.logger.verbose('Init');
   }
 
   handleConnection(client: Socket) {
-    this.logger.log(`Client Connected : ${client.id}`);
+    this.logger.verbose(`Client Connected : ${client.id}`);
+  }
+
+  handleDisconnect(client: Socket) {
+    this.logger.verbose(`Client Disconnected : ${client.id}`);
   }
 
   @SubscribeMessage('ClientToServer')
   async handleMessage(@MessageBody('data') data: string) {
-    this.server.emit('ServerToClient', data);
+    console.log(data);
+    this.server.emit('ServerToClient', data + ' from server');
   }
 }

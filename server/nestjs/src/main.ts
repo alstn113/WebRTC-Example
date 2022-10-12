@@ -13,7 +13,6 @@ async function bootstrap() {
   const port = configService.get<number>('server.port');
   const logger = new Logger();
 
-  app.setGlobalPrefix('/api');
   app.use(cookieParser());
   app.enableCors({
     origin: configService.get<string>('client'),
