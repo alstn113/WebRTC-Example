@@ -5,6 +5,7 @@ import { APP_PIPE } from '@nestjs/core';
 import configuration from '~/config/configuration';
 import { PrismaModule } from '~/prisma/prisma.module';
 import { PostsModule } from '~/modules/posts/posts.module';
+import { EventsModule } from '~/modules/events/events.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { PostsModule } from '~/modules/posts/posts.module';
       load: [configuration],
     }),
     PrismaModule,
+    EventsModule,
     PostsModule,
   ],
   providers: [

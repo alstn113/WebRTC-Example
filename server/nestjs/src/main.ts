@@ -5,6 +5,7 @@ import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from '~/app.module';
 import { setupSwagger } from '~/utils/setupSwagger';
+import { SocketIoAdapter } from '~/adapters/socke-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,7 @@ async function bootstrap() {
     origin: configService.get<string>('client'),
     credentials: true,
   });
+  app.useWebSocketAdapter(new SocketIoAdapter(app));
 
   setupSwagger(app);
   await app.listen(port);
