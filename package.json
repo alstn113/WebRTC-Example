@@ -6,6 +6,6 @@
   "author": "neko113 <alstn113@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"cd client && yarn dev\" \"cd server/nestjs && yarn start:dev\""
+    "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn start:dev\""
   }
 }

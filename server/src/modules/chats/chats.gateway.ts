@@ -10,7 +10,10 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway(8001, { cors: '*', namespace: 'chats' })
+@WebSocketGateway(8001, {
+  cors: '*',
+  namespace: 'chats',
+})
 export class ChatsGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
