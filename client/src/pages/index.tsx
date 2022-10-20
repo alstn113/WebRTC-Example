@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
-import io, { Socket } from 'socket.io-client';
+import { Manager } from 'socket.io-client';
 import { NextPage } from 'next';
 import { PROPERTIES } from '~/constants/properties';
 
-let socket: Socket;
+const manager = new Manager(PROPERTIES.SOCKET_CHAT_URL);
+const chats = manager.socket('/chats');
 
 const Index: NextPage = () => {
-  socket = io(PROPERTIES.SOCKET_URL);
   useEffect(() => {
-    socket.emit('ClientToServer', { data: 'Hello Server' });
-    socket.on('ServerToClient', (message) => {
+    chats.emit('ClientToServer', { data: 'Hello Server' });
+    chats.on('ServerToClient', (message) => {
       console.log(message);
     });
   }, []);
