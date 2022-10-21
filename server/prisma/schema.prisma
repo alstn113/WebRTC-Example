@@ -14,10 +14,49 @@ datasource db {
 // npx prisma generate
 // npx prisma studio
 
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  Chat      Chat[]
+  Room      Room[]
+}
+
+model Chat {
+  id      Int    @id @default(autoincrement())
+  message String
+  userId  Int
+  roomId  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+model Room {
+  id       Int     @id @default(autoincrement())
+  title    String
+  password String?
+  Chats    Chat[]
+  ownerId  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  owner User @relation(fields: [ownerId], references: [id])
+}
+
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  body      String
+  id    Int    @id @default(autoincrement())
+  title String
+  body  String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt()
 }

@@ -11,7 +11,7 @@ import {
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway(8001, {
-  cors: '*',
+  cors: 'http://localhost:3000',
   namespace: 'chats',
 })
 export class ChatsGateway
@@ -19,7 +19,7 @@ export class ChatsGateway
 {
   @WebSocketServer()
   server: Server;
-  private logger = new Logger('EventsGateway');
+  private logger = new Logger('ChatsGateway');
 
   afterInit() {
     this.logger.verbose('Init');
