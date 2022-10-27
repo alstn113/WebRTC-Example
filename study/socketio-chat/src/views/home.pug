@@ -7,6 +7,18 @@ html(lang="en")
         title Noom
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
     body
-
+        header
+            h1 Noom
+        main 
+            div#welcome
+                form
+                    input(placeholder="room name" type="text" name="room")
+                    button Enter Room
+            div#room
+                h3
+                ul
+                form
+                    input(placeholder="room name" type="text" name="room")
+                    button Send
         script(src="/socket.io/socket.io.js") 
         script(src="/public/js/app.js") 
