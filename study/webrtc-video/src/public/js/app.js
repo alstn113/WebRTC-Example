@@ -82,6 +82,13 @@ function handleCameraClick() {
 
 async function handleCameraChange() {
   await getMedia(camerasSelect.value);
+  if (myPeerConnection) {
+    const videoTrack = myStream.getVideoTracks()[0];
+    const videoSender = myPeerConnection
+      .getSenders()
+      .find((sender) => sender.track.kind === "video");
+    videoSender.replaceTrack(videoTrack);
+  }
 }
 
 muteBtn.addEventListener("click", handleMuteClick);
@@ -93,7 +100,7 @@ camerasSelect.addEventListener("input", handleCameraChange);
 const welcome = document.getElementById("welcome");
 const welcomeForm = welcome.querySelector("form");
 
-async function initMedia() {
+async function initCall() {
   welcome.hidden = true;
   call.hidden = false;
   await getMedia();
@@ -103,7 +110,7 @@ async function initMedia() {
 async function handleWelcomeSubmit(event) {
   event.preventDefault();
   const input = welcomeForm.querySelector("input");
-  await initMedia();
+  await initCall();
   socket.emit("join_room", input.value);
   roomName = input.value;
   input.value = "";
@@ -126,7 +133,7 @@ socket.on("offer", async (offer) => {
   const answer = await myPeerConnection.createAnswer();
   myPeerConnection.setLocalDescription(answer);
   socket.emit("answer", answer, roomName);
-  console.log("sent the offer");
+  console.log("sent the answer");
 });
 
 socket.on("answer", (answer) => {
@@ -151,6 +158,7 @@ function makeConnection() {
 }
 
 function handleIce(data) {
+  console.log("sent candidate");
   socket.emit("ice", data.candidate, roomName);
 }
 
