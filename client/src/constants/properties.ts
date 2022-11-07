@@ -1,5 +1,3 @@
 export const PROPERTIES = {
-  BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8080',
-  SOCKET_CHAT_URL:
-    process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:8001',
+  BASE_URL: import.meta.env.VITE_APP_BASE_URL || 'http://localhost:8080',
 };

@@ -1,7 +1,7 @@
 import { Global, css } from '@emotion/react';
-import reset from '~/styles/reset';
+import reset from './reset';
 
-const GlobalStyle = () => {
+export const GlobalStyle = () => {
   return (
     <>
       <Global
@@ -20,10 +20,12 @@ const GlobalStyle = () => {
             background: none;
             cursor: pointer;
           }
+          a {
+            text-decoration: none;
+            color: #000;
+          }
         `}
       />
     </>
   );
 };
-
-export default GlobalStyle;
