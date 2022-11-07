@@ -1,3 +1,5 @@
-# Learn Socket + WebRTC
+# Learn Socket.io + WebRTC
 
-# Nest + Next
+## Server - Nest
+
+## Client - React + Vite
