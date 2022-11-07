@@ -9,7 +9,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
 import { ChatsModule } from '~/modules/chats/chats.module';
-import { PostsModule } from '~/modules/posts/posts.module';
 
 @Module({
   imports: [
@@ -24,7 +23,6 @@ import { PostsModule } from '~/modules/posts/posts.module';
     UsersModule,
     RoomsModule,
     ChatsModule,
-    PostsModule,
   ],
   providers: [
     {
