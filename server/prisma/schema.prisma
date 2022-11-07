@@ -15,10 +15,12 @@ datasource db {
 // npx prisma studio
 
 model User {
-  id       Int     @id @default(autoincrement())
-  email    String  @unique
+  id       String @id @default(uuid())
+  socialId String
+  provider String
+  email    String @unique
   password String
-  name     String?
+  username String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -27,10 +29,10 @@ model User {
 }
 
 model Chat {
-  id      Int    @id @default(autoincrement())
+  id      String @id @default(uuid())
   message String
-  userId  Int
-  roomId  Int
+  userId  String
+  roomId  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -40,11 +42,11 @@ model Chat {
 }
 
 model Room {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(uuid())
   title    String
   password String?
   Chats    Chat[]
-  ownerId  Int
+  ownerId  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -53,7 +55,7 @@ model Room {
 }
 
 model Post {
-  id    Int    @id @default(autoincrement())
+  id    String @id @default(uuid())
   title String
   body  String
 

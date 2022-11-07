@@ -14,9 +14,7 @@ import { Server, Socket } from 'socket.io';
   cors: 'http://localhost:3000',
   namespace: 'chats',
 })
-export class ChatsGateway
-  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
-{
+export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
   private logger = new Logger('ChatsGateway');
