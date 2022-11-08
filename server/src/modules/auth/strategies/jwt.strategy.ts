@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { AuthService } from '../service';
 
+/** @todo */
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'github') {
   constructor(
