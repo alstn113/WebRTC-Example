@@ -9,9 +9,6 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty()
-  password: string;
-
-  @ApiProperty()
   socialId: string;
 
   @ApiProperty()
