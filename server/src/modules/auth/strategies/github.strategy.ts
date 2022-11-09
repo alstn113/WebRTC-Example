@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { UsersService } from '~/modules/users/users.service';
 import { PrismaService } from '~/prisma/prisma.service';
-import { AuthService } from '../service';
+import { AuthService } from '../auth.service';
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
@@ -26,26 +26,26 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     });
   }
 
-  /** 미완성 */
+  /** @todo 보완하기 */
   async validate(accessToken: string, refreshToken: string, profile: any, done: any) {
-    const { id, node_id, email, name }: profileJson = profile._json;
-    console.log(id, email, name);
-    /** @todo refactoring하기 */
+    const { node_id, email, name }: profileJson = profile._json;
+
+    // User Exists
     const exUser = await this.prisma.user.findFirst({
       where: {
         socialId: node_id,
       },
     });
-    if (!exUser) {
-      const newUser = this.usersService.createUser({
-        socialId: node_id,
-        email,
-        provider: 'github',
-        username: name,
-      });
-      return done(null, newUser);
-    }
-    return done(null, exUser);
+    if (exUser) return done(null, exUser);
+
+    // User Not Found And Create New User
+    const newUser = this.usersService.createUser({
+      socialId: node_id,
+      email,
+      provider: 'github',
+      username: name,
+    });
+    return done(null, newUser);
   }
 }
 

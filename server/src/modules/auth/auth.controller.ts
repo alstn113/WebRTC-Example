@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { ApiTags } from '@nestjs/swagger';
 import { GithubGuard } from './guards';
-import { AuthService } from './service/auth.service';
+import { AuthService } from './auth.service';
 
 @Controller('/auth')
 @ApiTags('/auth')
@@ -21,7 +21,7 @@ export class AuthController {
 
   @Get('/github/callback')
   @UseGuards(GithubGuard)
-  async githubAuthRedirect(@Req() req: Request, @Res() res: Response) {
+  async githubAuthCallback(@Req() req: Request, @Res() res: Response) {
     const REDIRECT_URI = this.configService.get<string>('client');
     return res.redirect(encodeURI(REDIRECT_URI));
   }
