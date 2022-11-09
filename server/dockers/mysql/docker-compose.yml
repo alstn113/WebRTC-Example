@@ -1,0 +1,15 @@
+version: '3'
+services:
+  local-db:
+    image: mysql:8.0.23
+    container_name: webrtc
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      TZ: Asia/Seoul
+    volumes:
+      - ./docker/conf.d:/etc/mysql/conf.d
+      - ./docker/data:/var/lib/mysql
+    platform: linux/x86_64

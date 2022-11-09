@@ -9,7 +9,11 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace, Server, Socket } from 'socket.io';
+import { AuthService } from '../auth/auth.service';
+import { UsersService } from '../users/users.service';
 import { AddMessageDto } from './dto/add-message.dto';
+import { JoinRoomDto } from './dto/join-room.dto';
+import { LeaveRoomDto } from './dto/leave-room.dto';
 
 @WebSocketGateway({
   namespace: 'chats',
@@ -18,37 +22,49 @@ import { AddMessageDto } from './dto/add-message.dto';
 export class ChatsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   private readonly nsp: Namespace;
-  private readonly connectedUsers: Map<string, string> = new Map();
+  private readonly connectedUsers: Map<string, number> = new Map();
   private readonly logger = new Logger('ChatsGateway');
 
-  handleConnection(client: Socket) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UsersService,
+  ) {}
+
+  async handleConnection(client: Socket) {
+    const token = client.handshake.query.token.toString();
+    const payload = await this.authService.verifyAccessToken(token);
+
+    const user = payload && (await this.userService.findUserById(payload.id));
+    if (!user) {
+      client.disconnect();
+      return;
+    }
+
+    this.connectedUsers.set(client.id, user.id);
+
     this.logger.verbose(`Client Connected : ${client.id}`);
   }
 
   handleDisconnect(client: Socket) {
+    this.connectedUsers.delete(client.id);
     this.logger.verbose(`Client Disconnected : ${client.id}`);
   }
 
   @SubscribeMessage('message')
   async onMessage(client: Socket, addMessageDto: AddMessageDto) {
+    client.to(addMessageDto.roomId).emit('message', addMessageDto.text);
     this.logger.verbose(`Message Received : ${addMessageDto.text}`);
   }
 
   @SubscribeMessage('join')
-  async onJoin(client: Socket, room: string) {
-    client.join(room);
-    this.logger.verbose(`Client ${client.id} joined room ${room}`);
+  async onRoomJoin(client: Socket, joinRoomDto: JoinRoomDto) {
+    client.join(joinRoomDto.roomId);
+    this.logger.verbose(`Client ${client.id} joined room ${joinRoomDto.roomId}`);
   }
 
   @SubscribeMessage('leave')
-  async onLeave(client: Socket, room: string) {
-    client.leave(room);
-    this.logger.verbose(`Client ${client.id} left room ${room}`);
+  async onRoomLeave(client: Socket, leaveRoomDto: LeaveRoomDto) {
+    client.leave(leaveRoomDto.roomId);
+    this.logger.verbose(`Client ${client.id} left room ${leaveRoomDto.roomId}`);
   }
-
-  // @SubscribeMessage('ClientToServer')
-  // async handleMessage(@MessageBody('data') data: string) {
-  //   console.log(data);
-  //   this.nsp.adapter.emit('ServerToClient', data + ' from server');
-  // }
 }
