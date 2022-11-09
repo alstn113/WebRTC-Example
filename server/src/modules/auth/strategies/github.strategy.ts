@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-github2';
+import { Profile, Strategy } from 'passport-github2';
 import { UsersService } from '~/modules/users/users.service';
 import { PrismaService } from '~/prisma/prisma.service';
 import { AuthService } from '../auth.service';
@@ -26,8 +26,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     });
   }
 
-  /** @todo 보완하기 */
-  async validate(accessToken: string, refreshToken: string, profile: any, done: any) {
+  async validate(_accessToken, _refreshToken, profile, done) {
     const { node_id, email, name }: profileJson = profile._json;
 
     // User Exists
