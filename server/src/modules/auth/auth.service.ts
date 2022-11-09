@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { Response } from 'express';
 import { PrismaService } from '~/prisma/prisma.service';
 
 @Injectable()
@@ -62,21 +61,5 @@ export class AuthService {
     });
 
     return payload;
-  }
-
-  setTokenCookie(res: Response, token: { access_token: string; refresh_token: string }) {
-    res.cookie('access_token', token.access_token, {
-      maxAge: 1000 * 60 * 60 * 1, // 1h
-      httpOnly: true,
-    });
-    res.cookie('refresh_token', token.refresh_token, {
-      maxAge: 1000 * 60 * 60 * 24 * 30, // 30d
-      httpOnly: true,
-    });
-  }
-
-  clearTokenCookies(res: Response) {
-    res.clearCookie('access_token');
-    res.clearCookie('refresh_token');
   }
 }
