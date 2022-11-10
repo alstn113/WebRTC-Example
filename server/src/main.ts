@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
@@ -14,6 +14,7 @@ const bootstrap = async () => {
   const logger = new Logger('Main');
 
   app.use(cookieParser());
+  app.useGlobalPipes(new ValidationPipe({}));
   app.enableCors({
     origin: configService.get<string>('client'),
     credentials: true,

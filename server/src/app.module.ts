@@ -1,6 +1,5 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_PIPE } from '@nestjs/core';
 import configuration from '~/config/configuration';
 import { PrismaModule } from '~/prisma/prisma.module';
 
@@ -23,12 +22,6 @@ import { ChatsModule } from '~/modules/chats/chats.module';
     UsersModule,
     RoomsModule,
     ChatsModule,
-  ],
-  providers: [
-    {
-      provide: APP_PIPE,
-      useClass: ValidationPipe,
-    },
   ],
 })
 export class AppModule {}
