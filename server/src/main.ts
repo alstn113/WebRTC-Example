@@ -6,6 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import { AppModule } from '~/app.module';
 import { setupSwagger } from '~/utils/setupSwagger';
 import { SocketIoAdapter } from '~/adapters/socke-io.adapter';
+import helmet from 'helmet';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ const bootstrap = async () => {
     origin: configService.get<string>('client'),
     credentials: true,
   });
+  app.use(helmet());
   app.useWebSocketAdapter(new SocketIoAdapter(app));
 
   setupSwagger(app);
