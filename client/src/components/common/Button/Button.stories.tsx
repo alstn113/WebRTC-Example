@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Spacer from '../../@Layouts/Spacer/Spacer';
+import Spacer from '../Spacer/Spacer';
 import Button, { Props } from './Button';
 
 export default {

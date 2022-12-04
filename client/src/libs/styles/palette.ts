@@ -5,7 +5,7 @@ export type NormalColorType =
   | 'warning'
   | 'error';
 
-const palette = {
+export const palette = {
   white: '#ffffff',
   gray: '#dfe6e9',
   black: '#000000',
@@ -15,5 +15,3 @@ const palette = {
   warning: '#F5A524',
   error: '#F31260',
 } as const;
-
-export default palette;

@@ -1,5 +1,5 @@
 /** @Components */
-export { default as Button } from './@Components/Button/Button';
+export { default as Button } from './Button/Button';
 
 /** @Layouts */
-export { default as Spacer } from './@Layouts/Spacer/Spacer';
+export { default as Spacer } from './Spacer/Spacer';
