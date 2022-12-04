@@ -1,4 +1,4 @@
-import Loader from '../../components/common/Loader/Loader';
+import Loader from '~/components/common/Loader/Loader';
 import * as S from './Loading.styles';
 
 const Loading = () => {
