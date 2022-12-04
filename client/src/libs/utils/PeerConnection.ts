@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { PROPERTIES } from '../../constants/properties';
+import { PROPERTIES } from '~/constants/properties';
 
 class PeerConnection {
   peerConnections: { [key: string]: RTCPeerConnection } = {};
