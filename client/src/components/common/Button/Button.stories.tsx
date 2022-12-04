@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Spacer from '../Spacer/Spacer';
-import Button, { Props } from './Button';
+import Button, { ButtonProps } from './Button';
 
 export default {
   title: 'Components/Button',
   component: Button,
 } as ComponentMeta<typeof Button>;
 
-const Template: ComponentStory<typeof Button> = (args: Props) => (
+const Template: ComponentStory<typeof Button> = (args: ButtonProps) => (
   <FlexColumn>
     <Button {...args} />
   </FlexColumn>

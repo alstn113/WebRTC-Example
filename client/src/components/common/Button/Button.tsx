@@ -2,7 +2,7 @@ import { NormalColorType } from '../../../libs/styles/palette';
 import { ButtonHTMLAttributes } from 'react';
 import * as S from './Button.styles';
 
-export interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg' | 'auto';
   children: React.ReactNode;
   color?: NormalColorType;
@@ -15,7 +15,7 @@ const Button = ({
   children,
   shadow = false,
   ...options
-}: Props) => {
+}: ButtonProps) => {
   return (
     <S.Container size={size} color={color} shadow={shadow} {...options}>
       {children}

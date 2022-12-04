@@ -42,10 +42,10 @@ export const Container = styled.div<{ size: 'sm' | 'md' | 'lg' }>`
       }
       else if (size === "lg") {
         return css`
-          width: 15rem;
-          height: 6rem;
+          width: 4.5rem;
+          height: 2.25rem;
           div {
-            width: 2rem;
+            width: 0.6rem;
             height: 100%;
           }
         `
