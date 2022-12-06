@@ -1,6 +1,7 @@
 import { NormalColorType } from '~/libs/styles/palette';
 import { ButtonHTMLAttributes } from 'react';
 import * as S from './Button.styles';
+import Ripple from './Ripple';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg' | 'auto';
@@ -18,6 +19,7 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <S.Container size={size} color={color} shadow={shadow} {...options}>
+      <Ripple />
       {children}
     </S.Container>
   );

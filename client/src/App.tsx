@@ -1,5 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
+
+// layouts
+import MainLayout from './components/Layouts/MainLayout';
+
+// pages
 import Home from './pages/Home/Home';
+import Room from './pages/Room/Room';
 import Loading from './pages/Loading/Loading';
 import NotFound from './pages/NotFound/NotFound';
 
@@ -7,8 +13,14 @@ const App = () => {
   return (
     <Routes>
       {/* public routes */}
-      <Route path="/" element={<Home />} />
-      <Route path="/loading" element={<Loading />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<Home />} />
+        <Route path="/room" element={<Room />}>
+          <Route path=":roomId" element={<Room />} />
+        </Route>
+        <Route path="/loading" element={<Loading />} />
+      </Route>
+
       {/* catch all */}
       <Route path="*" element={<NotFound />} />
     </Routes>

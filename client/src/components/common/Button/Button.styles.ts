@@ -7,6 +7,8 @@ export const Container = styled.button<{
   color: NormalColorType;
   shadow: boolean;
 }>`
+  position: relative;
+  overflow: hidden;
   background: ${({ color }) => palette[color]};
   color: #fff;
   border-radius: 0.7rem;
