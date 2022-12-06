@@ -1,6 +1,5 @@
 import { Logger } from '@nestjs/common';
 import {
-  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
@@ -30,7 +29,7 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   ) {}
 
   /** OnGatewayInit */
-  afterInit(server: Server) {
+  afterInit() {
     this.logger.verbose('Initialized');
   }
 
