@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { io } from 'socket.io-client';
 import { PROPERTIES } from '~/constants/properties';
 
@@ -8,6 +8,14 @@ const Home = () => {
   const handleGithubLogin = () => {
     window.location.href = 'http://localhost:8080/auth/github';
   };
+  useEffect(() => {
+    socket.on('connect', () => {
+      console.log('connected');
+    });
+    socket.on('disconnect', () => {
+      console.log('disconnected');
+    });
+  }, []);
 
   return (
     <div>
