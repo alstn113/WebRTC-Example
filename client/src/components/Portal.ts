@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 
 interface PortalProps {
   children: React.ReactNode;
@@ -6,10 +6,14 @@ interface PortalProps {
 }
 
 const Portal = ({ children, id }: PortalProps) => {
-  const element =
-    typeof window !== 'undefined' &&
-    (document.getElementById(id) as HTMLElement);
-  return element ? ReactDOM.createPortal(children, element) : null;
+  const isSSR = (): boolean => {
+    return typeof window === 'undefined' || typeof document === 'undefined';
+  };
+
+  const element = isSSR() ? null : (document.getElementById(id) as HTMLElement);
+
+  if (!element) return null;
+  return createPortal(children, element);
 };
 
 export default Portal;
