@@ -13,6 +13,7 @@ import { ThemeProvider } from '@emotion/react';
 // react-query
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ModalProvider from './components/ModalProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,6 +36,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <ThemeProvider theme={theme}>
           <GlobalStyle />
           <App />
+          <ModalProvider />
         </ThemeProvider>
       </BrowserRouter>
     </QueryClientProvider>
