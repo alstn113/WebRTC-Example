@@ -1,4 +1,4 @@
-import useModalStore from '~/libs/stores/useModalStore';
+import useModalStore from '~/lib/stores/useModalStore';
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
