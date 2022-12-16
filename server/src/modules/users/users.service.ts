@@ -17,13 +17,13 @@ export class UsersService {
     return users;
   }
 
-  async findUserById(id: number) {
+  async findUserById(id: string) {
     const user = await this.prisma.user.findUnique({ where: { id } });
     if (!user) throw new NotFoundException();
     return user;
   }
 
-  async deleteUserById(id: number) {
+  async deleteUserById(id: string) {
     /** @todo handle NotFound */
     return await this.prisma.user.delete({ where: { id } });
   }

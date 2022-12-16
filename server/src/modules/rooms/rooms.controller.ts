@@ -32,13 +32,13 @@ export class RoomsController {
 
   @Get('/:id')
   @UseGuards(JwtGuard)
-  async getRoomById(@Param('id', ParseIntPipe) id: number) {
+  async getRoomById(@Param('id', ParseIntPipe) id: string) {
     return await this.roomsService.findRoomById(id);
   }
 
   @Delete('/:id')
   @UseGuards(JwtGuard)
-  async deleteRoomById(@Param('id', ParseIntPipe) id: number, @GetCurrentUser() user) {
+  async deleteRoomById(@Param('id', ParseIntPipe) id: string, @GetCurrentUser() user) {
     return await this.roomsService.deleteRoomById(id, user);
   }
 }

@@ -19,7 +19,7 @@ export class UsersController {
   }
 
   @Get('/:id')
-  async getUserById(@Param('id', ParseIntPipe) id: number) {
+  async getUserById(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.findUserById(id);
   }
 
@@ -29,7 +29,7 @@ export class UsersController {
   }
 
   @Delete('/:id')
-  async deleteUserById(@Param('id', ParseIntPipe) id: number) {
+  async deleteUserById(@Param('id', ParseIntPipe) id: string) {
     return this.usersService.deleteUserById(id);
   }
 }
