@@ -33,9 +33,9 @@ const Modal = ({
           >
             <S.Positioner>
               <S.ModalBlock
-                initial={{ y: '30vh', opacity: 0, scale: 0.5 }}
+                initial={{ y: '30vh', opacity: 0, scale: 0.8 }}
                 animate={{ y: '0vh', opacity: 1, scale: 1 }}
-                exit={{ y: '30vh', opacity: 0, scale: 0.5 }}
+                exit={{ y: '30vh', opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.3 }}
               >
                 <S.Title>{title}</S.Title>
