@@ -20,7 +20,6 @@ import { LeaveRoomDto } from './dto/leave-room.dto';
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
-  private connectedUsers: Map<string, number> = new Map();
   private logger = new Logger('ChatsGateway');
 
   constructor(
@@ -35,23 +34,11 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   /** OnGatewayConnection */
   async handleConnection(client: Socket) {
-    const token = client.handshake.query.token.toString();
-    const payload = await this.authService.verifyAccessToken(token);
-
-    const user = payload && (await this.userService.findUserById(payload.id));
-    if (!user) {
-      client.disconnect();
-      return;
-    }
-
-    this.connectedUsers.set(client.id, user.id);
-
     this.logger.verbose(`Client Connected : ${client.id}`);
   }
 
   /** OnGatewayDisconnect */
   handleDisconnect(client: Socket) {
-    this.connectedUsers.delete(client.id);
     this.logger.verbose(`Client Disconnected : ${client.id}`);
   }
 

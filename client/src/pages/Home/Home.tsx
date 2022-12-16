@@ -4,7 +4,7 @@ import { Button } from '~/components/common';
 import { PROPERTIES } from '~/constants/properties';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
 
-const socket = io(PROPERTIES.BASE_URL);
+const socket = io(PROPERTIES.BASE_URL + '/chats');
 
 const Home = () => {
   const handleGithubLogin = () => {
