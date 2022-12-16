@@ -7,7 +7,7 @@ import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
 
 // layouts
-import MainLayout from '~/components/Layouts/MainLayout';
+import MainLayout from '~/components/Layouts/MainLayout/MainLayout';
 
 // pages
 import Home from '~/pages/Home/Home';
