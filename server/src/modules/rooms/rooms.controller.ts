@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GetCurrentUser } from '~/common/decorators/get-current-user.decorator';
 import { JwtGuard } from '../auth/guards';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -20,6 +20,7 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
+  @ApiBearerAuth('access-token')
   @UseGuards(JwtGuard)
   async createRoom(@Body() dto: CreateRoomDto, @GetCurrentUser() user) {
     return await this.roomsService.createRoom(dto, user);
