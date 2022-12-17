@@ -1,8 +1,13 @@
 import { useEffect } from 'react';
 import { io } from 'socket.io-client';
+import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button } from '~/components/common';
+import ErrorFallback from '~/components/ErrorFallback';
+import { MESSAGE } from '~/constants/messages';
 import { PROPERTIES } from '~/constants/properties';
+import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
+import RoomListContent from './RoomListContent';
 
 const socket = io(PROPERTIES.BASE_URL + '/chats');
 
@@ -25,6 +30,16 @@ const Home = () => {
     <div>
       <Button onClick={openLoginDialog}>Login</Button>
       Home <button onClick={handleGithubLogin}>sdf</button>
+      <AsyncBoundary
+        rejectedFallback={
+          <ErrorFallback
+            message={MESSAGE.ERROR.LOAD_DATA}
+            queryKey={useGetRoomList.getKey()}
+          />
+        }
+      >
+        <RoomListContent />
+      </AsyncBoundary>
     </div>
   );
 };

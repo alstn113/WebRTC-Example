@@ -1,5 +1,5 @@
-// react
-import { Route, Routes } from 'react-router-dom';
+// react-router-dom
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // ErrorBoundary
 import ErrorBoundary from '~/components/ErrorBoundary';
@@ -18,19 +18,23 @@ import NotFound from '~/pages/NotFound/NotFound';
 const App = () => {
   return (
     <ErrorBoundary fallback={<ErrorFallback message={MESSAGE.ERROR.UNKNOWN} />}>
-      <Routes>
-        {/* public routes */}
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/room" element={<Room />}>
+      <Router>
+        <Routes>
+          {/* public routes */}
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Home />} />
+            <Route path="loading" element={<Loading />} />
+          </Route>
+
+          <Route path="/room" element={<MainLayout />}>
+            <Route index element={<></>} />
             <Route path=":roomId" element={<Room />} />
           </Route>
-          <Route path="/loading" element={<Loading />} />
-        </Route>
 
-        {/* catch all */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          {/* catch all */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
     </ErrorBoundary>
   );
 };

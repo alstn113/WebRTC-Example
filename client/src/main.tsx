@@ -1,10 +1,6 @@
 // react
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-
-// react-router-dom
-import { BrowserRouter } from 'react-router-dom';
 
 // emotion
 import { GlobalStyle, theme } from './styles';
@@ -13,6 +9,8 @@ import { ThemeProvider } from '@emotion/react';
 // react-query
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+// provider
 import ModalProvider from './components/ModalProvider';
 
 const queryClient = new QueryClient({
@@ -29,16 +27,12 @@ const queryClient = new QueryClient({
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <ReactQueryDevtools initialIsOpen={false} />
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
-        <ModalProvider />
-      </ThemeProvider>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <App />
+      <ModalProvider />
+    </ThemeProvider>
   </QueryClientProvider>,
-  // </React.StrictMode>,
 );
