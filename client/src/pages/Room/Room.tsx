@@ -6,7 +6,7 @@ import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import RoomContent from './RoomContent';
 
 const Room = () => {
-  const roomId = useParams<{ roomId: string }>().roomId as string;
+  const { roomId } = useParams() as { roomId: string };
   return (
     <AsyncBoundary
       rejectedFallback={

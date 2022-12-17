@@ -15,8 +15,9 @@ import { JoinRoomDto } from './dto/join-room.dto';
 import { LeaveRoomDto } from './dto/leave-room.dto';
 
 @WebSocketGateway({
-  namespace: 'chats',
-  cors: { origin: ['http://localhost:3000'] },
+  namespace: '/socket/chats',
+  transpost: ['websocket', 'polling'],
+  cors: { origin: '*' },
 })
 export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
@@ -33,7 +34,7 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   /** OnGatewayConnection */
-  async handleConnection(client: Socket) {
+  handleConnection(client: Socket) {
     this.logger.verbose(`Client Connected : ${client.id}`);
   }
 
@@ -43,20 +44,19 @@ export class ChatsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   @SubscribeMessage('message')
-  async onMessage(client: Socket, addMessageDto: AddMessageDto) {
+  onMessage(client: Socket, addMessageDto: AddMessageDto) {
     client.to(addMessageDto.roomId).emit('message', addMessageDto.text);
-    this.logger.verbose(`Message Received : ${addMessageDto.text}`);
   }
 
   @SubscribeMessage('join')
-  async onRoomJoin(client: Socket, joinRoomDto: JoinRoomDto) {
+  onRoomJoin(client: Socket, joinRoomDto: JoinRoomDto) {
     client.join(joinRoomDto.roomId);
-    this.logger.verbose(`Client ${client.id} joined room ${joinRoomDto.roomId}`);
+    client.to(joinRoomDto.roomId).emit('join', client.id);
   }
 
   @SubscribeMessage('leave')
-  async onRoomLeave(client: Socket, leaveRoomDto: LeaveRoomDto) {
+  onRoomLeave(client: Socket, leaveRoomDto: LeaveRoomDto) {
     client.leave(leaveRoomDto.roomId);
-    this.logger.verbose(`Client ${client.id} left room ${leaveRoomDto.roomId}`);
+    client.to(leaveRoomDto.roomId).emit('leave', client.id);
   }
 }
