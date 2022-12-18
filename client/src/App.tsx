@@ -25,7 +25,6 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="loading" element={<Loading />} />
           </Route>
-
           <Route path="/room" element={<MainLayout />}>
             <Route index element={<></>} />
             <Route path=":roomId" element={<Room />} />

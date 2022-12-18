@@ -3,25 +3,25 @@ import Portal from '~/components/Portal';
 import { Button } from '~/components/common';
 import * as S from './Modal.styles';
 
-export interface ModalProps {
+export interface Props {
   visible: boolean;
   title: string;
   message: string;
+  cancelText?: string;
+  confirmText?: string;
   onConfirm: () => void;
   onCancel: () => void;
-  confirmText?: string;
-  cancelText?: string;
 }
 
 const Modal = ({
   visible,
   title,
   message,
+  cancelText = 'Cancel',
+  confirmText = 'Confirm',
   onConfirm,
   onCancel,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
-}: ModalProps) => {
+}: Props) => {
   return (
     <Portal id="modal">
       <AnimatePresence>
@@ -30,12 +30,13 @@ const Modal = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
             <S.Positioner>
               <S.ModalBlock
-                initial={{ y: '30vh', opacity: 0, scale: 0.8 }}
+                initial={{ y: '30vh', opacity: 0, scale: 0.5 }}
                 animate={{ y: '0vh', opacity: 1, scale: 1 }}
-                exit={{ y: '30vh', opacity: 0, scale: 0.8 }}
+                exit={{ y: '30vh', opacity: 0, scale: 0.5 }}
                 transition={{ duration: 0.3 }}
               >
                 <S.Title>{title}</S.Title>

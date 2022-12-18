@@ -5,7 +5,7 @@ import Modal from '~/components/common/Modal/Modal';
 const ModalProvider = () => {
   const { config, close, visible } = useModalStore();
 
-  const onCacel = useCallback(() => {
+  const onCancel = useCallback(() => {
     config?.onCancel?.();
     close();
   }, [config, close]);
@@ -22,7 +22,7 @@ const ModalProvider = () => {
       cancelText={config?.cancelText}
       confirmText={config?.confirmText}
       visible={visible}
-      onCancel={onCacel}
+      onCancel={onCancel}
       onConfirm={onConfirm}
     />
   );
