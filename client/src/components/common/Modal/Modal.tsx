@@ -3,7 +3,7 @@ import Portal from '~/components/Portal';
 import { Button } from '~/components/common';
 import * as S from './Modal.styles';
 
-export interface Props {
+export interface ModalProps {
   visible: boolean;
   title: string;
   message: string;
@@ -21,7 +21,7 @@ const Modal = ({
   confirmText = 'Confirm',
   onConfirm,
   onCancel,
-}: Props) => {
+}: ModalProps) => {
   return (
     <Portal id="modal">
       <AnimatePresence>
