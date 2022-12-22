@@ -1,16 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
-import { PROPERTIES } from '~/constants/properties';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
+import roomSocket from '~/lib/sockets/roomSocket';
 import RoomListContent from './RoomListContent';
-
-const socket = io(PROPERTIES.BASE_URL + '/chats');
 
 const Home = () => {
   const navigate = useNavigate();
@@ -19,10 +16,11 @@ const Home = () => {
     window.location.href = 'http://localhost:8080/auth/github';
   };
   useEffect(() => {
-    socket.on('connect', () => {
+    roomSocket.createRoomSocket();
+    roomSocket.socket?.on('connect', () => {
       console.log('connected');
     });
-    socket.on('disconnect', () => {
+    roomSocket.socket?.on('disconnect', () => {
       console.log('disconnected');
     });
   }, []);
