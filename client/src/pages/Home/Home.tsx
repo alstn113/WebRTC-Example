@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button } from '~/components/common';
@@ -12,7 +13,9 @@ import RoomListContent from './RoomListContent';
 const socket = io(PROPERTIES.BASE_URL + '/chats');
 
 const Home = () => {
+  const navigate = useNavigate();
   const handleGithubLogin = () => {
+    navigate('/loading');
     window.location.href = 'http://localhost:8080/auth/github';
   };
   useEffect(() => {

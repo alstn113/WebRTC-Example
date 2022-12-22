@@ -14,6 +14,7 @@ import Home from '~/pages/Home/Home';
 import Room from '~/pages/Room/Room';
 import Loading from '~/pages/Loading/Loading';
 import NotFound from '~/pages/NotFound/NotFound';
+import Auth from './pages/Auth/Auth';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           {/* public routes */}
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
+            <Route path="auth" element={<Auth />} />
             <Route path="loading" element={<Loading />} />
           </Route>
           <Route path="/room" element={<MainLayout />}>

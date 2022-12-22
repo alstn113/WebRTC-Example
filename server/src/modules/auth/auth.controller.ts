@@ -26,6 +26,6 @@ export class AuthController {
     const REDIRECT_URI = this.configService.get<string>('client');
     const accessToken = await this.authService.getAccessToken(user.id, user.email);
 
-    return res.redirect(`${REDIRECT_URI}/?access_token=${accessToken}`);
+    return res.redirect(`${REDIRECT_URI}/auth/?access_token=${accessToken}`);
   }
 }
