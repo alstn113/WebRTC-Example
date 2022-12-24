@@ -26,6 +26,7 @@ export class UsersService {
   }
 
   async getCurrentUser(user: User) {
+    if (!user) return { user: null };
     return {
       user: {
         id: user.id,
