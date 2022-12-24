@@ -25,6 +25,7 @@ export class UsersService {
     }
   }
 
+  // TODO: null로 할 지 error로 할 지 고민
   async getCurrentUser(user: User) {
     if (!user) return { user: null };
     return {

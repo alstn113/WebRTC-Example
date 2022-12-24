@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { Response } from 'express';
-import { PrismaService } from '~/prisma/prisma.service';
 import { LoginUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -12,7 +11,6 @@ import { AuthRepository } from './auth.repository';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly authRepository: AuthRepository,
