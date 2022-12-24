@@ -15,7 +15,12 @@ import Room from '~/pages/Room/Room';
 import Loading from '~/pages/Loading/Loading';
 import NotFound from '~/pages/NotFound/NotFound';
 
+// hooks
+import userGetMe from './hooks/queries/user/useGetMe';
+
 const App = () => {
+  const {} = userGetMe();
+
   return (
     <ErrorBoundary fallback={<ErrorFallback message={MESSAGE.ERROR.UNKNOWN} />}>
       <Router>

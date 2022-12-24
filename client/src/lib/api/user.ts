@@ -4,7 +4,7 @@ import apiClient from '~/lib/api/apiClient';
 const UserAPI = {
   getMe: async (): Promise<User | null> => {
     try {
-      const { data } = await apiClient.get('/user/me');
+      const { data } = await apiClient.get('/users/me');
       return data;
     } catch (e) {
       return null;
