@@ -23,6 +23,10 @@ const Home = () => {
     roomSocket.socket?.on('disconnect', () => {
       console.log('disconnected');
     });
+    roomSocket.socket?.emit('join', 1);
+    roomSocket.socket?.on('join', (data) => {
+      console.log(data);
+    });
   }, []);
 
   const openLoginDialog = useOpenLoginDialog();
