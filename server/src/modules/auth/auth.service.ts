@@ -19,11 +19,7 @@ export class AuthService {
   ) {}
 
   async login(res: Response, dto: LoginUserDto) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        email: dto.email,
-      },
-    });
+    const user = await this.authRepository.findUserByEmail(dto.email);
     if (!user) throw new HttpException('User not found', 404);
 
     const isPasswordMatches = await compareHash(user.password, dto.password);
@@ -34,7 +30,7 @@ export class AuthService {
       this.generateToken({ type: 'refresh_token', userId: user.id, email: user.email }),
     ]);
 
-    await this.updateRtHash(user.id, refreshToken);
+    await this.updateHashedRt(user.id, refreshToken);
     this.setTokenCookies(res, accessToken, refreshToken);
 
     return { accessToken, refreshToken };
@@ -42,17 +38,7 @@ export class AuthService {
 
   async logout(res: Response, userId: string) {
     try {
-      await this.prisma.user.updateMany({
-        where: {
-          id: userId,
-          hashedRt: {
-            not: null,
-          },
-        },
-        data: {
-          hashedRt: null,
-        },
-      });
+      await this.authRepository.deleteHashedRt(userId);
     } catch (error) {
       if (isNotFoundError) throw new HttpException('User not found', 404);
     } finally {
@@ -66,11 +52,7 @@ export class AuthService {
     >(refreshToken, {
       secret: this.configService.get('refresh_token.secret'),
     });
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id: refreshTokenPayload.userId,
-      },
-    });
+    const user = await this.authRepository.findUserById(refreshTokenPayload.userId);
     if (!user || !user.hashedRt) throw new HttpException('Refresh Failure', 401);
 
     const rtMatches = await compareHash(user.hashedRt, refreshToken);
@@ -85,7 +67,7 @@ export class AuthService {
         userId: user.id,
         email: user.email,
       });
-      await this.updateRtHash(user.id, refreshToken);
+      await this.updateHashedRt(user.id, refreshToken);
     }
 
     const accessToken = await this.generateToken({
@@ -114,17 +96,10 @@ export class AuthService {
     res.clearCookie('refresh_token');
   }
 
-  async updateRtHash(userId: string, refreshToken: string) {
-    const hash = await generateHash(refreshToken);
+  async updateHashedRt(userId: string, refreshToken: string) {
+    const hashRt = await generateHash(refreshToken);
     try {
-      await this.prisma.user.update({
-        where: {
-          id: userId,
-        },
-        data: {
-          hashedRt: hash,
-        },
-      });
+      await this.authRepository.updateHashedRt(userId, hashRt);
     } catch (error) {
       if (isNotFoundError) throw new HttpException('User not found', 404);
     }
