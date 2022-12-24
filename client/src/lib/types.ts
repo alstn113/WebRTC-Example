@@ -1,7 +1,6 @@
 export interface User {
   id: string;
   email: string;
-  name: string;
 }
 export interface CreateRoomParams {
   title: string;
@@ -16,4 +15,9 @@ export interface Room {
 
 export interface RoomList {
   roomList: Room[];
+}
+
+export interface AuthParams {
+  email: string;
+  password: string;
 }

@@ -3,7 +3,7 @@ import { PROPERTIES } from '~/constants/properties';
 
 const apiClient = axios.create({
   baseURL: PROPERTIES.BASE_URL,
-  // withCredentials: true, // able to use cookies
+  withCredentials: true,
 });
 
 export default apiClient;

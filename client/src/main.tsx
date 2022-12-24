@@ -16,6 +16,8 @@ import ModalProvider from './components/ModalProvider';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      suspense: true,
+      //
       retry: false,
       refetchOnMount: false,
       refetchOnReconnect: false,

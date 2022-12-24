@@ -16,7 +16,7 @@ export const Overlay = styled(motion.div)`
 export const Positioner = styled.div`
   position: absolute;
   left: 50%;
-  top: 40%; // 50%로 하니까 보기가 너무 불편함
+  top: 50%;
   transform: translate(-50%, -50%);
   z-index: ${zIndexes.Modal};
 `;
