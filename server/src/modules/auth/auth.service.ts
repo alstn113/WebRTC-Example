@@ -7,6 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { isNotFoundError } from '~/prisma/utils';
 import { compareHash, generateHash } from '~/utils';
 import type { DecodedToken, RefreshTokenPayload, TokenPayload } from './types';
+import { AuthRepository } from './auth.repository';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly authRepository: AuthRepository,
   ) {}
 
   async login(res: Response, dto: LoginUserDto) {
