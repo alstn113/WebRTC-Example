@@ -6,18 +6,18 @@ import { ConfigService } from '@nestjs/config';
 import { isNotFoundError } from '~/prisma/utils';
 import { compareHash, generateHash } from '~/utils';
 import type { DecodedToken, RefreshTokenPayload, TokenPayload } from './types';
-import { AuthRepository } from './auth.repository';
+import { UsersRepository } from '../users/users.repository';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly authRepository: AuthRepository,
+    private readonly userRepository: UsersRepository,
   ) {}
 
   async login(res: Response, dto: LoginUserDto) {
-    const user = await this.authRepository.findUserByEmail(dto.email);
+    const user = await this.userRepository.findUserByEmail(dto.email);
     if (!user) throw new HttpException('User not found', 404);
 
     const isPasswordMatches = await compareHash(user.password, dto.password);
@@ -34,9 +34,20 @@ export class AuthService {
     return { accessToken, refreshToken };
   }
 
+  async oauthLogin(res: Response, user: { id: string; email: string }) {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.generateToken({ type: 'access_token', userId: user.id, email: user.email }),
+      this.generateToken({ type: 'refresh_token', userId: user.id, email: user.email }),
+    ]);
+
+    await this.updateHashedRt(user.id, refreshToken);
+    this.setTokenCookies(res, accessToken, refreshToken);
+    return;
+  }
+
   async logout(res: Response, userId: string) {
     try {
-      await this.authRepository.deleteHashedRt(userId);
+      await this.userRepository.deleteHashedRt(userId);
     } catch (error) {
       if (isNotFoundError) throw new HttpException('User not found', 404);
     } finally {
@@ -50,7 +61,7 @@ export class AuthService {
     >(refreshToken, {
       secret: this.configService.get('refresh_token.secret'),
     });
-    const user = await this.authRepository.findUserById(refreshTokenPayload.userId);
+    const user = await this.userRepository.findUserById(refreshTokenPayload.userId);
     if (!user || !user.hashedRt) throw new HttpException('Refresh Failure', 401);
 
     const rtMatches = await compareHash(user.hashedRt, refreshToken);
@@ -97,7 +108,7 @@ export class AuthService {
   async updateHashedRt(userId: string, refreshToken: string) {
     const hashRt = await generateHash(refreshToken);
     try {
-      await this.authRepository.updateHashedRt(userId, hashRt);
+      await this.userRepository.updateHashedRt(userId, hashRt);
     } catch (error) {
       if (isNotFoundError) throw new HttpException('User not found', 404);
     }
