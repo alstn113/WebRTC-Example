@@ -22,10 +22,9 @@ export class JwtAuthMiddleware implements NestMiddleware {
       const accessTokenPayload = await this.jwtService.verifyAsync<
         DecodedToken<AccessTokenPayload>
       >(accessToken, {
-        secret: this.configService.get<string>('access_tokon.secret'),
+        secret: this.configService.get<string>('access_token.secret'),
       });
       req.user = { id: accessTokenPayload.userId, email: accessTokenPayload.email };
-
       const now = new Date().getDate();
       const diff = accessTokenPayload.exp - now;
       if (diff < 1000 * 60 * 30 && refreshToken) {
