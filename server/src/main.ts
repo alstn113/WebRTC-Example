@@ -6,6 +6,7 @@ import helmet from 'helmet';
 
 import { AppModule } from '~/app.module';
 import { setupSwagger } from '~/utils';
+import { SocketIoAdapter } from '~/adapters';
 
 const bootstrap = async () => {
   const app = await NestFactory.create(AppModule);
@@ -13,12 +14,13 @@ const bootstrap = async () => {
   const port = configService.get<number>('port');
   const loggger = new Logger('Main');
 
-  app.use(cookieParser());
   app.use(helmet());
+  app.use(cookieParser());
   app.enableCors({
     origin: configService.get<string>('client'),
     credentials: true,
   });
+  app.useWebSocketAdapter(new SocketIoAdapter(app));
 
   setupSwagger(app);
   await app.listen(port);
