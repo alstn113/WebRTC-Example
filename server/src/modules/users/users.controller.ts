@@ -1,35 +1,22 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from './dto/create-user.dto';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { ApiTags } from '@nestjs/swagger';
+import { CreateUserDto } from './dto';
+import { GetCurrentUser } from '~/common/decorators';
+import { User } from '@prisma/client';
 
-@Controller('/users')
-@ApiTags('/users')
+@ApiTags('users')
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('/')
-  async createUser(@Body() user: CreateUserDto) {
-    return this.usersService.createUser(user);
-  }
-
-  @Get('/')
-  async getUsers() {
-    return this.usersService.findUsers();
-  }
-
-  @Get('/:id')
-  async getUserById(@Param('id', ParseIntPipe) id: string) {
-    return this.usersService.findUserById(id);
+  @Post('/register')
+  async register(@Body() dto: CreateUserDto) {
+    return this.usersService.createUser(dto);
   }
 
   @Get('/me')
-  async getMe() {
-    return;
-  }
-
-  @Delete('/:id')
-  async deleteUserById(@Param('id', ParseIntPipe) id: string) {
-    return this.usersService.deleteUserById(id);
+  async getCurrentUser(@GetCurrentUser() user: User) {
+    return this.usersService.getCurrentUser(user);
   }
 }

@@ -1,63 +1,146 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
+import { HttpException, Injectable } from '@nestjs/common';
+import { Response } from 'express';
 import { PrismaService } from '~/prisma/prisma.service';
+import { LoginUserDto } from './dto';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { isNotFoundError } from '~/prisma/utils';
+import { compareHash, generateHash } from '~/utils';
+import type { DecodedToken, RefreshTokenPayload, TokenPayload } from './types';
 
 @Injectable()
 export class AuthService {
-  readonly ACCESS_TOKEN_SECRET = this.configService.get<string>('auth.access_token_secret');
-  readonly ACCESS_TOKEN_EXPIRE = this.configService.get<string>('auth.access_token_expire');
-
-  readonly REFRESH_TOKEN_SECRET = this.configService.get<string>('auth.refresh_token_secret');
-  readonly REFRESH_TOKEN_EXPIRE = this.configService.get<string>('auth.refresh_token_expire');
-
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
   ) {}
 
-  async getAccessToken(userId: number, email: string) {
-    const payload = { sub: 'access_token', userId, email };
-
-    const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.ACCESS_TOKEN_SECRET,
-      expiresIn: this.ACCESS_TOKEN_EXPIRE,
+  async login(res: Response, dto: LoginUserDto) {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: dto.email,
+      },
     });
+    if (!user) throw new HttpException('User not found', 404);
 
-    return accessToken;
+    const isPasswordMatches = await compareHash(user.password, dto.password);
+    if (!isPasswordMatches) throw new HttpException('Invalid password', 400);
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.generateToken({ type: 'access_token', userId: user.id, email: user.email }),
+      this.generateToken({ type: 'refresh_token', userId: user.id, email: user.email }),
+    ]);
+
+    await this.updateRtHash(user.id, refreshToken);
+    this.setTokenCookies(res, accessToken, refreshToken);
+
+    return { accessToken, refreshToken };
   }
 
-  async getRefreshToken(userId: number, email: string) {
-    const payload = { sub: 'refresh_token', userId, email };
-
-    const refresh_token = await this.jwtService.signAsync(payload, {
-      secret: this.REFRESH_TOKEN_SECRET,
-      expiresIn: this.REFRESH_TOKEN_EXPIRE,
-    });
-
-    return refresh_token;
-  }
-
-  async verifyAccessToken(accessToken: string) {
-    const ACCESS_TOKEN_SECRET = this.configService.get<string>('auth.access_token_secret');
-
+  async logout(res: Response, userId: string) {
     try {
-      const payload = await this.jwtService.verify(accessToken, {
-        secret: ACCESS_TOKEN_SECRET,
+      await this.prisma.user.updateMany({
+        where: {
+          id: userId,
+          hashedRt: {
+            not: null,
+          },
+        },
+        data: {
+          hashedRt: null,
+        },
       });
-
-      return payload;
-    } catch (err) {
-      return null;
+    } catch (error) {
+      if (isNotFoundError) throw new HttpException('User not found', 404);
+    } finally {
+      this.clearTokenCookies(res);
     }
   }
 
-  async verifyRefreshToken(refreshToken: string) {
-    const payload = await this.jwtService.verifyAsync(refreshToken, {
-      secret: this.REFRESH_TOKEN_SECRET,
+  async refreshTokens(res: Response, refreshToken: string) {
+    const refreshTokenPayload = await this.jwtService.verifyAsync<
+      DecodedToken<RefreshTokenPayload>
+    >(refreshToken, {
+      secret: this.configService.get('refresh_token.secret'),
+    });
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: refreshTokenPayload.userId,
+      },
+    });
+    if (!user || !user.hashedRt) throw new HttpException('Refresh Failure', 401);
+
+    const rtMatches = await compareHash(user.hashedRt, refreshToken);
+    if (!rtMatches) throw new HttpException('Refresh Failure', 401);
+
+    // If the refresh token is less than 15 days away, the refresh token is also renewed.
+    const now = new Date().getTime();
+    const diff = refreshTokenPayload.exp * 1000 - now;
+    if (diff < 1000 * 60 * 60 * 24 * 15) {
+      refreshToken = await this.generateToken({
+        type: 'refresh_token',
+        userId: user.id,
+        email: user.email,
+      });
+      await this.updateRtHash(user.id, refreshToken);
+    }
+
+    const accessToken = await this.generateToken({
+      type: 'access_token',
+      userId: user.id,
+      email: user.email,
     });
 
-    return payload;
+    this.setTokenCookies(res, accessToken, refreshToken);
+    return { id: user.id, email: user.email };
+  }
+
+  setTokenCookies(res: Response, accessToken: string, refreshToken: string) {
+    res.cookie('access_token', accessToken, {
+      maxAge: 1000 * 60 * 60 * 1, // 1h
+      httpOnly: true,
+    });
+    res.cookie('refresh_token', refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24 * 30, // 30d
+      httpOnly: true,
+    });
+  }
+
+  clearTokenCookies(res: Response) {
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+  }
+
+  async updateRtHash(userId: string, refreshToken: string) {
+    const hash = await generateHash(refreshToken);
+    try {
+      await this.prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          hashedRt: hash,
+        },
+      });
+    } catch (error) {
+      if (isNotFoundError) throw new HttpException('User not found', 404);
+    }
+  }
+
+  async generateToken(payload: TokenPayload) {
+    const token = await this.jwtService.signAsync(
+      {
+        type: payload.type,
+        userId: payload.userId,
+        email: payload.email,
+      },
+      {
+        secret: this.configService.get(`${payload.type}`).secret,
+        expiresIn: this.configService.get(`${payload.type}`).duration,
+      },
+    );
+
+    return token;
   }
 }

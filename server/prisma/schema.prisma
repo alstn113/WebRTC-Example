@@ -15,11 +15,12 @@ datasource db {
 // npx prisma studio
 
 model User {
-  id       String @id @default(uuid())
-  socialId String
-  provider String
-  email    String @unique
-  username String
+  id       String  @id @default(uuid())
+  socialId String?
+  provider String?
+  email    String  @unique
+  password String?
+  hashedRt String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt

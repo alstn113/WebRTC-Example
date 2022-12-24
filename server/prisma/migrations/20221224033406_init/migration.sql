@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "User" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "socialId" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -13,10 +13,10 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Chat" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "message" TEXT NOT NULL,
-    "userId" INTEGER NOT NULL,
-    "roomId" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -25,10 +25,10 @@ CREATE TABLE "Chat" (
 
 -- CreateTable
 CREATE TABLE "Room" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "password" TEXT,
-    "ownerId" INTEGER NOT NULL,
+    "ownerId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

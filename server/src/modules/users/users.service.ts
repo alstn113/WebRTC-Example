@@ -1,30 +1,39 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import { isAlreadyExistsError } from '~/prisma/utils';
+import { CreateUserDto } from './dto';
 import { PrismaService } from '~/prisma/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { generateHash } from '~/utils';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUser(dto: CreateUserDto) {
-    /** @todo handle error */
-    return this.prisma.user.create({ data: dto });
+    const hashedPassword = await generateHash(dto.password);
+
+    try {
+      const user = await this.prisma.user.create({
+        data: {
+          email: dto.email,
+          password: hashedPassword,
+        },
+      });
+
+      return user;
+    } catch (err) {
+      if (isAlreadyExistsError) {
+        throw new HttpException('User already exists', 400);
+      }
+    }
   }
 
-  async findUsers() {
-    /** @todo handle error */
-    const users = await this.prisma.user.findMany();
-    return users;
-  }
-
-  async findUserById(id: string) {
-    const user = await this.prisma.user.findUnique({ where: { id } });
-    if (!user) throw new NotFoundException();
-    return user;
-  }
-
-  async deleteUserById(id: string) {
-    /** @todo handle NotFound */
-    return await this.prisma.user.delete({ where: { id } });
+  async getCurrentUser(user: User) {
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+      },
+    };
   }
 }

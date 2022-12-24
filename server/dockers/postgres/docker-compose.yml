@@ -1,15 +1,18 @@
-version: '3'
+# Set the version of docker compose to use
+version: '3.9'
+
+# The containers that compose the project
 services:
-  dev-db:
+  db:
     image: postgres:14
-    container_name: dev-db-container
     restart: always
+    container_name: integration-tests-prisma
     ports:
-      - 5432:5432
+      - '5433:5432'
     environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'postgres'
-      POSTGRES_DB: webrtc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
     labels:
       - 'name=postgres'
       - 'mode=standalone'
