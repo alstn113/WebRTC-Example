@@ -5,6 +5,7 @@ import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
+import useLogout from '~/hooks/queries/auth/useLogout';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import userGetMe from '~/hooks/queries/user/useGetMe';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
@@ -34,12 +35,18 @@ const Home = () => {
   const openLoginDialog = useOpenLoginDialog();
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData(userGetMe.getKey());
+  const { mutate } = useLogout({
+    onSuccess: () => {
+      queryClient.invalidateQueries(userGetMe.getKey());
+    },
+  });
 
   return (
     <div>
       <Button onClick={openLoginDialog}>Login</Button>
       Home <button onClick={handleGithubLogin}>sdf</button>
       <div>{JSON.stringify(user)}</div>
+      <Button onClick={mutate}>로그아웃</Button>
       <AsyncBoundary
         rejectedFallback={
           <ErrorFallback
