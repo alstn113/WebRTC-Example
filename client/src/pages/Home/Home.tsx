@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
@@ -31,13 +32,14 @@ const Home = () => {
   }, []);
 
   const openLoginDialog = useOpenLoginDialog();
-  const { data: currentUser } = userGetMe();
+  const queryClient = useQueryClient();
+  const user = queryClient.getQueryData(userGetMe.getKey());
 
   return (
     <div>
       <Button onClick={openLoginDialog}>Login</Button>
       Home <button onClick={handleGithubLogin}>sdf</button>
-      <div>{JSON.stringify(currentUser)}</div>
+      <div>{JSON.stringify(user)}</div>
       <AsyncBoundary
         rejectedFallback={
           <ErrorFallback
