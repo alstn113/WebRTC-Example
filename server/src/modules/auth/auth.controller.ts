@@ -5,7 +5,7 @@ import { Response } from 'express';
 import { GetCurrentUser, Public } from '~/common/decorators';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dto';
-import { GithubGuard } from './guards';
+import { GithubGuard, KakaoGuard } from './guards';
 
 @ApiTags('/auth')
 @Public()
@@ -30,6 +30,22 @@ export class AuthController {
   @Get('/github/callback')
   @UseGuards(GithubGuard)
   async githubAuthCallback(
+    @Res({ passthrough: true }) res: Response,
+    @GetCurrentUser() user: { id: string; email: string },
+  ) {
+    const REDIRECT_URI = this.configService.get<string>('client');
+    await this.authService.oauthLogin(res, user);
+    return res.redirect(REDIRECT_URI);
+  }
+  @Get('/kakao')
+  @UseGuards(KakaoGuard)
+  async kakaoAuth() {
+    return 'login with kakao';
+  }
+
+  @Get('/kakao/callback')
+  @UseGuards(KakaoGuard)
+  async kakaoAuthCallback(
     @Res({ passthrough: true }) res: Response,
     @GetCurrentUser() user: { id: string; email: string },
   ) {

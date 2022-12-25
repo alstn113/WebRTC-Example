@@ -18,6 +18,10 @@ const Home = () => {
     navigate('/loading');
     window.location.href = 'http://localhost:8080/auth/github';
   };
+  const handleKakaoLogin = () => {
+    navigate('/loading');
+    window.location.href = 'http://localhost:8080/auth/kakao';
+  };
   useEffect(() => {
     roomSocket.createRoomSocket();
     roomSocket.socket?.on('connect', () => {
@@ -43,10 +47,19 @@ const Home = () => {
 
   return (
     <div>
-      <Button onClick={openLoginDialog}>Login</Button>
-      Home <button onClick={handleGithubLogin}>sdf</button>
+      <Button shadow color="secondary" onClick={openLoginDialog}>
+        Login
+      </Button>
+      <Button shadow color="secondary" onClick={handleGithubLogin}>
+        GITHUB LOGIN
+      </Button>
+      <Button shadow color="success" onClick={handleKakaoLogin}>
+        KAKAO LOGIN
+      </Button>
+      <Button shadow color="error" onClick={() => mutate()}>
+        로그아웃
+      </Button>
       <div>{JSON.stringify(user)}</div>
-      <Button onClick={mutate}>로그아웃</Button>
       <AsyncBoundary
         rejectedFallback={
           <ErrorFallback

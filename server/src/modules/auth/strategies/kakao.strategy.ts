@@ -17,17 +17,13 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     super({
       clientID: KAKAO_CLIENT_ID,
       callbackURL: KAKAO_CALLBACK_URL,
-      scope: ['user:email'],
     });
   }
 
   async validate(accessToken, refreshToken, profile, done) {
-    const {
-      id,
-      kakao_account: { email },
-    }: KakaoProfile = profile._json;
+    const { id, kakao_account }: KakaoProfile = profile._json;
     try {
-      const exUser = await this.userRepository.findUserByEmail(email);
+      const exUser = await this.userRepository.findUserByEmail(kakao_account?.email);
       if (exUser) {
         return done(null, {
           id: exUser.id,
@@ -36,7 +32,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
       }
 
       const newUser = await this.userRepository.createOAuthUser({
-        email,
+        email: kakao_account?.email,
         provider: 'kakao',
         socialId: id.toString(),
       });

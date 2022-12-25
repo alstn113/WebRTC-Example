@@ -6,6 +6,6 @@ export default () => ({
   },
   kakao: {
     client_id: process.env.KAKAO_CLIENT_ID,
-    callback_url: process.env.CALLBACK_URL,
+    callback_url: process.env.KAKAO_CALLBACK_URL,
   },
 });
