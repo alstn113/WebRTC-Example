@@ -11,14 +11,14 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
     readonly configService: ConfigService,
     private readonly userRepository: UsersRepository,
   ) {
-    const GIT_CLIENT_ID = configService.get<string>('github.client_id');
-    const GIT_CLIENT_SECRET = configService.get<string>('github.client_secret');
-    const GIT_CALLBACK_URL = configService.get<string>('github.callback_url');
+    const GITHUB_CLIENT_ID = configService.get<string>('github.client_id');
+    const GITHUB_CLIENT_SECRET = configService.get<string>('github.client_secret');
+    const GITHUB_CALLBACK_URL = configService.get<string>('github.callback_url');
 
     super({
-      clientID: GIT_CLIENT_ID,
-      clientSecret: GIT_CLIENT_SECRET,
-      callbackURL: GIT_CALLBACK_URL,
+      clientID: GITHUB_CLIENT_ID,
+      clientSecret: GITHUB_CLIENT_SECRET,
+      callbackURL: GITHUB_CALLBACK_URL,
       scope: ['user:email'],
     });
   }
