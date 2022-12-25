@@ -5,9 +5,9 @@ import { CreateUserDto } from './dto';
 import { GetCurrentUser, Public } from '~/common/decorators';
 import { User } from '@prisma/client';
 
-@ApiTags('users')
+@ApiTags('/users')
 @Public()
-@Controller('users')
+@Controller('/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
