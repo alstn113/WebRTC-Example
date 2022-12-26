@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
-import { Button } from '~/components/common';
+import { Button, Toggle } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
 import useLogout from '~/hooks/queries/auth/useLogout';
@@ -22,19 +22,19 @@ const Home = () => {
     navigate('/loading');
     window.location.href = 'http://localhost:8080/auth/kakao';
   };
-  useEffect(() => {
-    roomSocket.createRoomSocket();
-    roomSocket.socket?.on('connect', () => {
-      console.log('connected');
-    });
-    roomSocket.socket?.on('disconnect', () => {
-      console.log('disconnected');
-    });
-    roomSocket.socket?.emit('join', 1);
-    roomSocket.socket?.on('join', (data) => {
-      console.log(data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   roomSocket.createRoomSocket();
+  //   roomSocket.socket?.on('connect', () => {
+  //     console.log('connected');
+  //   });
+  //   roomSocket.socket?.on('disconnect', () => {
+  //     console.log('disconnected');
+  //   });
+  //   roomSocket.socket?.emit('join', 1);
+  //   roomSocket.socket?.on('join', (data) => {
+  //     console.log(data);
+  //   });
+  // }, []);
 
   const openLoginDialog = useOpenLoginDialog();
   const queryClient = useQueryClient();
@@ -50,6 +50,7 @@ const Home = () => {
       <Button shadow color="secondary" onClick={openLoginDialog}>
         Login
       </Button>
+      <Toggle labelText="Toggle" />
       <Button shadow color="secondary" onClick={handleGithubLogin}>
         GITHUB LOGIN
       </Button>

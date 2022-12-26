@@ -7,5 +7,6 @@
   "license": "MIT",
   "scripts": {
     "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn start:dev\""
-  }
+  },
+  "dependencies": {}
 }
