@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 
 interface Props {}
@@ -9,9 +10,11 @@ const RoomListContent = ({}: Props) => {
       {data?.map((room) => {
         return (
           <div key={room.id}>
-            <br />
-            <div>Title: {room.title}</div>
-            <div>Description: {room.description}</div>
+            <Link to={`/room/${room.id}`}>
+              <br />
+              <div>Title: {room.title}</div>
+              <div>Description: {room.description}</div>
+            </Link>
           </div>
         );
       })}

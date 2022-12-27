@@ -1,7 +1,10 @@
 export interface User {
-  id: string;
-  email: string;
+  user: {
+    id: string;
+    email: string;
+  };
 }
+
 export interface CreateRoomParams {
   title: string;
   description: string;

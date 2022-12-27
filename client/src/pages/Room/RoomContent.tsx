@@ -6,7 +6,12 @@ interface Props {
 
 const RoomContent = ({ roomId }: Props) => {
   const { data } = useGetRoom(roomId);
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <div>
+      <div>{data?.title}</div>
+      <div>{data?.description}</div>
+    </div>
+  );
 };
 
 export default RoomContent;

@@ -1,5 +1,4 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button, Toggle } from '~/components/common';
@@ -9,7 +8,6 @@ import useLogout from '~/hooks/queries/auth/useLogout';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import userGetMe from '~/hooks/queries/user/useGetMe';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
-import roomSocket from '~/lib/sockets/roomSocket';
 import { User } from '~/lib/types';
 import RoomListContent from './RoomListContent';
 
@@ -23,19 +21,6 @@ const Home = () => {
     navigate('/loading');
     window.location.href = 'http://localhost:8080/auth/kakao';
   };
-  useEffect(() => {
-    roomSocket.createRoomSocket();
-    roomSocket.socket?.on('connect', () => {
-      console.log('connected');
-    });
-    roomSocket.socket?.on('disconnect', () => {
-      console.log('disconnected');
-    });
-    roomSocket.socket?.emit('join', 1);
-    roomSocket.socket?.on('join', (data) => {
-      console.log(data);
-    });
-  }, []);
 
   const openLoginDialog = useOpenLoginDialog();
   const queryClient = useQueryClient();
@@ -61,7 +46,7 @@ const Home = () => {
       <Button shadow color="error" onClick={() => mutate()}>
         로그아웃
       </Button>
-      <div>{user?.email}</div>
+      <div>{user?.user?.email}</div>
       <AsyncBoundary
         rejectedFallback={
           <ErrorFallback

@@ -5,7 +5,6 @@ import { parseCookie } from '~/utils';
 import { AuthService } from '../auth/auth.service';
 import { UsersRepository } from '../users/users.repository';
 import { JoinRoomDto, LeaveRoomDto, SendMessageDto } from './dto';
-import { RoomsGateway } from './rooms.gateway';
 
 @Injectable()
 export class RoomsGatewayService {
@@ -59,6 +58,6 @@ export class RoomsGatewayService {
   }
 
   onSendMessage(client: Socket, dto: SendMessageDto) {
-    client.to(dto.roomId).emit(EVENT.RECEIVE_MESSAGE, dto.message);
+    client.to(dto.roomId).emit(EVENT.RECEIVE_MESSAGE, `${dto.message} server_id: ${client.id}`);
   }
 }
