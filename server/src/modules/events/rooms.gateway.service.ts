@@ -3,6 +3,7 @@ import { Server, Socket } from 'socket.io';
 import { parseCookie } from '~/utils';
 import { AuthService } from '../auth/auth.service';
 import { UsersRepository } from '../users/users.repository';
+import { JoinRoomDto, LeaveRoomDto, SendMessageDto } from './dto';
 import { RoomsGateway } from './rooms.gateway';
 
 @Injectable()
@@ -42,5 +43,17 @@ export class RoomsGatewayService {
 
   onGatewayDisconnect(client: Socket) {
     return;
+  }
+
+  onJoinRoom(client: Socket, dto: JoinRoomDto) {
+    client.join(dto.roomId);
+  }
+
+  onLeaveRoom(client: Socket, dto: LeaveRoomDto) {
+    client.leave(dto.roomId);
+  }
+
+  onSendMessage(client: Socket, dto: SendMessageDto) {
+    client.emit('message', dto.message);
   }
 }

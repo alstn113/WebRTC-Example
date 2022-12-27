@@ -6,6 +6,8 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { EVENT } from '~/common/constants';
+import { JoinRoomDto, LeaveRoomDto, SendMessageDto } from './dto';
 import { RoomsGatewayService } from './rooms.gateway.service';
 
 @WebSocketGateway({
@@ -28,18 +30,18 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     return this.roomsGatewayService.onGatewayDisconnect(client);
   }
 
-  @SubscribeMessage('join')
-  handleJoin(client: Socket, room: string) {
-    client.join(room);
+  @SubscribeMessage(EVENT.JOIN_ROOM)
+  handleJoinRoom(client: Socket, dto: JoinRoomDto) {
+    return this.roomsGatewayService.onJoinRoom(client, dto);
   }
 
-  @SubscribeMessage('leave')
-  handleLeave(client: Socket, room: string) {
-    client.leave(room);
+  @SubscribeMessage(EVENT.LEAVE_ROOM)
+  handleLeaveRoom(client: Socket, dto: LeaveRoomDto) {
+    return this.roomsGatewayService.onLeaveRoom(client, dto);
   }
 
-  @SubscribeMessage('message')
-  handleMessage(client: Socket, message: string) {
-    client.emit('message', message);
+  @SubscribeMessage(EVENT.SEND_MESSAGE)
+  handleSendMessage(client: Socket, dto: SendMessageDto) {
+    return this.roomsGatewayService.onSendMessage(client, dto);
   }
 }
