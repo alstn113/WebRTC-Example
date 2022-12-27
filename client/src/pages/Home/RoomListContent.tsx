@@ -4,7 +4,19 @@ interface Props {}
 
 const RoomListContent = ({}: Props) => {
   const { data } = useGetRoomList();
-  return <div>{JSON.stringify(data)}</div>;
+  return (
+    <>
+      {data?.map((room) => {
+        return (
+          <div key={room.id}>
+            <br />
+            <div>Title: {room.title}</div>
+            <div>Description: {room.description}</div>
+          </div>
+        );
+      })}
+    </>
+  );
 };
 
 export default RoomListContent;

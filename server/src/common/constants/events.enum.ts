@@ -5,4 +5,4 @@ export const EVENT = {
   RECEIVE_MESSAGE: 'receive_message',
 } as const;
 
-type Event = typeof EVENT[keyof typeof EVENT];
+export type Event = typeof EVENT[keyof typeof EVENT];

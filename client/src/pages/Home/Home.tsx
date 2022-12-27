@@ -10,6 +10,7 @@ import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import userGetMe from '~/hooks/queries/user/useGetMe';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
 import roomSocket from '~/lib/sockets/roomSocket';
+import { User } from '~/lib/types';
 import RoomListContent from './RoomListContent';
 
 const Home = () => {
@@ -38,7 +39,7 @@ const Home = () => {
 
   const openLoginDialog = useOpenLoginDialog();
   const queryClient = useQueryClient();
-  const user = queryClient.getQueryData(userGetMe.getKey());
+  const user = queryClient.getQueryData<User>(userGetMe.getKey());
   const { mutate } = useLogout({
     onSuccess: () => {
       queryClient.invalidateQueries(userGetMe.getKey());
@@ -60,7 +61,7 @@ const Home = () => {
       <Button shadow color="error" onClick={() => mutate()}>
         로그아웃
       </Button>
-      <div>{JSON.stringify(user)}</div>
+      <div>{user?.email}</div>
       <AsyncBoundary
         rejectedFallback={
           <ErrorFallback

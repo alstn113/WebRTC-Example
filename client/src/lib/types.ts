@@ -4,18 +4,16 @@ export interface User {
 }
 export interface CreateRoomParams {
   title: string;
-  password?: string;
+  description: string;
 }
 
 export interface Room {
   id: string;
   title: string;
-  password?: string;
+  description: string;
 }
 
-export interface RoomList {
-  roomList: Room[];
-}
+export type RoomList = Room[];
 
 export interface AuthParams {
   email: string;
