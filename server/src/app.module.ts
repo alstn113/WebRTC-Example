@@ -15,6 +15,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RoomsModule } from './modules/rooms/rooms.module';
     AuthModule,
     UsersModule,
     RoomsModule,
+    EventsModule,
   ],
 
   providers: [

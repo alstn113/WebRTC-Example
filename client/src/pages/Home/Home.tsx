@@ -22,19 +22,19 @@ const Home = () => {
     navigate('/loading');
     window.location.href = 'http://localhost:8080/auth/kakao';
   };
-  // useEffect(() => {
-  //   roomSocket.createRoomSocket();
-  //   roomSocket.socket?.on('connect', () => {
-  //     console.log('connected');
-  //   });
-  //   roomSocket.socket?.on('disconnect', () => {
-  //     console.log('disconnected');
-  //   });
-  //   roomSocket.socket?.emit('join', 1);
-  //   roomSocket.socket?.on('join', (data) => {
-  //     console.log(data);
-  //   });
-  // }, []);
+  useEffect(() => {
+    roomSocket.createRoomSocket();
+    roomSocket.socket?.on('connect', () => {
+      console.log('connected');
+    });
+    roomSocket.socket?.on('disconnect', () => {
+      console.log('disconnected');
+    });
+    roomSocket.socket?.emit('join', 1);
+    roomSocket.socket?.on('join', (data) => {
+      console.log(data);
+    });
+  }, []);
 
   const openLoginDialog = useOpenLoginDialog();
   const queryClient = useQueryClient();

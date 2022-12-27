@@ -8,10 +8,9 @@ class RoomSocket {
   }
 
   createRoomSocket() {
-    const access_token = localStorage.getItem('access_token');
-    if (this.socket && !access_token) return;
+    if (this.socket) return;
 
-    this.socket = io(`${PROPERTIES.BASE_URL}/socket/chats`, {
+    this.socket = io(`${PROPERTIES.BASE_URL}/socket/rooms`, {
       transports: ['websocket', 'polling'], // use WebSocket first, if available
     });
   }
