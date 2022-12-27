@@ -12,6 +12,8 @@ export type RefreshTokenPayload = {
 
 export type TokenPayload = AccessTokenPayload | RefreshTokenPayload;
 
+export type TokenType = 'access_token' | 'refresh_token';
+
 export type DecodedToken<T> = T & {
   // issued at
   iat: number;

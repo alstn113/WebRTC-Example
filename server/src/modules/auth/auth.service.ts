@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { isNotFoundError } from '~/prisma/utils';
 import { compareHash, generateHash } from '~/utils';
-import type { DecodedToken, RefreshTokenPayload, TokenPayload } from './types';
+import type { DecodedToken, RefreshTokenPayload, TokenPayload, TokenType } from './types';
 import { UsersRepository } from '../users/users.repository';
 
 @Injectable()
@@ -56,11 +56,7 @@ export class AuthService {
   }
 
   async refreshTokens(res: Response, refreshToken: string) {
-    const refreshTokenPayload = await this.jwtService.verifyAsync<
-      DecodedToken<RefreshTokenPayload>
-    >(refreshToken, {
-      secret: this.configService.get('refresh_token.secret'),
-    });
+    const refreshTokenPayload = await this.verifyToken(refreshToken, 'refresh_token');
     const user = await this.userRepository.findUserById(refreshTokenPayload.userId);
     if (!user || !user.hashedRt) throw new HttpException('Refresh Failure', 401);
 
@@ -122,11 +118,23 @@ export class AuthService {
         email: payload.email,
       },
       {
-        secret: this.configService.get(`${payload.type}`).secret,
-        expiresIn: this.configService.get(`${payload.type}`).duration,
+        secret: this.configService.get(`${payload.type}.secret`),
+        expiresIn: this.configService.get(`${payload.type}.duration`),
       },
     );
 
     return token;
+  }
+
+  async verifyToken(token: string, type: TokenType) {
+    try {
+      //TODO: 여기 jwt type "TokenPayload" 수정하기
+      const decodedToken = await this.jwtService.verifyAsync<DecodedToken<TokenPayload>>(token, {
+        secret: this.configService.get(`${type}.secret`),
+      });
+      return decodedToken;
+    } catch (error) {
+      throw new HttpException('Invalid token', 401);
+    }
   }
 }
