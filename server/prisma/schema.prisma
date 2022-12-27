@@ -42,11 +42,12 @@ model Chat {
 }
 
 model Room {
-  id       String  @id @default(uuid())
-  title    String
-  password String?
-  Chats    Chat[]
-  ownerId  String
+  id          String @id @default(uuid())
+  title       String
+  description String
+  ownerId     String
+
+  Chats Chat[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
