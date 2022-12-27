@@ -7,6 +7,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { parseCookie } from '~/utils';
 
 @WebSocketGateway({
   cors: { origin: '*' },
@@ -17,16 +18,15 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   private server: Server;
   private logger = new Logger('RoomGateway');
 
+  constructor(private readonly) {}
+
   afterInit(server: Server) {
     this.server = server;
     this.logger.verbose('Initialized RoomGateway');
   }
 
   handleConnection(client: Socket) {
-    const cookie = client.handshake.headers.cookie
-      ?.split('; ')
-      .find((cookie: string) => cookie.startsWith('access_token'))
-      .split('=')[1];
+    const accessToken = parseCookie(client.handshake.headers.cookie, 'access_token');
 
     this.logger.verbose(`access_token: ${cookie}`);
   }
