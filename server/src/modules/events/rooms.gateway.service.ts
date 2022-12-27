@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
+import { EVENT } from '~/common/constants';
 import { parseCookie } from '~/utils';
 import { AuthService } from '../auth/auth.service';
 import { UsersRepository } from '../users/users.repository';
@@ -32,12 +33,10 @@ export class RoomsGatewayService {
         email: user.email,
       };
 
-      client.join(user.id);
       this.logger.verbose(`Connected user client_id: ${user.id}, server_id: ${client.id}`);
     } catch (error) {
       this.logger.error(error.message);
       client.disconnect(true);
-      return;
     }
   }
 
@@ -47,13 +46,19 @@ export class RoomsGatewayService {
 
   onJoinRoom(client: Socket, dto: JoinRoomDto) {
     client.join(dto.roomId);
+    client
+      .to(dto.roomId)
+      .emit(EVENT.RECEIVE_MESSAGE, `Joined room ${dto.roomId} server_id: ${client.id}!`);
   }
 
   onLeaveRoom(client: Socket, dto: LeaveRoomDto) {
     client.leave(dto.roomId);
+    client
+      .to(dto.roomId)
+      .emit(EVENT.RECEIVE_MESSAGE, `Left room ${dto.roomId}! server_id: ${client.id}`);
   }
 
   onSendMessage(client: Socket, dto: SendMessageDto) {
-    client.emit('message', dto.message);
+    client.to(dto.roomId).emit(EVENT.RECEIVE_MESSAGE, dto.message);
   }
 }

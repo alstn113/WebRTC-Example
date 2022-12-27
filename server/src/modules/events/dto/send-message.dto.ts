@@ -5,6 +5,14 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class SendMessageDto {
   @ApiProperty({
     type: String,
+    description: 'Room id',
+  })
+  @IsString()
+  @IsNotEmpty()
+  roomId: string;
+
+  @ApiProperty({
+    type: String,
     description: 'Message to send',
   })
   @IsString()
