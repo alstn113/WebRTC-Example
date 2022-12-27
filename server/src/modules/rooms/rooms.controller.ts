@@ -10,15 +10,15 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Public()
-  @Get('/')
-  async getRooms() {
-    return await this.roomsService.getRooms();
-  }
-
-  @Public()
   @Get('/:id')
   async getRoomById(@Param('id') id: string) {
     return await this.roomsService.getRoomById(id);
+  }
+
+  @Public()
+  @Get('/')
+  async getRooms() {
+    return await this.roomsService.getRooms();
   }
 
   @Post('/')
@@ -28,6 +28,6 @@ export class RoomsController {
 
   @Delete('/:id')
   async deleteRoom(@Param('id') id: string, @GetCurrentUser('id') userId: string) {
-    return this.roomsService.deleteRoomById(id), userId;
+    return this.roomsService.deleteRoomById(id, userId);
   }
 }

@@ -18,7 +18,7 @@ export class RoomsService {
     return await this.roomsRepository.createRoom(dto, userId);
   }
 
-  async deleteRoomById(id: string) {
-    return await this.deleteRoomById(id);
+  async deleteRoomById(id: string, userId: string) {
+    return await this.roomsRepository.deleteRoomById(id);
   }
 }

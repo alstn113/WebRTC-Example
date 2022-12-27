@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from '~/prisma/prisma.service';
 import { CreateRoomDto } from './dto';
 
@@ -7,15 +7,27 @@ export class RoomsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findRoomById(id: string) {
-    return this.prisma.room.findUnique({
+    const room = await this.prisma.room.findUnique({
       where: {
         id,
       },
+      include: {
+        //TODO: select owner data
+        owner: true,
+      },
     });
+    if (!room) throw new HttpException('Room not found', 404);
+
+    return room;
   }
 
   async findRooms() {
-    return this.prisma.room.findMany({});
+    return this.prisma.room.findMany({
+      include: {
+        //TODO: select owner data. make custom owner selector
+        owner: true,
+      },
+    });
   }
 
   async createRoom(dto: CreateRoomDto, userId: string) {
