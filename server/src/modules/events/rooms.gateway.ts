@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,7 +6,7 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { parseCookie } from '~/utils';
+import { RoomsGatewayService } from './rooms.gateway.service';
 
 @WebSocketGateway({
   cors: { origin: '*' },
@@ -15,24 +14,18 @@ import { parseCookie } from '~/utils';
   namespace: 'socket/rooms',
 })
 export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  private server: Server;
-  private logger = new Logger('RoomGateway');
-
-  constructor(private readonly) {}
+  constructor(private readonly roomsGatewayService: RoomsGatewayService) {}
 
   afterInit(server: Server) {
-    this.server = server;
-    this.logger.verbose('Initialized RoomGateway');
+    return this.roomsGatewayService.onGatewayInit(server);
   }
 
   handleConnection(client: Socket) {
-    const accessToken = parseCookie(client.handshake.headers.cookie, 'access_token');
-
-    this.logger.verbose(`access_token: ${cookie}`);
+    return this.roomsGatewayService.onGatewayConnection(client);
   }
 
   handleDisconnect(client: Socket) {
-    return;
+    return this.roomsGatewayService.onGatewayDisconnect(client);
   }
 
   @SubscribeMessage('join')
