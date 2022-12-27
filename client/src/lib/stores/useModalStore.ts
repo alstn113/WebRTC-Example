@@ -25,15 +25,15 @@ const useModalStore = create<States & Actions>((set) => ({
   config: null,
   close: () =>
     set(
-      produce((states: States) => {
-        states.visible = false;
+      produce((draft: States) => {
+        draft.visible = false;
       }),
     ),
   open: (config) =>
     set(
-      produce((states: States) => {
-        states.visible = true;
-        states.config = config;
+      produce((draft: States) => {
+        draft.visible = true;
+        draft.config = config;
       }),
     ),
 }));

@@ -1,6 +1,8 @@
 import { Theme } from '@emotion/react';
 
-export const theme: Theme = {
+export type ThemeType = 'lightTheme' | 'darkTheme';
+
+export const lightTheme: Theme = {
   bg_page1: '#fff',
   bg_page2: '#fff',
 };

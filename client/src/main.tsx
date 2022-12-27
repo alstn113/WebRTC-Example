@@ -2,22 +2,19 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
 
-// emotion
-import { GlobalStyle, theme } from './styles';
-import { ThemeProvider } from '@emotion/react';
-
 // react-query
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-// provider
+// store
 import ModalProvider from './components/ModalProvider';
+import MyThemeProvider from './styles/MyThemeProvider';
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       suspense: true,
-      //
+      // -- react-query default config --
       retry: false,
       refetchOnMount: false,
       refetchOnReconnect: false,
@@ -31,10 +28,9 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <QueryClientProvider client={queryClient}>
     <ReactQueryDevtools initialIsOpen={false} />
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
+    <MyThemeProvider>
       <App />
       <ModalProvider />
-    </ThemeProvider>
+    </MyThemeProvider>
   </QueryClientProvider>,
 );
