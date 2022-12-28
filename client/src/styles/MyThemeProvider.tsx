@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@emotion/react';
-import useThemeStore from '~/lib/stores/useThemeStore';
 import { GlobalStyle } from './GlobalStyle';
 
 interface Props {

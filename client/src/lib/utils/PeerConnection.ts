@@ -11,7 +11,7 @@ class PeerConnection {
     this.socket = socket;
   }
 
-  addPeerConnection(id: string, stream: MediaStream, callback: Function) {
+  addPeerConnection(id: string, stream: MediaStream) {
     this.peerConnections[id] = new RTCPeerConnection({
       iceServers: [
         {

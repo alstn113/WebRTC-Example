@@ -1,6 +1,5 @@
 import React from 'react';
-import { ThemeProvider } from '@emotion/react';
-import { GlobalStyle, theme } from '../src/styles';
+import MyThemeProvider from '../src/styles/MyThemeProvider';
 
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -14,10 +13,9 @@ export const parameters = {
 
 export const decorators = [
   (Story) => (
-    <ThemeProvider theme={theme}>
-      <GlobalStyle />
+    <MyThemeProvider>
       <Story />
       <div id="modal"></div>
-    </ThemeProvider>
+    </MyThemeProvider>
   ),
 ];

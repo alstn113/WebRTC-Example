@@ -16,10 +16,12 @@ import Loading from '~/pages/Loading/Loading';
 import NotFound from '~/pages/NotFound/NotFound';
 
 // hooks
-import userGetMe from './hooks/queries/user/useGetMe';
+import useGetMe from './hooks/queries/user/useGetMe';
+import { useQueryClient } from '@tanstack/react-query';
 
 const App = () => {
-  const {} = userGetMe();
+  const queryClient = useQueryClient();
+  queryClient.fetchQuery(useGetMe.getKey());
 
   return (
     <ErrorBoundary fallback={<ErrorFallback message={MESSAGE.ERROR.UNKNOWN} />}>

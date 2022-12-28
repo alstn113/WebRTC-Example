@@ -1,9 +1,7 @@
 import { Link } from 'react-router-dom';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 
-interface Props {}
-
-const RoomListContent = ({}: Props) => {
+const RoomListContent = () => {
   const { data } = useGetRoomList();
   return (
     <>
