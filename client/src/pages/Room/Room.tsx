@@ -18,7 +18,6 @@ const Room = () => {
   const user = queryClient.getQueryData<User>(userGetMe.getKey());
 
   useEffect(() => {
-    roomSocket.createRoomSocket();
     roomSocket.socket?.on('connect', () => {
       console.log('connected');
     });
@@ -31,9 +30,7 @@ const Room = () => {
       console.log(data);
     });
     return () => {
-      roomSocket.socket?.emit(EVENT.LEAVE_ROOM, { roomId });
-      roomSocket.socket?.disconnect();
-      roomSocket.deleteRoomSocket();
+      roomSocket.leaveRoom(roomId);
     };
   }, []);
 
