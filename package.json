@@ -10,6 +10,13 @@
     "client",
     "server"
   ],
-  "scripts": {},
+  "scripts": {
+    "dev": "concurrently \"yarn workspace client dev\" \"yarn workspace server start:dev\"",
+    "dev:client": "yarn workspace client dev",
+    "dev:server": "yarn workspace server start:dev",
+    "build:client": "yarn workspace client build",
+    "build:server": "yarn workspace server build",
+    "storybook": "yarn workspace client storybook"
+  },
   "devDependencies": {}
 }
