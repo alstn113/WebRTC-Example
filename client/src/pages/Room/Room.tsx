@@ -33,6 +33,7 @@ const Room = () => {
     return () => {
       roomSocket.socket?.emit(EVENT.LEAVE_ROOM, { roomId });
       roomSocket.socket?.disconnect();
+      roomSocket.deleteRoomSocket();
     };
   }, []);
 
