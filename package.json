@@ -11,16 +11,21 @@
     "packages/server"
   ],
   "scripts": {
-    "dev": "concurrently \"yarn workspace client dev\" \"yarn workspace server start:dev\"",
-    "dev:client": "yarn workspace client dev",
-    "dev:server": "yarn workspace server start:dev",
-    "build:client": "yarn workspace client build",
-    "build:server": "yarn workspace server build",
-    "format:client": "yarn workspace client format",
-    "format:server": "yarn workspace server format",
-    "lint:client": "yarn workspace client lint",
-    "lint:server": "yarn workspace server lint",
-    "storybook": "yarn workspace client storybook",
+    "client": "yarn workspace client",
+    "server": "yarn workspace server",
+    "dev": "concurrently \"yarn client dev\" \"yarn server start:dev\"",
+    "dev:client": "yarn client dev",
+    "dev:server": "yarn server start:dev",
+    "build:client": "yarn client build",
+    "build:server": "yarn server build",
+    "format:client": "yarn client format",
+    "format:server": "yarn server format",
+    "lint:client": "yarn client lint",
+    "lint:server": "yarn server lint",
+    "storybook": "yarn client storybook",
+    "prisma:generate": "yarn server prisma generate",
+    "prisma:migrate": "yarn server prisma migrate dev --name init",
+    "prisma:studio": "yarn server prisma studio",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -47,5 +52,6 @@
     "lint-staged": "^13.1.0",
     "prettier": "^2.3.2",
     "typescript": "^4.6.4"
-  }
+  },
+  "packageManager": "yarn@3.3.1"
 }
