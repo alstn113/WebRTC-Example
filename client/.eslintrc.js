@@ -1,3 +1,4 @@
+// 나도 잘 모르겠으니까 이거 참고하지마세요
 module.exports = {
   env: {
     browser: true,
