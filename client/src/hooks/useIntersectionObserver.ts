@@ -4,9 +4,7 @@ interface useIntersectionObserverProps {
   onIntersect: () => void;
 }
 
-const useIntersectionObserver = ({
-  onIntersect,
-}: useIntersectionObserverProps) => {
+const useIntersectionObserver = ({ onIntersect }: useIntersectionObserverProps) => {
   const targetElement = useRef(null);
 
   useEffect(() => {

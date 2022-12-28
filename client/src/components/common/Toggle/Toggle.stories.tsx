@@ -34,12 +34,7 @@ export const Size = () => {
       <Spacer />
       <Toggle labelText="error" color="error" variant="lg" defaultChecked />
       <Spacer />
-      <Toggle
-        labelText="secondary"
-        color="secondary"
-        variant="lg"
-        defaultChecked
-      />
+      <Toggle labelText="secondary" color="secondary" variant="lg" defaultChecked />
       <Spacer />
       <Toggle labelText="success" color="success" variant="lg" defaultChecked />
       <Spacer />

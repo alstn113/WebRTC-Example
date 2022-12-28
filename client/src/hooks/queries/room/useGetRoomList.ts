@@ -2,9 +2,7 @@ import RoomAPI from '~/lib/api/room';
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryOptionsOf } from '~/hooks/queries/types';
 
-const useGetRoomList = (
-  options: UseQueryOptionsOf<typeof RoomAPI.getRoomList> = {},
-) => {
+const useGetRoomList = (options: UseQueryOptionsOf<typeof RoomAPI.getRoomList> = {}) => {
   return useQuery(getKey(), fetcher(), options);
 };
 

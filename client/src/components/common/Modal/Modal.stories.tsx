@@ -14,12 +14,7 @@ const Template: ComponentStory<typeof Modal> = (args: ModalProps) => {
   return (
     <div>
       <Button onClick={onOpen}>Modal Open</Button>
-      <Modal
-        {...args}
-        visible={isOpen}
-        onCancel={onClose}
-        onConfirm={onClose}
-      />
+      <Modal {...args} visible={isOpen} onCancel={onClose} onConfirm={onClose} />
     </div>
   );
 };

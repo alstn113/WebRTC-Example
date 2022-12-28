@@ -33,13 +33,7 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(function Toggle(
   return (
     <S.ToggleLabel variant={variant}>
       <S.ToggleText variant={variant}>{labelText}</S.ToggleText>
-      <S.ToggleCheckbox
-        type="checkbox"
-        variant={variant}
-        ref={ref}
-        color={color}
-        {...options}
-      />
+      <S.ToggleCheckbox type="checkbox" variant={variant} ref={ref} color={color} {...options} />
       <S.ToggleSwitch variant={variant} />
     </S.ToggleLabel>
   );

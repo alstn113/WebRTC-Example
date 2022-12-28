@@ -1,9 +1,4 @@
-export type NormalColorType =
-  | 'primary'
-  | 'success'
-  | 'secondary'
-  | 'warning'
-  | 'error';
+export type NormalColorType = 'primary' | 'success' | 'secondary' | 'warning' | 'error';
 
 export const palette = {
   white: '#ffffff',
