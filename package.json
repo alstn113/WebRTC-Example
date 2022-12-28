@@ -7,8 +7,8 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "client",
-    "server"
+    "packages/client",
+    "packages/server"
   ],
   "scripts": {
     "dev": "concurrently \"yarn workspace client dev\" \"yarn workspace server start:dev\"",
@@ -24,11 +24,11 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "client/**/*/*.{ts,tsx}": [
+    "packages/client/**/*/*.{ts,tsx}": [
       "yarn format:client",
       "yarn lint:client"
     ],
-    "server/**/*/*.ts": [
+    "packages/server/**/*/*.ts": [
       "yarn format:server",
       "yarn lint:server"
     ]
