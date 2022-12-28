@@ -5,8 +5,11 @@
   "repository": "https://github.com/neko113/WebRTC-app.git",
   "author": "neko113 <alstn113@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "dev": "concurrently \"cd client && yarn dev\" \"cd server && yarn start:dev\""
-  },
-  "dependencies": {}
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {},
+  "devDependencies": {}
 }
