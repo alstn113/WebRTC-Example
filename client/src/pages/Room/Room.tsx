@@ -18,27 +18,15 @@ const Room = () => {
   const user = queryClient.getQueryData<User>(userGetMe.getKey());
 
   useEffect(() => {
-    roomSocket.socket?.on('connect', () => {
-      console.log('connected');
-    });
-    roomSocket.socket?.on('disconnect', () => {
-      console.log('disconnected');
-    });
-    // 방에 입장
-    roomSocket.socket?.emit(EVENT.JOIN_ROOM, { roomId });
-    roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
-      console.log(data);
-    });
+    roomSocket.initRoomSocket(roomId);
+
     return () => {
       roomSocket.leaveRoom(roomId);
     };
   }, []);
 
   const handleSendMessage = () => {
-    roomSocket.socket?.emit(EVENT.SEND_MESSAGE, {
-      message: `Hello I'm ${user?.user?.email}`,
-      roomId,
-    });
+    roomSocket.sendMessage(roomId, 'Hello');
   };
   return (
     <AsyncBoundary
