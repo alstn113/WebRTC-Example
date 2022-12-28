@@ -30,9 +30,6 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
   },
   settings: {
-    'import/resolver': {
-      typescript: {},
-    },
     react: {
       version: 'detect',
     },
