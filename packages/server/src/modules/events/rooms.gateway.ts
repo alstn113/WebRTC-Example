@@ -60,16 +60,16 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   @SubscribeMessage(EVENT.CALL_USER)
   handleCallUser(client: Socket, dto: CallUserDto) {
-    return;
+    return this.roomsGatewayService.onCallUser(client, dto);
   }
 
   @SubscribeMessage(EVENT.MAKE_ANSWER)
   handleMakeAnswer(client: Socket, dto: MakeAnswerDto) {
-    return;
+    return this.roomsGatewayService.onMakeAnswer(client, dto);
   }
 
   @SubscribeMessage(EVENT.ICE_CANDIDATE)
   handleIceCandidate(client: Socket, dto: IceCandidateDto) {
-    return;
+    return this.roomsGatewayService.onIceCandidate(client, dto);
   }
 }

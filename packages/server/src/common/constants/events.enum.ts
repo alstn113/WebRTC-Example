@@ -9,6 +9,8 @@ export const EVENT = {
   CALL_USER: 'call_user',
   MAKE_ANSWER: 'make_answer',
   ICE_CANDIDATE: 'ice_candidate',
+  CALL_MADE: 'call_made',
+  ANSWER_MADE: 'answer_made',
 } as const;
 
 export type Event = typeof EVENT[keyof typeof EVENT];

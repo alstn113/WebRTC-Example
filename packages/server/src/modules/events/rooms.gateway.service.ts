@@ -4,7 +4,14 @@ import { EVENT } from '~/common/constants';
 import { parseCookie } from '~/utils';
 import { AuthService } from '../auth/auth.service';
 import { UsersRepository } from '../users/users.repository';
-import { JoinRoomDto, LeaveRoomDto, SendMessageDto } from './dto';
+import {
+  CallUserDto,
+  IceCandidateDto,
+  JoinRoomDto,
+  LeaveRoomDto,
+  MakeAnswerDto,
+  SendMessageDto,
+} from './dto';
 
 @Injectable()
 export class RoomsGatewayService {
@@ -15,6 +22,8 @@ export class RoomsGatewayService {
 
   private server: Server;
   private logger = new Logger('RoomsGateway');
+
+  /** Default Setting */
 
   onGatewayInit(server: Server) {
     this.server = server;
@@ -43,6 +52,8 @@ export class RoomsGatewayService {
     return;
   }
 
+  /** Socket Chat */
+
   onJoinRoom(client: Socket, dto: JoinRoomDto) {
     client.join(dto.roomId);
     client
@@ -59,5 +70,26 @@ export class RoomsGatewayService {
 
   onSendMessage(client: Socket, dto: SendMessageDto) {
     client.to(dto.roomId).emit(EVENT.RECEIVE_MESSAGE, `${dto.message} server_id: ${client.id}`);
+  }
+
+  /** WebRTC */
+
+  onCallUser(client: Socket, dto: CallUserDto) {
+    client.to(dto.to).emit(EVENT.CALL_MADE, {
+      offer: dto.offer,
+      sid: client.id,
+    });
+  }
+  onMakeAnswer(client: Socket, dto: MakeAnswerDto) {
+    client.to(dto.to).emit(EVENT.ANSWER_MADE, {
+      answer: dto.answer,
+      sid: client.id,
+    });
+  }
+  onIceCandidate(client: Socket, dto: IceCandidateDto) {
+    client.to(dto.to).emit(EVENT.ICE_CANDIDATE, {
+      candidate: dto.candidate,
+      sid: client.id,
+    });
   }
 }
