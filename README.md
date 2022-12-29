@@ -1,4 +1,4 @@
-# Learn Socket.io + WebRTC
+# Socket.io + WebRTC
 
 ```
 📁 WEBRTC
