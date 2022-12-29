@@ -51,14 +51,17 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
 
   /** [WebRTC] */
 
+  @SubscribeMessage(EVENT.CALL_USER)
   handleCallUser(data: any) {
     return;
   }
 
+  @SubscribeMessage(EVENT.MAKE_ANSWER)
   handleMakerAnswer(data: any) {
     return;
   }
 
+  @SubscribeMessage(EVENT.ICE_CANDIDATE)
   handleIceCandidate(data: any) {
     return;
   }
