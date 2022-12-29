@@ -18,6 +18,8 @@ import { RoomsGatewayService } from './rooms.gateway.service';
 export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly roomsGatewayService: RoomsGatewayService) {}
 
+  /** [Default Setting] */
+
   afterInit(server: Server) {
     return this.roomsGatewayService.onGatewayInit(server);
   }
@@ -29,6 +31,8 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   handleDisconnect(client: Socket) {
     return this.roomsGatewayService.onGatewayDisconnect(client);
   }
+
+  /** [Socket Chat] */
 
   @SubscribeMessage(EVENT.JOIN_ROOM)
   handleJoinRoom(client: Socket, dto: JoinRoomDto) {
@@ -43,5 +47,19 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   @SubscribeMessage(EVENT.SEND_MESSAGE)
   handleSendMessage(client: Socket, dto: SendMessageDto) {
     return this.roomsGatewayService.onSendMessage(client, dto);
+  }
+
+  /** [WebRTC] */
+
+  handleCallUser(data: any) {
+    return;
+  }
+
+  handleMakerAnswer(data: any) {
+    return;
+  }
+
+  handleIceCandidate(data: any) {
+    return;
   }
 }
