@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.2",
+    "@emotion/babel-plugin": "^11.10.5",
     "@storybook/addon-actions": "^6.5.14",
     "@storybook/addon-essentials": "^6.5.14",
     "@storybook/addon-interactions": "^6.5.14",
@@ -44,7 +45,7 @@
     "babel-loader": "^8.3.0",
     "eslint-plugin-react": "^7.31.11",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.6.7",
+    "eslint-plugin-storybook": "^0.6.8",
     "vite": "^3.2.0",
     "vite-tsconfig-paths": "^3.6.0"
   }

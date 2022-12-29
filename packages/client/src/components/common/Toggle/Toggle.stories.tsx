@@ -1,8 +1,6 @@
-import React from 'react';
 import styled from '@emotion/styled';
 import { ComponentMeta } from '@storybook/react';
-import { Spacer } from '../../layouts';
-import { Toggle } from './Toggle';
+import { Spacer, Toggle } from '../../common';
 
 export default {
   title: 'Components/Toggle',

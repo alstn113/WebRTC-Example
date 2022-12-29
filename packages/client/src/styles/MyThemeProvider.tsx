@@ -11,10 +11,10 @@ const MyThemeProvider = ({ children }: Props) => {
     // <ThemeProvider theme={theme}>
     //TODO: 이거 localStorage에서 { {"state":{"theme":"lightTheme"},"version":0} }에서 theme를 가져와야함
 
-    <ThemeProvider theme={{}}>
+    <>
       <GlobalStyle />
       {children}
-    </ThemeProvider>
+    </>
   );
 };
 

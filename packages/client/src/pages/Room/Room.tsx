@@ -33,7 +33,7 @@ const Room = () => {
         <ErrorFallback message={MESSAGE.ERROR.LOAD_DATA} queryKey={useGetRoom.getKey(roomId)} />
       }
     >
-      <div>{user?.user.email}</div>
+      <div>{user?.user?.email}</div>
       <br />
       <Button shadow color="warning" onClick={handleSendMessage}>
         메시지 보내기
