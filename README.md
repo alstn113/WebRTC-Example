@@ -1,5 +1,14 @@
 # Learn Socket.io + WebRTC
 
-## Server - Nest
-
-## Client - React + Vite
+```
+📁 WEBRTC
+│
+├── 📁 packages
+│   ├── 📁 client / Nest.js
+│   └── 📁 server / React.js
+│
+└── 📁 study
+    ├── 📁 websocket-chat
+    ├── 📁 sochet.io-cat
+    └── 📁 webrtc-video
+```
