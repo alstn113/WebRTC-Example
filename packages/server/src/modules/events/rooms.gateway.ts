@@ -7,7 +7,14 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { EVENT } from '~/common/constants';
-import { JoinRoomDto, LeaveRoomDto, SendMessageDto } from './dto';
+import {
+  CallUserDto,
+  IceCandidateDto,
+  JoinRoomDto,
+  LeaveRoomDto,
+  SendMessageDto,
+  MakeAnswerDto,
+} from './dto';
 import { RoomsGatewayService } from './rooms.gateway.service';
 
 @WebSocketGateway({
@@ -18,7 +25,7 @@ import { RoomsGatewayService } from './rooms.gateway.service';
 export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly roomsGatewayService: RoomsGatewayService) {}
 
-  /** [Default Setting] */
+  /** Default Setting */
 
   afterInit(server: Server) {
     return this.roomsGatewayService.onGatewayInit(server);
@@ -32,7 +39,7 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     return this.roomsGatewayService.onGatewayDisconnect(client);
   }
 
-  /** [Socket Chat] */
+  /** Socket Chat */
 
   @SubscribeMessage(EVENT.JOIN_ROOM)
   handleJoinRoom(client: Socket, dto: JoinRoomDto) {
@@ -49,20 +56,20 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     return this.roomsGatewayService.onSendMessage(client, dto);
   }
 
-  /** [WebRTC] */
+  /** WebRTC */
 
   @SubscribeMessage(EVENT.CALL_USER)
-  handleCallUser(data: any) {
+  handleCallUser(client: Socket, dto: CallUserDto) {
     return;
   }
 
   @SubscribeMessage(EVENT.MAKE_ANSWER)
-  handleMakerAnswer(data: any) {
+  handleMakeAnswer(client: Socket, dto: MakeAnswerDto) {
     return;
   }
 
   @SubscribeMessage(EVENT.ICE_CANDIDATE)
-  handleIceCandidate(data: any) {
+  handleIceCandidate(client: Socket, dto: IceCandidateDto) {
     return;
   }
 }
