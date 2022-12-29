@@ -21,6 +21,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint'],
+  ignorePatterns: ['.eslintrc.js'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'no-duplicate-imports': 'error',
