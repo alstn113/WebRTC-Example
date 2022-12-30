@@ -8,5 +8,5 @@ export class IceCandidateDto {
   to: string;
 
   @IsNotEmpty()
-  candidate: RTCIceCandidate;
+  candidate: RTCIceCandidateInit;
 }
