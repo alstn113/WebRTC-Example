@@ -29,9 +29,6 @@ const Room = () => {
     roomSocket.sendMessage(roomId, 'Hello');
   };
 
-  // ------------------------------ webrtc ------------------------------
-
-  // ------------------------------ webrtc ------------------------------
   return (
     <AsyncBoundary
       rejectedFallback={
