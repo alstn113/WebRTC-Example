@@ -24,7 +24,7 @@
     "lint:server": "yarn server lint",
     "storybook": "yarn client storybook",
     "prisma:generate": "yarn server prisma generate",
-    "prisma:migrate": "yarn server prisma migrate dev --name init",
+    "prisma:migrate": "yarn server prisma migrate dev --name init && yarn prisma:generate",
     "prisma:studio": "yarn server prisma studio",
     "prepare": "husky install"
   },

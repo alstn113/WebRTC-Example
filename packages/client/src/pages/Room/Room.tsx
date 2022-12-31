@@ -10,6 +10,7 @@ import useGetMe from '~/hooks/queries/user/useGetMe';
 import roomSocket from '~/lib/sockets/roomSocket';
 import { User } from '~/lib/types';
 import RoomContent from './RoomContent';
+import VideoScreen from './VideoScreen';
 
 const Room = () => {
   const { roomId } = useParams() as { roomId: string };
@@ -27,6 +28,7 @@ const Room = () => {
   const handleSendMessage = () => {
     roomSocket.sendMessage(roomId, 'Hello');
   };
+
   return (
     <AsyncBoundary
       rejectedFallback={
@@ -35,6 +37,7 @@ const Room = () => {
     >
       <div>{user?.user?.email}</div>
       <br />
+      <VideoScreen />
       <Button shadow color="warning" onClick={handleSendMessage}>
         메시지 보내기
       </Button>

@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
+    'plugin:storybook/recommended',
     'plugin:prettier/recommended',
   ],
   overrides: [],
@@ -20,7 +21,6 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint'],
   ignorePatterns: ['.eslintrc.js'],
   rules: {
     'react/react-in-jsx-scope': 'off',

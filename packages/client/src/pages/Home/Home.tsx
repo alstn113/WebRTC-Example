@@ -36,7 +36,7 @@ const Home = () => {
       <Button shadow color="secondary" onClick={openLoginDialog}>
         Login
       </Button>
-      {/* <Toggle labelText="Toggle" /> */}
+      <Toggle labelText="Toggle" />
       <Button shadow color="secondary" onClick={handleGithubLogin}>
         GITHUB LOGIN
       </Button>
