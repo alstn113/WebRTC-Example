@@ -16,11 +16,7 @@ const PeerConfig = {
 };
 
 class PeerConnection {
-  peerConnection: RTCPeerConnection | null;
-
-  constructor() {
-    this.peerConnection = null;
-  }
+  peerConnection: RTCPeerConnection | null = null;
 
   createPeerConnection = (socket: Socket, sid: string, stream: MediaStream | null) => {
     this.peerConnection = new RTCPeerConnection(PeerConfig);
@@ -44,8 +40,14 @@ class PeerConnection {
     return this.peerConnection;
   };
 
-  createOffer = (socket: Socket) => {
-    return;
+  createOffer = async (socket: Socket, sid: string) => {
+    if (!this.peerConnection) return;
+    const offer = await this.peerConnection.createOffer({
+      offerToReceiveAudio: true,
+      offerToReceiveVideo: true,
+    });
+    await this.peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+    socket.emit(EVENT.CALL_USER, { to: sid, offer });
   };
 
   onCallMade = (socket: Socket) => {
