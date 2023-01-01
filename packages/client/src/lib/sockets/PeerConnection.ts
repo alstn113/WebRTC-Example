@@ -53,22 +53,26 @@ class PeerConnection {
     this.socket.emit(EVENT.CALL_USER, { to: sid, offer });
   };
 
-  createAnswer = async (socket: Socket, sid: string, offer: RTCSessionDescriptionInit) => {
+  createAnswer = async (sid: string, offer: RTCSessionDescriptionInit) => {
     if (!this.peerConnection) return;
     await this.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
     const answer = await this.peerConnection.createAnswer();
     await this.peerConnection.setLocalDescription(answer);
 
-    socket.emit(EVENT.MAKE_ANSWER, { to: sid, answer });
+    this.socket.emit(EVENT.MAKE_ANSWER, { to: sid, answer });
   };
 
   onCallMade = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
-    await this.createAnswer(this.socket, sid, offer);
+    await this.createAnswer(sid, offer);
   };
 
   onAnswerMade = async ({ sid, answer }: { sid: string; answer: RTCSessionDescriptionInit }) => {
     if (!this.peerConnection) return;
     await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
+  };
+
+  onAddUser = async ({ sid, uid }: { sid: string; uid: string }) => {
+    await this.createOffer(sid);
   };
 
   onIceCandidateReceived = ({
@@ -79,6 +83,10 @@ class PeerConnection {
     candidate: RTCIceCandidateInit;
   }) => {
     this.peerConnection?.addIceCandidate(new RTCIceCandidate(candidate));
+  };
+
+  disconnectConnection = () => {
+    this.peerConnection?.close();
   };
 }
 
