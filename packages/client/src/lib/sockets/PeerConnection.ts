@@ -62,28 +62,24 @@ class PeerConnection {
     socket.emit(EVENT.MAKE_ANSWER, { to: sid, answer });
   };
 
-  onCallMade = async ({ sid, offer }: CallMadePayload) => {
+  onCallMade = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
     await this.createAnswer(this.socket, sid, offer);
   };
 
-  onAnswerMade = async ({ sid, answer }: AnswerMadePayload) => {
+  onAnswerMade = async ({ sid, answer }: { sid: string; answer: RTCSessionDescriptionInit }) => {
     if (!this.peerConnection) return;
     await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
   };
 
-  onIceCandidateReceived = () => {
-    return;
+  onIceCandidateReceived = ({
+    sid,
+    candidate,
+  }: {
+    sid: string;
+    candidate: RTCIceCandidateInit;
+  }) => {
+    this.peerConnection?.addIceCandidate(new RTCIceCandidate(candidate));
   };
 }
 
 export default PeerConnection;
-
-interface CallMadePayload {
-  sid: string;
-  offer: RTCSessionDescriptionInit;
-}
-
-interface AnswerMadePayload {
-  sid: string;
-  answer: RTCSessionDescriptionInit;
-}
