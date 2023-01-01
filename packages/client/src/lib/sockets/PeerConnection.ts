@@ -50,11 +50,16 @@ class PeerConnection {
     socket.emit(EVENT.CALL_USER, { to: sid, offer });
   };
 
-  onCallMade = (socket: Socket) => {
-    return;
+  createAnswer = async (socket: Socket, sid: string, offer: RTCSessionDescriptionInit) => {
+    if (!this.peerConnection) return;
+    await this.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+    const answer = await this.peerConnection.createAnswer();
+    await this.peerConnection.setLocalDescription(answer);
+
+    socket.emit(EVENT.MAKE_ANSWER, { to: sid, answer });
   };
 
-  createAnswer = (socket: Socket) => {
+  onCallMade = (socket: Socket) => {
     return;
   };
 
