@@ -1,6 +1,5 @@
-import { io, Socket } from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 import { EVENT } from '~/constants';
-import { PROPERTIES } from '~/constants/properties';
 
 const PeerConfig = {
   iceServers: [
@@ -17,12 +16,16 @@ const PeerConfig = {
 
 class PeerConnection {
   peerConnection: RTCPeerConnection | null = null;
+  socket: Socket;
 
-  createPeerConnection = (socket: Socket, sid: string, stream: MediaStream | null) => {
+  constructor(socket: Socket) {
+    this.socket = socket;
+  }
+  createPeerConnection = (sid: string, stream: MediaStream | null) => {
     this.peerConnection = new RTCPeerConnection(PeerConfig);
     this.peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
       if (event.candidate) {
-        socket.emit(EVENT.ICE_CANDIDATE, {
+        this.socket.emit(EVENT.ICE_CANDIDATE, {
           to: sid,
           candidate: event.candidate,
         });
@@ -40,14 +43,14 @@ class PeerConnection {
     return this.peerConnection;
   };
 
-  createOffer = async (socket: Socket, sid: string) => {
+  createOffer = async (sid: string) => {
     if (!this.peerConnection) return;
     const offer = await this.peerConnection.createOffer({
       offerToReceiveAudio: true,
       offerToReceiveVideo: true,
     });
     await this.peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-    socket.emit(EVENT.CALL_USER, { to: sid, offer });
+    this.socket.emit(EVENT.CALL_USER, { to: sid, offer });
   };
 
   createAnswer = async (socket: Socket, sid: string, offer: RTCSessionDescriptionInit) => {
@@ -59,17 +62,28 @@ class PeerConnection {
     socket.emit(EVENT.MAKE_ANSWER, { to: sid, answer });
   };
 
-  onCallMade = (socket: Socket) => {
-    return;
+  onCallMade = async ({ sid, offer }: CallMadePayload) => {
+    await this.createAnswer(this.socket, sid, offer);
   };
 
-  onAnswerMade = (socket: Socket) => {
-    return;
+  onAnswerMade = async ({ sid, answer }: AnswerMadePayload) => {
+    if (!this.peerConnection) return;
+    await this.peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
   };
 
-  onIceCandidateReceived = (socket: Socket) => {
+  onIceCandidateReceived = () => {
     return;
   };
 }
 
 export default PeerConnection;
+
+interface CallMadePayload {
+  sid: string;
+  offer: RTCSessionDescriptionInit;
+}
+
+interface AnswerMadePayload {
+  sid: string;
+  answer: RTCSessionDescriptionInit;
+}
