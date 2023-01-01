@@ -16,7 +16,7 @@ const PeerConfig = {
 
 class PeerConnection {
   createPeerConnection = (socket: Socket) => {
-    return;
+    const peerConnection = new RTCPeerConnection(PeerConfig);
   };
 
   createOffer = (socket: Socket) => {
