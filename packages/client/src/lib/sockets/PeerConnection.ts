@@ -16,9 +16,15 @@ const PeerConfig = {
 };
 
 class PeerConnection {
+  peerConnection: RTCPeerConnection | null;
+
+  constructor() {
+    this.peerConnection = null;
+  }
+
   createPeerConnection = (socket: Socket, sid: string, stream: MediaStream | null) => {
-    const peerConnection = new RTCPeerConnection(PeerConfig);
-    peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+    this.peerConnection = new RTCPeerConnection(PeerConfig);
+    this.peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
       if (event.candidate) {
         socket.emit(EVENT.ICE_CANDIDATE, {
           to: sid,
@@ -27,15 +33,15 @@ class PeerConnection {
       }
     };
 
-    peerConnection.ontrack = (event: RTCTrackEvent) => {
+    this.peerConnection.ontrack = (event: RTCTrackEvent) => {
       console.log('ontrack', event.streams[0]);
     };
 
     stream?.getTracks().forEach((track) => {
-      peerConnection.addTrack(track, stream);
+      this.peerConnection?.addTrack(track, stream);
     });
 
-    return peerConnection;
+    return this.peerConnection;
   };
 
   createOffer = (socket: Socket) => {
