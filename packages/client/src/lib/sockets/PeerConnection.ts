@@ -14,6 +14,30 @@ const PeerConfig = {
   ],
 };
 
-class PeerConnection {}
+class PeerConnection {
+  createPeerConnection = (socket: Socket) => {
+    return;
+  };
+
+  createOffer = (socket: Socket) => {
+    return;
+  };
+
+  onCallMade = (socket: Socket) => {
+    return;
+  };
+
+  createAnswer = (socket: Socket) => {
+    return;
+  };
+
+  onAnswerMade = (socket: Socket) => {
+    return;
+  };
+
+  onIceCandidateReceived = (socket: Socket) => {
+    return;
+  };
+}
 
 export default PeerConnection;
