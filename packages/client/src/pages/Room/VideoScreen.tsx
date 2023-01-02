@@ -29,9 +29,11 @@ const VideoScreen = () => {
   }, []);
 
   return (
-    <S.Video autoPlay playsInline ref={videoRef}>
-      VideoScreen
-    </S.Video>
+    <S.VideoContainer>
+      <S.Video autoPlay playsInline ref={videoRef}>
+        VideoScreen
+      </S.Video>
+    </S.VideoContainer>
   );
 };
 

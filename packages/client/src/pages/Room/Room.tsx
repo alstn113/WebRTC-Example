@@ -7,6 +7,7 @@ import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
 import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import useGetMe from '~/hooks/queries/user/useGetMe';
+import usePeerConnection from '~/hooks/usePeerConnection';
 import roomSocket from '~/lib/sockets/roomSocket';
 import { User } from '~/lib/types';
 import RoomContent from './RoomContent';
@@ -24,6 +25,8 @@ const Room = () => {
       roomSocket.leaveRoom(roomId);
     };
   }, [roomId]);
+
+  usePeerConnection();
 
   const handleSendMessage = () => {
     roomSocket.sendMessage(roomId, 'Hello');
