@@ -59,7 +59,7 @@ export class RoomsGatewayService {
     client
       .to(dto.roomId)
       .emit(EVENT.RECEIVE_MESSAGE, `Joined room ${dto.roomId} server_id: ${client.id}!`);
-    client.to(dto.roomId).emit(EVENT.ADD_USER, {
+    client.to(dto.roomId).emit(EVENT.CALL_USER, {
       sid: client.id,
     });
   }

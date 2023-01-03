@@ -7,7 +7,7 @@ import usePeerConnectionStore from '~/lib/stores/usePeerConnectionStore';
 const VideoContents = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const { peerConnection, setPeerConnection } = usePeerConnectionStore();
+  const { sid, peerConnection, setPeerConnection, setEmpty } = usePeerConnectionStore();
   const socket = roomSocket.socket;
 
   const setVideoTracks = async () => {
@@ -21,10 +21,6 @@ const VideoContents = () => {
       if (localVideoRef.current) localVideoRef.current.srcObject = stream;
       if (!(peerConnection && socket)) return;
 
-      stream.getTracks().forEach((track) => {
-        if (!peerConnection) return;
-        peerConnection.addTrack(track, stream);
-      });
       peerConnection.onicecandidate = (e) => {
         if (e.candidate) {
           if (!socket) return;
@@ -35,20 +31,22 @@ const VideoContents = () => {
       peerConnection.oniceconnectionstatechange = (e) => {
         console.log('ice connection state change', e);
       };
+
       peerConnection.ontrack = (e) => {
         console.log('add track success');
         if (remoteVideoRef.current) remoteVideoRef.current.srcObject = e.streams[0];
-        socket.emit(EVENT.JOIN_ROOM, {
-          roomId: 'test',
-        });
       };
+
+      stream.getTracks().forEach((track) => {
+        if (!peerConnection) return;
+        peerConnection.addTrack(track, stream);
+      });
     } catch (error) {
       console.error(error);
     }
-    return;
   };
 
-  const createOffer = async () => {
+  const createOffer = async (sid: string) => {
     console.log('create offer');
     if (!(peerConnection && socket)) return;
     try {
@@ -58,6 +56,7 @@ const VideoContents = () => {
       });
       await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
       socket.emit(EVENT.CALL_USER, {
+        to: sid,
         offer,
       });
     } catch (error) {
@@ -65,7 +64,13 @@ const VideoContents = () => {
     }
   };
 
-  const createAnswer = async (offer: RTCSessionDescription) => {
+  const createAnswer = async ({
+    sid,
+    offer,
+  }: {
+    sid: string;
+    offer: RTCSessionDescriptionInit;
+  }) => {
     if (!(peerConnection && socket)) return;
     try {
       await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
@@ -75,6 +80,7 @@ const VideoContents = () => {
       });
       await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
       socket.emit(EVENT.MAKE_ANSWER, {
+        to: sid,
         answer,
       });
     } catch (error) {
@@ -82,49 +88,62 @@ const VideoContents = () => {
     }
   };
 
-  useEffect(() => {
-    setPeerConnection(
-      new RTCPeerConnection({
+  const onCallMade = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
+    await createAnswer({ sid, offer });
+  };
+
+  const onAnswerMade = async ({
+    sid,
+    answer,
+  }: {
+    sid: string;
+    answer: RTCSessionDescriptionInit;
+  }) => {
+    console.log('answer made', sid, answer);
+    if (!peerConnection) return;
+    peerConnection?.setRemoteDescription(new RTCSessionDescription(answer));
+  };
+
+  const onCallUser = async ({ sid }: { sid: string }) => {
+    setPeerConnection({
+      sid,
+      peerConnection: new RTCPeerConnection({
         iceServers: [
           {
             urls: 'stun:stun.l.google.com:19302',
           },
         ],
       }),
-    );
-
-    socket?.on(EVENT.CALL_USER, () => {
-      createOffer();
     });
+    await createOffer(sid);
+  };
 
-    socket?.on(EVENT.CALL_MADE, ({ sid, offer }: { sid: string; offer: RTCSessionDescription }) => {
-      console.log('call made', sid, offer);
-      createAnswer(offer);
-    });
+  const onIceCandidateReceived = ({
+    sid,
+    candidate,
+  }: {
+    sid: string;
+    candidate: RTCIceCandidateInit;
+  }) => {
+    if (!peerConnection) return;
+    peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+    console.log('ice candidate', sid, candidate);
+  };
 
-    socket?.on(
-      EVENT.ANSWER_MADE,
-      ({ sid, answer }: { sid: string; answer: RTCSessionDescription }) => {
-        console.log('answer made', sid, answer);
-        if (!peerConnection) return;
-        peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-      },
-    );
-
-    socket?.on(
-      EVENT.ICE_CANDIDATE,
-      ({ sid, candidate }: { sid: string; candidate: RTCIceCandidate }) => {
-        if (!peerConnection) return;
-        peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-        console.log('ice candidate', sid, candidate);
-      },
-    );
+  useEffect(() => {
+    socket?.on(EVENT.CALL_USER, onCallUser);
+    socket?.on(EVENT.CALL_MADE, onCallMade);
+    socket?.on(EVENT.ANSWER_MADE, onAnswerMade);
+    socket?.on(EVENT.ICE_CANDIDATE, onIceCandidateReceived);
 
     setVideoTracks();
 
     return () => {
-      if (socket) socket.close();
-      if (peerConnection) peerConnection.close();
+      socket?.off(EVENT.CALL_USER, onCallUser);
+      socket?.off(EVENT.CALL_MADE, onCallMade);
+      socket?.off(EVENT.ANSWER_MADE, onAnswerMade);
+      socket?.off(EVENT.ICE_CANDIDATE, onIceCandidateReceived);
+      setEmpty();
     };
   }, [socket]);
 

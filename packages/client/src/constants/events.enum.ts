@@ -6,7 +6,6 @@ export const EVENT = {
   RECEIVE_MESSAGE: 'receive_message',
 
   /** WebRTC */
-  ADD_USER: 'add_user',
   CALL_USER: 'call_user',
   MAKE_ANSWER: 'make_answer',
   ICE_CANDIDATE: 'ice_candidate',

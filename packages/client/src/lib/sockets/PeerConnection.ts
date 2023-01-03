@@ -73,8 +73,8 @@ class PeerConnection {
     await this.peerConnection.setRemoteDescription(answer);
   };
 
-  onAddUser = async ({ sid }: { sid: string }) => {
-    console.log('[onAddUser]', this.peerConnection);
+  onCallUser = async ({ sid }: { sid: string }) => {
+    console.log('[onCallUser]', this.peerConnection);
     await this.createOffer(sid);
   };
 
