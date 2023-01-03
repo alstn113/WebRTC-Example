@@ -6,7 +6,7 @@ import roomSocket from '~/lib/sockets/roomSocket';
 const VideoContents = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const pcRef = useRef<RTCPeerConnection>(null);
+  const pcRef = useRef<RTCPeerConnection>();
   const socket = roomSocket.socket;
 
   const setVideoTracks = async () => {
@@ -82,8 +82,48 @@ const VideoContents = () => {
   };
 
   useEffect(() => {
-    return;
-  }, []);
+    pcRef.current = new RTCPeerConnection({
+      iceServers: [
+        {
+          urls: 'stun:stun.l.google.com:19302',
+        },
+      ],
+    });
+
+    socket?.on(EVENT.CALL_USER, () => {
+      createOffer();
+    });
+
+    socket?.on(EVENT.CALL_MADE, ({ sid, offer }: { sid: string; offer: RTCSessionDescription }) => {
+      console.log('call made', sid, offer);
+      createAnswer(offer);
+    });
+
+    socket?.on(
+      EVENT.ANSWER_MADE,
+      ({ sid, answer }: { sid: string; answer: RTCSessionDescription }) => {
+        console.log('answer made', sid, answer);
+        if (!pcRef.current) return;
+        pcRef.current.setRemoteDescription(new RTCSessionDescription(answer));
+      },
+    );
+
+    socket?.on(
+      EVENT.ICE_CANDIDATE,
+      ({ sid, candidate }: { sid: string; candidate: RTCIceCandidate }) => {
+        if (!pcRef.current) return;
+        pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+        console.log('ice candidate', sid, candidate);
+      },
+    );
+
+    setVideoTracks();
+
+    return () => {
+      if (socket) socket.close();
+      if (pcRef.current) pcRef.current.close();
+    };
+  }, [socket]);
 
   return (
     <VideoContainer>
