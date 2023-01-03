@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import * as S from './VideoScreen.styles';
 
 const VideoScreen = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const getMedia = async () => {
     try {
