@@ -41,18 +41,44 @@ const VideoContents = () => {
           roomId: 'test',
         });
       };
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
     return;
   };
 
   const createOffer = async () => {
-    return;
+    console.log('create offer');
+    if (!(pcRef.current && socket)) return;
+    try {
+      const offer = await pcRef.current.createOffer({
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: true,
+      });
+      await pcRef.current.setLocalDescription(new RTCSessionDescription(offer));
+      socket.emit(EVENT.CALL_USER, {
+        offer,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const createAnswer = async () => {
-    return;
+  const createAnswer = async (offer: RTCSessionDescription) => {
+    if (!(pcRef.current && socket)) return;
+    try {
+      await pcRef.current.setRemoteDescription(new RTCSessionDescription(offer));
+      const answer = await pcRef.current.createAnswer({
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: true,
+      });
+      await pcRef.current.setLocalDescription(new RTCSessionDescription(answer));
+      socket.emit(EVENT.MAKE_ANSWER, {
+        answer,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
