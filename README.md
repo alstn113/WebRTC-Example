@@ -21,6 +21,6 @@
 │
 └── 📁 study
     ├── 📁 websocket-chat
-    ├── 📁 sochet.io-cat
+    ├── 📁 sochet.io-chat
     └── 📁 webrtc-video
 ```

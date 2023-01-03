@@ -4,9 +4,11 @@ import roomSocket from './roomSocket';
 
 class PeerConnection {
   socket: Socket | null;
+  peerConnection: RTCPeerConnection | null;
 
   constructor() {
     this.socket = roomSocket.socket;
+    this.peerConnection = null;
   }
   createPeerConnection = (sid: string) => {
     const stream: MediaStream | null = null;
@@ -17,7 +19,8 @@ class PeerConnection {
         },
       ],
     });
-    peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
+    if (!this.peerConnection) return;
+    this.peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
       if (event.candidate) {
         this.socket?.emit(EVENT.ICE_CANDIDATE, {
           to: sid,
@@ -26,7 +29,7 @@ class PeerConnection {
       }
     };
 
-    peerConnection.ontrack = (event: RTCTrackEvent) => {
+    this.peerConnection.ontrack = (event: RTCTrackEvent) => {
       console.log('ontrack', event.streams[0]);
     };
 
@@ -38,42 +41,40 @@ class PeerConnection {
   };
 
   createOffer = async (sid: string) => {
-    // console.log('[createOffer]');
-    const peerConnection = this.createPeerConnection(sid);
-    if (!peerConnection) return;
-    const offer = await peerConnection.createOffer({
+    console.log('[createOffer]', this.peerConnection);
+    this.peerConnection = this.createPeerConnection(sid) as RTCPeerConnection;
+    if (!this.peerConnection) return;
+    const offer = await this.peerConnection.createOffer({
       offerToReceiveAudio: true,
       offerToReceiveVideo: true,
     });
-    await peerConnection.setLocalDescription(offer);
+    await this.peerConnection.setLocalDescription(offer);
     this.socket?.emit(EVENT.CALL_USER, { to: sid, offer });
   };
 
   createAnswer = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
-    // console.log('[createAnswer]');
-    const peerConnection = this.createPeerConnection(sid);
-    if (!peerConnection) return;
-    await peerConnection.setRemoteDescription(offer);
-    const answer = await peerConnection.createAnswer();
-    await peerConnection.setLocalDescription(answer);
+    console.log('[createAnswer]', this.peerConnection);
+    if (!this.peerConnection) return;
+    await this.peerConnection.setRemoteDescription(offer);
+    const answer = await this.peerConnection.createAnswer();
+    await this.peerConnection.setLocalDescription(answer);
 
     this.socket?.emit(EVENT.MAKE_ANSWER, { to: sid, answer });
   };
 
   onCallMade = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
-    // console.log('[onCallMade]');
+    console.log('[onCallMade]', this.peerConnection);
     await this.createAnswer({ sid, offer });
   };
 
   onAnswerMade = async ({ sid, answer }: { sid: string; answer: RTCSessionDescriptionInit }) => {
-    // console.log('[onAnswerMade]');
-    const peerConnection = this.createPeerConnection(sid);
-    if (!peerConnection) return;
-    await peerConnection.setRemoteDescription(answer);
+    console.log('[onAnswerMade]', this.peerConnection);
+    if (!this.peerConnection) return;
+    await this.peerConnection.setRemoteDescription(answer);
   };
 
   onAddUser = async ({ sid }: { sid: string }) => {
-    // console.log('[onAddUser]');
+    console.log('[onAddUser]', this.peerConnection);
     await this.createOffer(sid);
   };
 
@@ -84,10 +85,10 @@ class PeerConnection {
     sid: string;
     candidate: RTCIceCandidateInit;
   }) => {
-    // console.log('[onIceCandidateReceived]');
-    const peerConnection = this.createPeerConnection(sid);
-    if (!peerConnection) return;
-    peerConnection?.addIceCandidate(candidate);
+    console.log('[onIceCandidateReceived]', this.peerConnection);
+    if (!this.peerConnection) return;
+    console.log(this.peerConnection);
+    this.peerConnection.addIceCandidate(candidate);
   };
 }
 
