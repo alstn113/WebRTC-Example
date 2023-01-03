@@ -2,11 +2,12 @@ import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import { EVENT } from '~/constants';
 import roomSocket from '~/lib/sockets/roomSocket';
+import usePeerConnectionStore from '~/lib/stores/usePeerConnectionStore';
 
 const VideoContents = () => {
   const localVideoRef = useRef<HTMLVideoElement>(null);
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
-  const pcRef = useRef<RTCPeerConnection>();
+  const { peerConnection, setPeerConnection } = usePeerConnectionStore();
   const socket = roomSocket.socket;
 
   const setVideoTracks = async () => {
@@ -18,23 +19,23 @@ const VideoContents = () => {
         },
       });
       if (localVideoRef.current) localVideoRef.current.srcObject = stream;
-      if (!(pcRef.current && socket)) return;
+      if (!(peerConnection && socket)) return;
 
       stream.getTracks().forEach((track) => {
-        if (!pcRef.current) return;
-        pcRef.current.addTrack(track, stream);
+        if (!peerConnection) return;
+        peerConnection.addTrack(track, stream);
       });
-      pcRef.current.onicecandidate = (e) => {
+      peerConnection.onicecandidate = (e) => {
         if (e.candidate) {
           if (!socket) return;
           console.log('candidate', e.candidate);
           socket.emit(EVENT.ICE_CANDIDATE, e.candidate);
         }
       };
-      pcRef.current.oniceconnectionstatechange = (e) => {
+      peerConnection.oniceconnectionstatechange = (e) => {
         console.log('ice connection state change', e);
       };
-      pcRef.current.ontrack = (e) => {
+      peerConnection.ontrack = (e) => {
         console.log('add track success');
         if (remoteVideoRef.current) remoteVideoRef.current.srcObject = e.streams[0];
         socket.emit(EVENT.JOIN_ROOM, {
@@ -49,13 +50,13 @@ const VideoContents = () => {
 
   const createOffer = async () => {
     console.log('create offer');
-    if (!(pcRef.current && socket)) return;
+    if (!(peerConnection && socket)) return;
     try {
-      const offer = await pcRef.current.createOffer({
+      const offer = await peerConnection.createOffer({
         offerToReceiveAudio: true,
         offerToReceiveVideo: true,
       });
-      await pcRef.current.setLocalDescription(new RTCSessionDescription(offer));
+      await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
       socket.emit(EVENT.CALL_USER, {
         offer,
       });
@@ -65,14 +66,14 @@ const VideoContents = () => {
   };
 
   const createAnswer = async (offer: RTCSessionDescription) => {
-    if (!(pcRef.current && socket)) return;
+    if (!(peerConnection && socket)) return;
     try {
-      await pcRef.current.setRemoteDescription(new RTCSessionDescription(offer));
-      const answer = await pcRef.current.createAnswer({
+      await peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+      const answer = await peerConnection.createAnswer({
         offerToReceiveAudio: true,
         offerToReceiveVideo: true,
       });
-      await pcRef.current.setLocalDescription(new RTCSessionDescription(answer));
+      await peerConnection.setLocalDescription(new RTCSessionDescription(answer));
       socket.emit(EVENT.MAKE_ANSWER, {
         answer,
       });
@@ -82,13 +83,15 @@ const VideoContents = () => {
   };
 
   useEffect(() => {
-    pcRef.current = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: 'stun:stun.l.google.com:19302',
-        },
-      ],
-    });
+    setPeerConnection(
+      new RTCPeerConnection({
+        iceServers: [
+          {
+            urls: 'stun:stun.l.google.com:19302',
+          },
+        ],
+      }),
+    );
 
     socket?.on(EVENT.CALL_USER, () => {
       createOffer();
@@ -103,16 +106,16 @@ const VideoContents = () => {
       EVENT.ANSWER_MADE,
       ({ sid, answer }: { sid: string; answer: RTCSessionDescription }) => {
         console.log('answer made', sid, answer);
-        if (!pcRef.current) return;
-        pcRef.current.setRemoteDescription(new RTCSessionDescription(answer));
+        if (!peerConnection) return;
+        peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
       },
     );
 
     socket?.on(
       EVENT.ICE_CANDIDATE,
       ({ sid, candidate }: { sid: string; candidate: RTCIceCandidate }) => {
-        if (!pcRef.current) return;
-        pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+        if (!peerConnection) return;
+        peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
         console.log('ice candidate', sid, candidate);
       },
     );
@@ -121,7 +124,7 @@ const VideoContents = () => {
 
     return () => {
       if (socket) socket.close();
-      if (pcRef.current) pcRef.current.close();
+      if (peerConnection) peerConnection.close();
     };
   }, [socket]);
 
