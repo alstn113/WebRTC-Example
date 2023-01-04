@@ -25,11 +25,11 @@ export const ModalBlock = styled(motion.div)`
   background: white;
   width: 25rem;
   background: white;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 14px;
   box-shadow: rgb(0 0 0 / 9%) 0px 2px 12px 0px;
   ${mediaQuery.sm} {
-    width: 17rem;
+    width: 18rem;
   }
 `;
 

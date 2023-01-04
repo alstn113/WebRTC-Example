@@ -7,9 +7,11 @@ import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
 import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import useGetMe from '~/hooks/queries/user/useGetMe';
+import usePeerConnection from '~/hooks/usePeerConnection';
 import roomSocket from '~/lib/sockets/roomSocket';
 import { User } from '~/lib/types';
 import RoomContent from './RoomContent';
+import VideoContents from './VideoContents';
 import VideoScreen from './VideoScreen';
 
 const Room = () => {
@@ -25,6 +27,8 @@ const Room = () => {
     };
   }, [roomId]);
 
+  // usePeerConnection();
+
   const handleSendMessage = () => {
     roomSocket.sendMessage(roomId, 'Hello');
   };
@@ -37,12 +41,13 @@ const Room = () => {
     >
       <div>{user?.user?.email}</div>
       <br />
-      <VideoScreen />
+      {/* <VideoScreen /> */}
       <Button shadow color="warning" onClick={handleSendMessage}>
         메시지 보내기
       </Button>
       <br />
       <RoomContent roomId={roomId} />
+      <VideoContents roomId={roomId} />
     </AsyncBoundary>
   );
 };
