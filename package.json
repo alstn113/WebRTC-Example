@@ -11,6 +11,7 @@
     "packages/server"
   ],
   "scripts": {
+    "clean": "yarn workspaces foreach -piv run clean && rm -rf .yarn/cache && rm yarn.lock",
     "client": "yarn workspace client",
     "server": "yarn workspace server",
     "dev": "concurrently \"yarn client dev\" \"yarn server start:dev\"",
