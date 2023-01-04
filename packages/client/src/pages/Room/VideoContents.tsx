@@ -18,7 +18,11 @@ const VideoContents = ({ roomId }: Props) => {
         video: true,
         audio: true,
       });
-      if (localVideoRef.current) localVideoRef.current.srcObject = stream;
+      if (localVideoRef.current) {
+        localVideoRef.current.volume = 0;
+        localVideoRef.current.srcObject = stream;
+      }
+
       if (!(pcRef.current && socket)) return;
       stream.getTracks().forEach((track) => {
         if (!pcRef.current) return;
