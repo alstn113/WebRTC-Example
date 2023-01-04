@@ -26,8 +26,6 @@ const Room = () => {
     };
   }, [roomId]);
 
-  // usePeerConnection();
-
   const handleSendMessage = () => {
     roomSocket.sendMessage(roomId, 'Hello');
   };

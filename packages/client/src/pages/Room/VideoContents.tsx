@@ -13,6 +13,8 @@ const VideoContents = ({ roomId }: Props) => {
   const socket = roomSocket.socket;
 
   const setVideoTracks = async () => {
+    console.log('setVideoTracks');
+
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -53,6 +55,8 @@ const VideoContents = ({ roomId }: Props) => {
   };
 
   const createOffer = async (sid: string) => {
+    console.log('createOffer');
+
     if (!(pcRef.current && socket)) return;
     try {
       const offer = await pcRef.current.createOffer({
@@ -76,6 +80,8 @@ const VideoContents = ({ roomId }: Props) => {
     sid: string;
     offer: RTCSessionDescriptionInit;
   }) => {
+    console.log('createAnswer');
+
     if (!(pcRef.current && socket)) return;
     try {
       await pcRef.current.setRemoteDescription(new RTCSessionDescription(offer));
@@ -94,6 +100,7 @@ const VideoContents = ({ roomId }: Props) => {
   };
 
   const onCallMade = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
+    console.log('onCallMade');
     await createAnswer({ sid, offer });
   };
 
@@ -104,11 +111,13 @@ const VideoContents = ({ roomId }: Props) => {
     sid: string;
     answer: RTCSessionDescriptionInit;
   }) => {
+    console.log('onAnswerMade');
     if (!pcRef.current) return;
     pcRef.current?.setRemoteDescription(new RTCSessionDescription(answer));
   };
 
   const onCallUser = async ({ sid }: { sid: string }) => {
+    console.log('onCallUser');
     await createOffer(sid);
   };
 
@@ -119,6 +128,7 @@ const VideoContents = ({ roomId }: Props) => {
     sid: string;
     candidate: RTCIceCandidateInit;
   }) => {
+    console.log('onIceCandidateReceived');
     if (!pcRef.current) return;
     pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
   };
