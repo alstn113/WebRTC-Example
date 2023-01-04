@@ -169,6 +169,6 @@ const VideoContainer = styled.div`
 const VideoScreen = styled.video`
   width: 360px;
   height: 360px;
-  margin: 2rem;
+  margin: 1rem;
   background-color: #000;
 `;

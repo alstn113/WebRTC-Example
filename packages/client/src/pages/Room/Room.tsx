@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
@@ -9,7 +10,7 @@ import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import useGetMe from '~/hooks/queries/user/useGetMe';
 import roomSocket from '~/lib/sockets/roomSocket';
 import { User } from '~/lib/types';
-import RoomContent from './RoomContent';
+import Chat from './Chat';
 import VideoContents from './VideoContents';
 
 const Room = () => {
@@ -37,16 +38,35 @@ const Room = () => {
         <ErrorFallback message={MESSAGE.ERROR.LOAD_DATA} queryKey={useGetRoom.getKey(roomId)} />
       }
     >
-      <div>{user?.user?.email}</div>
-      <br />
-      <Button shadow color="warning" onClick={handleSendMessage}>
-        메시지 보내기
-      </Button>
-      <br />
-      <RoomContent roomId={roomId} />
-      <VideoContents roomId={roomId} />
+      <Container>
+        <Button>{user?.user?.email}</Button>
+        <br />
+        <Button shadow color="warning" onClick={handleSendMessage}>
+          메시지 보내기
+        </Button>
+        <br />
+        <ContentsWrapper>
+          <VideoContents roomId={roomId} />
+          <Chat roomId={roomId} />
+        </ContentsWrapper>
+      </Container>
     </AsyncBoundary>
   );
 };
 
 export default Room;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+`;
+
+const ContentsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
