@@ -19,6 +19,7 @@ const VideoContents = ({ roomId }: Props) => {
         audio: true,
       });
       if (localVideoRef.current) {
+        // remove howling sound
         localVideoRef.current.volume = 0;
         localVideoRef.current.srcObject = stream;
       }
@@ -37,9 +38,7 @@ const VideoContents = ({ roomId }: Props) => {
           });
         }
       };
-      pcRef.current.oniceconnectionstatechange = (event) => {
-        console.log('on ice connection state change', event);
-      };
+
       pcRef.current.ontrack = (event: RTCTrackEvent) => {
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = event.streams[0];
@@ -105,7 +104,6 @@ const VideoContents = ({ roomId }: Props) => {
     sid: string;
     answer: RTCSessionDescriptionInit;
   }) => {
-    console.log('answer made', sid, answer);
     if (!pcRef.current) return;
     pcRef.current?.setRemoteDescription(new RTCSessionDescription(answer));
   };
@@ -123,7 +121,6 @@ const VideoContents = ({ roomId }: Props) => {
   }) => {
     if (!pcRef.current) return;
     pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
-    console.log('ice candidate', sid, candidate);
   };
 
   useEffect(() => {
