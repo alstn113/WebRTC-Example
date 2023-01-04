@@ -21,13 +21,13 @@ class RoomSocket {
     roomSocket.socket?.connect();
 
     // --- 여기는 확인용으로 임시로 넣어둠 ---
-    roomSocket.socket?.on('connect', () => {
-      console.log('connected');
-    });
-    roomSocket.socket?.on('disconnect', () => {
-      console.log('disconnected');
-    });
-    roomSocket.socket?.emit(EVENT.JOIN_ROOM, { roomId });
+    // roomSocket.socket?.on('connect', () => {
+    //   console.log('connected');
+    // });
+    // roomSocket.socket?.on('disconnect', () => {
+    //   console.log('disconnected');
+    // });
+    // roomSocket.socket?.emit(EVENT.JOIN_ROOM, { roomId });
     roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
       console.log(data);
     });

@@ -47,7 +47,7 @@ const Room = () => {
       </Button>
       <br />
       <RoomContent roomId={roomId} />
-      <VideoContents />
+      <VideoContents roomId={roomId} />
     </AsyncBoundary>
   );
 };
