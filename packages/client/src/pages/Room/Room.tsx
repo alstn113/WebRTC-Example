@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
+import MediaStreamSetting from '~/components/Room/MediaStreamSetting';
 import { MESSAGE } from '~/constants/messages';
 import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import useGetMe from '~/hooks/queries/user/useGetMe';
-import usePeerConnection from '~/hooks/usePeerConnection';
 import roomSocket from '~/lib/sockets/roomSocket';
 import { User } from '~/lib/types';
 import Chat from './Chat';
@@ -41,6 +41,7 @@ const Room = () => {
           <VideoContents roomId={roomId} />
           <Chat roomId={roomId} />
         </ContentsWrapper>
+        <MediaStreamSetting />
       </Container>
     </AsyncBoundary>
   );
@@ -54,6 +55,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  gap: 1rem;
 `;
 
 const ContentsWrapper = styled.div`

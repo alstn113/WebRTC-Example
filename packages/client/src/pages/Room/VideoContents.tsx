@@ -12,7 +12,7 @@ const VideoContents = ({ roomId }: Props) => {
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const pcRef = useRef<RTCPeerConnection>();
   const socket = roomSocket.socket;
-  const { setMediaStream, mediaStream, isMicOn, isVideoOn } = useMediaStreamStore();
+  const { setMediaStream, isMicOn, isVideoOn } = useMediaStreamStore();
 
   const setVideoTracks = async () => {
     console.log('setVideoTracks');
@@ -163,7 +163,7 @@ const VideoContents = ({ roomId }: Props) => {
 
       if (pcRef.current) pcRef.current.close();
     };
-  }, []);
+  }, [isMicOn, isVideoOn]);
 
   return (
     <VideoContainer>
