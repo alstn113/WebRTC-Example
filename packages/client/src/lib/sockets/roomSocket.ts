@@ -28,14 +28,14 @@ class RoomSocket {
     //   console.log('disconnected');
     // });
     // roomSocket.socket?.emit(EVENT.JOIN_ROOM, { roomId });
-    // roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
+    // roomSocket.socket?.on(EVENT.CHAT_MESSAGE, (data) => {
     //   console.log(data);
     // });
     // --------------------------------
   }
 
   sendMessage(roomId: string, message: string) {
-    roomSocket.socket?.emit(EVENT.SEND_MESSAGE, {
+    roomSocket.socket?.emit(EVENT.CHAT_MESSAGE, {
       roomId,
       message,
     });
@@ -45,8 +45,8 @@ class RoomSocket {
     this.socket?.emit(EVENT.LEAVE_ROOM, { roomId });
     this.socket?.off(EVENT.JOIN_ROOM);
     this.socket?.off(EVENT.LEAVE_ROOM);
-    this.socket?.off(EVENT.RECEIVE_MESSAGE);
-    this.socket?.off(EVENT.SEND_MESSAGE);
+    this.socket?.off(EVENT.CHAT_MESSAGE);
+    this.socket?.off(EVENT.CHAT_MESSAGE);
     this.socket?.disconnect();
   }
 }

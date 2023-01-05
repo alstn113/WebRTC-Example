@@ -8,8 +8,7 @@ export const EVENT = {
   LEAVE_LOBBY: 'leave_lobby',
 
   /** Socket Chat */
-  SEND_MESSAGE: 'send_message',
-  RECEIVE_MESSAGE: 'receive_message',
+  CHAT_MESSAGE: 'chat_message',
 
   /** WebRTC */
   CALL_USER: 'call_user',

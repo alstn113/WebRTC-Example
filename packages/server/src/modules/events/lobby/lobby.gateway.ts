@@ -48,7 +48,7 @@ export class LobbyGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
     return this.lobbyGatewayService.onLeaveLobby(client);
   }
 
-  @SubscribeMessage(EVENT.SEND_MESSAGE)
+  @SubscribeMessage(EVENT.CHAT_MESSAGE)
   handleSendMessageToLobby(client: Socket, dto: SendMessageToLobbyDto) {
     return this.lobbyGatewayService.onSendMessageToLobby(client, dto);
   }

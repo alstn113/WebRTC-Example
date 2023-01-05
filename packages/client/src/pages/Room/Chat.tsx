@@ -12,7 +12,7 @@ const Chat = ({ roomId }: Props) => {
   const [messageInput, setMessageInput] = useState<string>('');
   const chatListRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
+    roomSocket.socket?.on(EVENT.CHAT_MESSAGE, (data) => {
       setMessages([...messages, data]);
     });
     chatListRef.current?.scrollTo(0, chatListRef.current.scrollHeight);
@@ -20,7 +20,7 @@ const Chat = ({ roomId }: Props) => {
 
   const handleSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    roomSocket.socket?.emit(EVENT.SEND_MESSAGE, { roomId, message: messageInput });
+    roomSocket.socket?.emit(EVENT.CHAT_MESSAGE, { roomId, message: messageInput });
     setMessageInput('');
   };
   return (

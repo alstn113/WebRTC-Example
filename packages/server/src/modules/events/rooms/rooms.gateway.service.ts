@@ -59,7 +59,7 @@ export class RoomsGatewayService {
     client.join(dto.roomId);
     client
       .to(dto.roomId)
-      .emit(EVENT.RECEIVE_MESSAGE, `Joined room ${dto.roomId} ${client.data.user.email}!`);
+      .emit(EVENT.CHAT_MESSAGE, `Joined room ${dto.roomId} ${client.data.user.email}!`);
     client.to(dto.roomId).emit(EVENT.CALL_USER, {
       sid: client.id,
     });
@@ -70,14 +70,14 @@ export class RoomsGatewayService {
     client.leave(dto.roomId);
     client
       .to(dto.roomId)
-      .emit(EVENT.RECEIVE_MESSAGE, `Left room ${dto.roomId}! ${client.data.user.email}`);
+      .emit(EVENT.CHAT_MESSAGE, `Left room ${dto.roomId}! ${client.data.user.email}`);
   }
 
   onSendMessage(client: Socket, dto: SendMessageDto) {
     // send to all clients in room
     this.server
       .to(dto.roomId)
-      .emit(EVENT.RECEIVE_MESSAGE, `${client.data.user.email}: ${dto.message}`);
+      .emit(EVENT.CHAT_MESSAGE, `${client.data.user.email}: ${dto.message}`);
   }
 
   /** WebRTC */
