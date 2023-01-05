@@ -9,13 +9,6 @@ const AuthAPI = {
     });
     return data;
   },
-  register: async ({ email, password }: AuthParams) => {
-    const { data } = await apiClient.post('/auth/register', {
-      email,
-      password,
-    });
-    return data;
-  },
   logout: async () => {
     const { data } = await apiClient.delete('/auth/logout');
     return data;

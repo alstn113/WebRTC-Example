@@ -1,12 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import useLogin from '~/hooks/queries/auth/useLogin';
+import useRegister from '~/hooks/queries/user/useRegister';
 import { Button, ErrorMessage, TextInput } from '~/components/common';
 import styled from '@emotion/styled';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
-import useGetMe from '~/hooks/queries/user/useGetMe';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormInput {
   email: string;
@@ -18,18 +16,12 @@ const schema = yup.object().shape({
   password: yup.string().required('필수항목입니다'),
 });
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const next = params.get('next') || '/';
 
-  const queryClient = useQueryClient();
-
-  const { mutate } = useLogin({
+  const { mutate } = useRegister({
     onSuccess: async () => {
-      await queryClient.refetchQueries(useGetMe.getKey());
-      navigate(next);
+      navigate('/login');
     },
     onError: (e) => {
       console.log(e);
@@ -59,16 +51,7 @@ const LoginPage = () => {
           variant="underlined"
         />
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
-        <Button shadow size="auto" type="submit">
-          LOGIN
-        </Button>
-        <Button
-          shadow
-          size="auto"
-          type="button"
-          color="success"
-          onClick={() => navigate('/register')}
-        >
+        <Button shadow size="auto" type="submit" color="success">
           REGISTER
         </Button>
       </Form>
@@ -94,4 +77,4 @@ const Form = styled.form`
   }
 `;
 
-export default LoginPage;
+export default RegisterPage;

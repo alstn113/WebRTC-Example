@@ -13,6 +13,7 @@ import MainLayout from '~/components/Layouts/MainLayout/MainLayout';
 import Home from '~/pages/Home/Home';
 import Room from '~/pages/Room/Room';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import Loading from '~/pages/Loading/Loading';
 import NotFound from '~/pages/NotFound/NotFound';
 
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
           </Route>
           <Route path="/loading" element={<Loading />} />
           <Route path="/room" element={<MainLayout />}>
