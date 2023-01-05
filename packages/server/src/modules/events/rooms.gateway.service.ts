@@ -55,6 +55,7 @@ export class RoomsGatewayService {
   /** Socket Chat */
 
   onJoinRoom(client: Socket, dto: JoinRoomDto) {
+    // send to all clients in room except sender
     client.join(dto.roomId);
     client
       .to(dto.roomId)
@@ -65,6 +66,7 @@ export class RoomsGatewayService {
   }
 
   onLeaveRoom(client: Socket, dto: LeaveRoomDto) {
+    // send to all clients in room except sender
     client.leave(dto.roomId);
     client
       .to(dto.roomId)
@@ -72,6 +74,7 @@ export class RoomsGatewayService {
   }
 
   onSendMessage(client: Socket, dto: SendMessageDto) {
+    // send to all clients in room
     this.server
       .to(dto.roomId)
       .emit(EVENT.RECEIVE_MESSAGE, `${client.data.user.email}: ${dto.message}`);
