@@ -1,15 +1,43 @@
 import styled from '@emotion/styled';
+import { useEffect, useRef, useState } from 'react';
+import { EVENT } from '~/constants';
+import roomSocket from '~/lib/sockets/roomSocket';
 
 interface Props {
   roomId: string;
 }
 
 const Chat = ({ roomId }: Props) => {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [messageInput, setMessageInput] = useState<string>('');
+  const chatListRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
+      setMessages([...messages, data]);
+    });
+    chatListRef.current?.scrollTo(0, chatListRef.current.scrollHeight);
+  }, [messages]);
+
+  const handleSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    roomSocket.socket?.emit(EVENT.SEND_MESSAGE, { roomId, message: messageInput });
+    setMessageInput('');
+  };
   return (
     <ChatWrapper>
       <Title>Chat</Title>
-      <ChatList></ChatList>
-      <ChatInput placeholder="Write Message..." />
+      <ChatList ref={chatListRef}>
+        {messages.map((message) => (
+          <div key={crypto.randomUUID()}>{message}</div>
+        ))}
+      </ChatList>
+      <ChatForm onSubmit={handleSubmitMessage}>
+        <ChatInput
+          placeholder="Write Message..."
+          onChange={(e) => setMessageInput(e.target.value)}
+          value={messageInput}
+        />
+      </ChatForm>
     </ChatWrapper>
   );
 };
@@ -31,7 +59,7 @@ const Title = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   padding: 5px 0;
   height: 40px;
@@ -47,6 +75,9 @@ const ChatList = styled.div`
   overflow-y: auto;
 `;
 
+const ChatForm = styled.form`
+  width: 100%;
+`;
 const ChatInput = styled.input`
   display: flex;
   flex-direction: row;
@@ -57,5 +88,5 @@ const ChatInput = styled.input`
   height: 40px;
   width: 100%;
   padding: 0 20px;
-  font-size: 20px;
+  font-size: 18px;
 `;

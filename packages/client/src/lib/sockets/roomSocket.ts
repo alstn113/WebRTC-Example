@@ -28,9 +28,9 @@ class RoomSocket {
     //   console.log('disconnected');
     // });
     // roomSocket.socket?.emit(EVENT.JOIN_ROOM, { roomId });
-    roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
-      console.log(data);
-    });
+    // roomSocket.socket?.on(EVENT.RECEIVE_MESSAGE, (data) => {
+    //   console.log(data);
+    // });
     // --------------------------------
   }
 

@@ -28,12 +28,6 @@ const Room = () => {
     };
   }, [roomId]);
 
-  // usePeerConnection();
-
-  const handleSendMessage = () => {
-    roomSocket.sendMessage(roomId, 'Hello');
-  };
-
   return (
     <AsyncBoundary
       rejectedFallback={
@@ -41,13 +35,8 @@ const Room = () => {
       }
     >
       <Container>
-        <Button>{user?.user?.email}</Button>
-        <br />
-        <Button shadow color="warning" onClick={handleSendMessage}>
-          메시지 보내기
-        </Button>
-        <br />
         <RoomContent roomId={roomId} />
+        <Button>{user?.user?.email}</Button>
         <ContentsWrapper>
           <VideoContents roomId={roomId} />
           <Chat roomId={roomId} />

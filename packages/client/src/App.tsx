@@ -31,7 +31,6 @@ const App = () => {
           </Route>
           <Route path="loading" element={<Loading />} />
           <Route path="/room" element={<MainLayout />}>
-            <Route index element={<></>} />
             <Route path=":roomId" element={<Room />} />
           </Route>
 

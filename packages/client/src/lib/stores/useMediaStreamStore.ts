@@ -16,7 +16,7 @@ type Actions = {
 const useMediaStreamStore = create<States & Actions>((set) => ({
   mediaStream: null,
   isVideoOn: true,
-  isMicOn: true,
+  isMicOn: false,
   setMediaStream: (mediaStream) =>
     set(
       produce((draft: States) => {
