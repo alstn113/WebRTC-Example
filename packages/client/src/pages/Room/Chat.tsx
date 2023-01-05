@@ -21,9 +21,10 @@ const ChatWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 360px;
-  width: 360px;
+  height: 300px;
+  width: 300px;
   border: 1px solid black;
+  margin-left: 1rem;
 `;
 
 const Title = styled.span`
@@ -41,7 +42,7 @@ const Title = styled.span`
 `;
 
 const ChatList = styled.div`
-  height: 280px;
+  height: 220px;
   width: 100%;
   overflow-y: auto;
 `;

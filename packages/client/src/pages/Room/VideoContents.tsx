@@ -40,7 +40,6 @@ const VideoContents = ({ roomId }: Props) => {
           });
         }
       };
-
       pcRef.current.ontrack = (event: RTCTrackEvent) => {
         if (remoteVideoRef.current) {
           remoteVideoRef.current.srcObject = event.streams[0];
@@ -101,6 +100,7 @@ const VideoContents = ({ roomId }: Props) => {
 
   const onCallMade = async ({ sid, offer }: { sid: string; offer: RTCSessionDescriptionInit }) => {
     console.log('onCallMade');
+
     await createAnswer({ sid, offer });
   };
 
@@ -112,12 +112,12 @@ const VideoContents = ({ roomId }: Props) => {
     answer: RTCSessionDescriptionInit;
   }) => {
     console.log('onAnswerMade');
+
     if (!pcRef.current) return;
     pcRef.current?.setRemoteDescription(new RTCSessionDescription(answer));
   };
 
   const onCallUser = async ({ sid }: { sid: string }) => {
-    console.log('onCallUser');
     await createOffer(sid);
   };
 
@@ -129,6 +129,7 @@ const VideoContents = ({ roomId }: Props) => {
     candidate: RTCIceCandidateInit;
   }) => {
     console.log('onIceCandidateReceived');
+
     if (!pcRef.current) return;
     pcRef.current.addIceCandidate(new RTCIceCandidate(candidate));
   };
@@ -157,7 +158,7 @@ const VideoContents = ({ roomId }: Props) => {
 
       if (pcRef.current) pcRef.current.close();
     };
-  }, []);
+  }, [setVideoTracks, socket]);
 
   return (
     <VideoContainer>
@@ -177,8 +178,10 @@ const VideoContainer = styled.div`
 `;
 
 const VideoScreen = styled.video`
-  width: 360px;
-  height: 360px;
-  margin: 1rem;
+  width: 300px;
+  height: 300px;
+  & + & {
+    margin-left: 1rem;
+  }
   background-color: #000;
 `;
