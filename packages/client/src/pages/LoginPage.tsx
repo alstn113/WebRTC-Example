@@ -50,6 +50,7 @@ const LoginPage = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <Title>LOGIN</Title>
         <TextInput {...register('email')} type="text" placeholder="email" variant="underlined" />
         <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <TextInput
@@ -69,7 +70,7 @@ const LoginPage = () => {
           color="success"
           onClick={() => navigate('/register')}
         >
-          REGISTER
+          Aren&apos;t you a member yet?
         </Button>
       </Form>
     </Container>
@@ -92,6 +93,12 @@ const Form = styled.form`
   button {
     margin-top: 1rem;
   }
+`;
+
+const Title = styled.span`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 `;
 
 export default LoginPage;

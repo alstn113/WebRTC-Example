@@ -42,6 +42,7 @@ const RegisterPage = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <Title>REGISTER</Title>
         <TextInput {...register('email')} type="text" placeholder="email" variant="underlined" />
         <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <TextInput
@@ -53,6 +54,17 @@ const RegisterPage = () => {
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
         <Button shadow size="auto" type="submit" color="success">
           REGISTER
+        </Button>
+        <Button
+          shadow
+          size="auto"
+          type="button"
+          color="primary"
+          onClick={() => {
+            navigate('/login');
+          }}
+        >
+          Are you already a member?
         </Button>
       </Form>
     </Container>
@@ -75,6 +87,12 @@ const Form = styled.form`
   button {
     margin-top: 1rem;
   }
+`;
+
+const Title = styled.span`
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 `;
 
 export default RegisterPage;
