@@ -12,7 +12,7 @@ import {
   IceCandidateDto,
   JoinRoomDto,
   LeaveRoomDto,
-  SendMessageDto,
+  RoomMessageDto,
   MakeAnswerDto,
 } from '../dto';
 import { RoomsGatewayService } from './rooms.gateway.service';
@@ -52,7 +52,7 @@ export class RoomsGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   @SubscribeMessage(EVENT.CHAT_MESSAGE)
-  handleSendMessage(client: Socket, dto: SendMessageDto) {
+  handleSendMessage(client: Socket, dto: RoomMessageDto) {
     return this.roomsGatewayService.onSendMessage(client, dto);
   }
 

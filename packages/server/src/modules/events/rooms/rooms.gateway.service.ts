@@ -10,7 +10,7 @@ import {
   JoinRoomDto,
   LeaveRoomDto,
   MakeAnswerDto,
-  SendMessageDto,
+  RoomMessageDto,
 } from '../dto';
 
 @Injectable()
@@ -73,7 +73,7 @@ export class RoomsGatewayService {
       .emit(EVENT.CHAT_MESSAGE, `Left room ${dto.roomId}! ${client.data.user.email}`);
   }
 
-  onSendMessage(client: Socket, dto: SendMessageDto) {
+  onSendMessage(client: Socket, dto: RoomMessageDto) {
     // send to all clients in room
     this.server
       .to(dto.roomId)

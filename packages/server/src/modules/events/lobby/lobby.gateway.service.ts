@@ -4,7 +4,7 @@ import { EVENT } from '~/common/constants';
 import { AuthService } from '~/modules/auth/auth.service';
 import { UsersRepository } from '~/modules/users/users.repository';
 import { parseCookie } from '~/utils';
-import { SendMessageToLobbyDto } from '../dto';
+import { LobbyMessageDto } from '../dto';
 
 @Injectable()
 export class LobbyGatewayService {
@@ -51,7 +51,7 @@ export class LobbyGatewayService {
     client.emit(EVENT.CHAT_MESSAGE, `Left room ${client.data.user.email}`);
   }
 
-  onSendMessageToLobby(client: Socket, dto: SendMessageToLobbyDto) {
+  onSendMessage(client: Socket, dto: LobbyMessageDto) {
     // send to all clients in room
     this.server.emit(EVENT.CHAT_MESSAGE, `${client.data.user.email}: ${dto.message}`);
   }

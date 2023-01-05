@@ -1,10 +1,12 @@
-// Room Chat
-export * from './send-message.dto';
+// Chat
+export * from './room-message.dto';
+
+// Room
 export * from './join-room.dto';
 export * from './leave-room.dto';
 
-// Lobby Chat
-export * from './send-message-to-lobby.dto';
+// Lobby
+export * from './lobby-message.dto';
 
 // WebRTC
 export * from './make-answer.dto';

@@ -7,7 +7,7 @@ import {
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { EVENT } from '~/common/constants';
-import { SendMessageToLobbyDto } from '../dto/send-message-to-lobby.dto';
+import { LobbyMessageDto } from '../dto/lobby-message.dto';
 import { LobbyGatewayService } from './lobby.gateway.service';
 
 @WebSocketGateway({
@@ -49,7 +49,7 @@ export class LobbyGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   @SubscribeMessage(EVENT.CHAT_MESSAGE)
-  handleSendMessageToLobby(client: Socket, dto: SendMessageToLobbyDto) {
-    return this.lobbyGatewayService.onSendMessageToLobby(client, dto);
+  handleSendMessage(client: Socket, dto: LobbyMessageDto) {
+    return this.lobbyGatewayService.onSendMessage(client, dto);
   }
 }
