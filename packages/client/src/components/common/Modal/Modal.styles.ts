@@ -14,6 +14,7 @@ export const Overlay = styled(motion.div)`
 `;
 
 export const Positioner = styled.div`
+  position: fixed;
   position: absolute;
   left: 50%;
   top: 50%;

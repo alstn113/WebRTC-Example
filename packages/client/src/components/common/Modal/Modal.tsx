@@ -2,6 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import Portal from '~/components/Portal';
 import { Button } from '~/components/common';
 import * as S from './Modal.styles';
+import { useEffect } from 'react';
 
 export interface ModalProps {
   visible: boolean;
@@ -22,22 +23,32 @@ const Modal = ({
   onConfirm,
   onCancel,
 }: ModalProps) => {
+  useEffect(() => {
+    if (visible) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [visible]);
+
   return (
     <Portal id="modal">
       <AnimatePresence>
         {visible && (
-          <S.Overlay
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
+          <>
+            <S.Overlay
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={onCancel}
+            />
             <S.Positioner>
               <S.ModalBlock
                 initial={{ y: '-30px', opacity: 0.5 }}
                 animate={{ y: '0vh', opacity: 1 }}
-                exit={{ y: '-30px', opacity: 0.5 }}
-                transition={{ duration: 0.3 }}
+                exit={{ y: '-30px', opacity: 0 }}
+                transition={{ duration: 0.3, ease: 'easeInOut' }}
               >
                 <S.Title>{title}</S.Title>
                 <S.Message>{message}</S.Message>
@@ -51,7 +62,7 @@ const Modal = ({
                 </S.Footer>
               </S.ModalBlock>
             </S.Positioner>
-          </S.Overlay>
+          </>
         )}
       </AnimatePresence>
     </Portal>
