@@ -14,7 +14,7 @@ import {
   LeaveRoomDto,
   SendMessageDto,
   MakeAnswerDto,
-} from './dto';
+} from '../dto';
 import { RoomsGatewayService } from './rooms.gateway.service';
 
 @WebSocketGateway({

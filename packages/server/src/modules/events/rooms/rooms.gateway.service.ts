@@ -2,8 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 import { Server, Socket } from 'socket.io';
 import { EVENT } from '~/common/constants';
 import { parseCookie } from '~/utils';
-import { AuthService } from '../auth/auth.service';
-import { UsersRepository } from '../users/users.repository';
+import { AuthService } from '../../auth/auth.service';
+import { UsersRepository } from '../../users/users.repository';
 import {
   CallUserDto,
   IceCandidateDto,
@@ -11,7 +11,7 @@ import {
   LeaveRoomDto,
   MakeAnswerDto,
   SendMessageDto,
-} from './dto';
+} from '../dto';
 
 @Injectable()
 export class RoomsGatewayService {
