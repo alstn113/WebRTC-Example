@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-kakao';
 import { UsersRepository } from '~/modules/users/users.repository';
 import type { KakaoProfile } from '../types';
+import { uuid } from 'uuidv4';
 
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
@@ -33,6 +34,7 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
 
       const newUser = await this.userRepository.createOAuthUser({
         email: kakao_account?.email,
+        password: id + uuid(),
         provider: 'kakao',
         socialId: id.toString(),
       });

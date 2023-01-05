@@ -16,10 +16,11 @@ export class UsersRepository {
     });
   }
 
-  async createOAuthUser({ email, provider, socialId }: CreateOAuthUserDto) {
+  async createOAuthUser({ email, provider, socialId, password }: CreateOAuthUserDto) {
     return await this.prisma.user.create({
       data: {
         email,
+        password,
         provider,
         socialId,
       },

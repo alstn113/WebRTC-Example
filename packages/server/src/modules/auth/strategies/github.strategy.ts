@@ -4,6 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github2';
 import { UsersRepository } from '~/modules/users/users.repository';
 import type { GithubProfile } from '../types';
+import { uuid } from 'uuidv4';
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
@@ -36,6 +37,7 @@ export class GithubStrategy extends PassportStrategy(Strategy, 'github') {
 
       const newUser = await this.userRepository.createOAuthUser({
         email,
+        password: id + uuid(),
         provider: 'github',
         socialId: id.toString(),
       });

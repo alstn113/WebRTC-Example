@@ -5,7 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { isNotFoundError } from '~/prisma/utils';
 import { compareHash, generateHash } from '~/utils';
-import type { DecodedToken, RefreshTokenPayload, TokenPayload, TokenType } from './types';
+import type { DecodedToken, TokenPayload, TokenType } from './types';
 import { UsersRepository } from '../users/users.repository';
 
 @Injectable()

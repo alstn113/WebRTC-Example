@@ -13,6 +13,14 @@ export class CreateOAuthUserDto {
 
   @ApiProperty({
     type: String,
+    description: 'User password',
+  })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @ApiProperty({
+    type: String,
     description: 'Provider name',
   })
   @IsString()
