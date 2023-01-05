@@ -1,7 +1,13 @@
 export const EVENT = {
-  /** Socket Chat */
+  /** Socket Room */
   JOIN_ROOM: 'join_room',
   LEAVE_ROOM: 'leave_room',
+
+  /** Socket Lobby */
+  JOIN_LOBBY: 'join_lobby',
+  LEAVE_LOBBY: 'leave_lobby',
+
+  /** Socket Chat */
   SEND_MESSAGE: 'send_message',
   RECEIVE_MESSAGE: 'receive_message',
 
