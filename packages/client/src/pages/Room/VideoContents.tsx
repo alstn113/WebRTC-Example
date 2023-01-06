@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import { EVENT } from '~/constants';
-import roomSocket from '~/lib/sockets/roomSocket';
-import useMediaStreamStore from '~/lib/stores/useMediaStreamStore';
+import roomSocket from '~/libs/sockets/roomSocket';
+import useMediaStreamStore from '~/libs/stores/useMediaStreamStore';
 
 interface Props {
   roomId: string;

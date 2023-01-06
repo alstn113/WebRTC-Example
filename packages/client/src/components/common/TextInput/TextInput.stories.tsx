@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { TextInput, TextInputProps } from './TextInput';
+import TextInput, { TextInputProps } from './TextInput';
 
 export default {
   title: 'Components/TextInput',

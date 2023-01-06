@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { EVENT } from '~/constants';
-import PeerConnection from '~/lib/sockets/PeerConnection';
-import roomSocket from '~/lib/sockets/roomSocket';
+import PeerConnection from '~/libs/sockets/PeerConnection';
+import roomSocket from '~/libs/sockets/roomSocket';
 
 const usePeerConnection = () => {
   useEffect(() => {

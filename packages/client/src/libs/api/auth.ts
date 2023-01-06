@@ -1,4 +1,4 @@
-import type { AuthParams } from '~/lib/types';
+import type { AuthParams } from '~/libs/types';
 import apiClient from './apiClient';
 
 const AuthAPI = {

@@ -1,5 +1,5 @@
-import apiClient from '~/lib/api/apiClient';
-import { CreateRoomParams, Room, RoomList } from '~/lib/types';
+import apiClient from '~/libs/api/apiClient';
+import { CreateRoomParams, Room, RoomList } from '~/libs/types';
 
 const RoomAPI = {
   getRoom: async (roomId: string) => {

@@ -1,4 +1,4 @@
-import AuthAPI from '~/lib/api/auth';
+import AuthAPI from '~/libs/api/auth';
 import { useMutation } from '@tanstack/react-query';
 import type { UseMutationOptionsOf } from '~/hooks/queries/types';
 

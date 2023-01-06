@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import useMediaStreamStore from '~/lib/stores/useMediaStreamStore';
+import useMediaStreamStore from '~/libs/stores/useMediaStreamStore';
 import { Button } from '../common';
 
 const MediaStreamSetting = () => {

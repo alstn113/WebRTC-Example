@@ -8,7 +8,7 @@ import useLogout from '~/hooks/queries/auth/useLogout';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import useGetMe from '~/hooks/queries/user/useGetMe';
 import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
-import { User } from '~/lib/types';
+import { User } from '~/libs/types';
 import RoomListContent from './RoomListContent';
 
 const Home = () => {

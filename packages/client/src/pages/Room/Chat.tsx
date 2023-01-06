@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { EVENT } from '~/constants';
-import roomSocket from '~/lib/sockets/roomSocket';
+import roomSocket from '~/libs/sockets/roomSocket';
 
 interface Props {
   roomId: string;

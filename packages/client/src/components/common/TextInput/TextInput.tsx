@@ -1,5 +1,5 @@
 import { forwardRef, InputHTMLAttributes } from 'react';
-import { NormalColorType } from '~/lib/styles/palette';
+import { NormalColorType } from '~/libs/styles/palette';
 import * as S from './TextInput.styles';
 
 export type InputVariantType = 'bordered' | 'underlined';

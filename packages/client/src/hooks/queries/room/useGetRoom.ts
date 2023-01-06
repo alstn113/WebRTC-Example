@@ -1,4 +1,4 @@
-import RoomAPI from '~/lib/api/room';
+import RoomAPI from '~/libs/api/room';
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryOptionsOf } from '~/hooks/queries/types';
 

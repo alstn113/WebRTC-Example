@@ -1,5 +1,5 @@
-import { AuthParams, User } from '~/lib/types';
-import apiClient from '~/lib/api/apiClient';
+import { AuthParams, User } from '~/libs/types';
+import apiClient from '~/libs/api/apiClient';
 
 const UserAPI = {
   register: async ({ email, password }: AuthParams) => {
