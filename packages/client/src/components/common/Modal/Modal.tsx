@@ -57,7 +57,7 @@ const Modal = ({
             />
             <S.Positioner>
               <S.ModalBlock
-                initial={{ y: '-30px', opacity: 0.5 }}
+                initial={{ y: '-30px', opacity: 0 }}
                 animate={{ y: '0vh', opacity: 1 }}
                 exit={{ y: '-30px', opacity: 0 }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
