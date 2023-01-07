@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
@@ -19,6 +20,7 @@ const Home = () => {
       queryClient.invalidateQueries(useGetMe.getKey());
     },
   });
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -36,6 +38,9 @@ const Home = () => {
       >
         <RoomListContent />
       </AsyncBoundary>
+      <Button shadow onClick={() => navigate('/lobby')}>
+        LOBBY
+      </Button>
     </div>
   );
 };

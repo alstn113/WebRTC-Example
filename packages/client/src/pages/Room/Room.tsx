@@ -36,7 +36,7 @@ const Room = () => {
     >
       <Container>
         <RoomContent roomId={roomId} />
-        <Button>{user?.user?.email}</Button>
+        <Button color="secondary">{user?.user?.email}</Button>
         <ContentsWrapper>
           <VideoContents roomId={roomId} />
           <Chat roomId={roomId} />
