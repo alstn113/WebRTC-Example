@@ -1,9 +1,10 @@
 import { AuthParams, User } from '~/libs/types';
 import apiClient from '~/libs/api/apiClient';
+import { PROPERTIES } from '~/constants';
 
 const UserAPI = {
   register: async ({ email, password }: AuthParams) => {
-    const { data } = await apiClient.post('/users/register', {
+    const { data } = await apiClient.post(`${PROPERTIES.USER_URL}/register`, {
       email,
       password,
     });
@@ -11,7 +12,7 @@ const UserAPI = {
   },
   getMe: async (): Promise<User | null> => {
     try {
-      const { data } = await apiClient.get('/users/me');
+      const { data } = await apiClient.get(`${PROPERTIES.USER_URL}/me`);
       return data;
     } catch (e) {
       return null;

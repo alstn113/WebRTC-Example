@@ -9,7 +9,7 @@ class LobbySocket {
   }
 
   private generateLobbySocket() {
-    this.socket = io(`${PROPERTIES.BASE_URL}/socket/lobby`, {
+    this.socket = io(`${PROPERTIES.LOBBY_SOCKET_URI}`, {
       transports: ['websocket', 'polling'], // use WebSocket first, if available
     });
   }

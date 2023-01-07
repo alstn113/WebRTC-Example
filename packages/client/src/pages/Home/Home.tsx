@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import { Button, Toggle } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
+import { PROPERTIES } from '~/constants';
 import { MESSAGE } from '~/constants/messages';
 import useLogout from '~/hooks/queries/auth/useLogout';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
@@ -15,11 +16,11 @@ const Home = () => {
   const navigate = useNavigate();
   const handleGithubLogin = () => {
     navigate('/loading');
-    window.location.href = 'http://localhost:8080/auth/github';
+    window.location.href = PROPERTIES.GITHUB_LOGIN_URL;
   };
   const handleKakaoLogin = () => {
     navigate('/loading');
-    window.location.href = 'http://localhost:8080/auth/kakao';
+    window.location.href = PROPERTIES.KAKAO_LOGIN_URL;
   };
 
   const openLoginDialog = useOpenLoginDialog();

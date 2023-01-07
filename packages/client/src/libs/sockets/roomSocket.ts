@@ -9,7 +9,7 @@ class RoomSocket {
   }
 
   private generateRoomSocket() {
-    this.socket = io(`${PROPERTIES.BASE_URL}/socket/room`, {
+    this.socket = io(`${PROPERTIES.ROOM_SOCKET_URI}`, {
       transports: ['websocket', 'polling'], // use WebSocket first, if available
     });
   }
