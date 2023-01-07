@@ -5,19 +5,14 @@ import { Button } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
 import { MESSAGE } from '~/constants/messages';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
-import useOpenLoginDialog from '~/hooks/useOpenLoginDialog';
 import RoomListContent from './RoomListContent';
 
 const Home = () => {
   const navigate = useNavigate();
-  const openLoginDialog = useOpenLoginDialog();
 
   return (
     <Container>
       <ButtonWrapper>
-        <Button shadow color="secondary" onClick={openLoginDialog}>
-          로그인 모달
-        </Button>
         <Button shadow onClick={() => navigate('/lobby')}>
           LOBBY
         </Button>
