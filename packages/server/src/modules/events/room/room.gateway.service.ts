@@ -5,11 +5,11 @@ import { parseCookie } from '~/utils';
 import { AuthService } from '../../auth/auth.service';
 import { UsersRepository } from '../../users/users.repository';
 import {
-  CallUserDto,
-  IceCandidateDto,
+  SendOfferDto,
+  SendIceCandidateDto,
   JoinRoomDto,
   LeaveRoomDto,
-  MakeAnswerDto,
+  SendAnswerDto,
   RoomMessageDto,
 } from '../dto';
 
@@ -60,8 +60,9 @@ export class RoomGatewayService {
     client.to(dto.roomId).emit(EVENT.CHAT_MESSAGE, {
       message: `Joined room ${dto.roomId} ${client.data.user.email}!`,
     });
-    client.to(dto.roomId).emit(EVENT.CALL_USER, {
+    client.to(dto.roomId).emit(EVENT.NEW_USER, {
       sid: client.id,
+      uid: client.data.user.id,
     });
   }
 
@@ -82,20 +83,20 @@ export class RoomGatewayService {
 
   /** WebRTC */
 
-  onCallUser(client: Socket, dto: CallUserDto) {
-    client.to(dto.to).emit(EVENT.CALL_MADE, {
+  onNewUser(client: Socket, dto: SendOfferDto) {
+    client.to(dto.to).emit(EVENT.RECEIVE_OFFER, {
       offer: dto.offer,
       sid: client.id,
     });
   }
-  onMakeAnswer(client: Socket, dto: MakeAnswerDto) {
-    client.to(dto.to).emit(EVENT.ANSWER_MADE, {
+  onSendAnswer(client: Socket, dto: SendAnswerDto) {
+    client.to(dto.to).emit(EVENT.RECEIVE_ANSWER, {
       answer: dto.answer,
       sid: client.id,
     });
   }
-  onIceCandidate(client: Socket, dto: IceCandidateDto) {
-    client.to(dto.to).emit(EVENT.ICE_CANDIDATE, {
+  onSendIceCandidate(client: Socket, dto: SendIceCandidateDto) {
+    client.to(dto.to).emit(EVENT.RECEIVE_ICE_CANDIDATE, {
       candidate: dto.candidate,
       sid: client.id,
     });

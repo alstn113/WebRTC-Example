@@ -65,7 +65,8 @@ const usePeerConnection = () => {
         });
 
         await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-        roomSocket.socket?.emit(EVENT.SEND_OFFER, { to: sid, offer });
+
+        return offer;
       } catch (error) {
         console.error('[CreateOffer Error]', error);
       }
@@ -101,7 +102,8 @@ const usePeerConnection = () => {
       console.log('[onNewUser]');
       try {
         addConnectedUser({ sid, uid });
-        await createOffer(sid);
+        const offer = await createOffer(sid);
+        roomSocket.socket?.emit(EVENT.NEW_USER, { to: sid, offer });
       } catch (error) {
         console.error('[OnNewUser Error]', error);
       }

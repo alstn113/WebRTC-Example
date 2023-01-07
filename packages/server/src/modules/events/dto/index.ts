@@ -9,6 +9,6 @@ export * from './leave-room.dto';
 export * from './lobby-message.dto';
 
 // WebRTC
-export * from './make-answer.dto';
-export * from './call-user.dto';
-export * from './ice-candidate.dto';
+export * from './send-answer.dto';
+export * from './send-offer.dto';
+export * from './send-ice-candidate.dto';

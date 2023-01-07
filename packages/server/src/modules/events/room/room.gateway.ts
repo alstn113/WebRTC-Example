@@ -8,12 +8,12 @@ import {
 import { Server, Socket } from 'socket.io';
 import { EVENT } from '~/common/constants';
 import {
-  CallUserDto,
-  IceCandidateDto,
+  SendOfferDto,
+  SendIceCandidateDto,
   JoinRoomDto,
   LeaveRoomDto,
   RoomMessageDto,
-  MakeAnswerDto,
+  SendAnswerDto,
 } from '../dto';
 import { RoomGatewayService } from './room.gateway.service';
 
@@ -58,18 +58,18 @@ export class RoomGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   /** WebRTC */
 
-  @SubscribeMessage(EVENT.CALL_USER)
-  handleCallUser(client: Socket, dto: CallUserDto) {
-    return this.roomGatewayService.onCallUser(client, dto);
+  @SubscribeMessage(EVENT.NEW_USER)
+  handleNewUser(client: Socket, dto: SendOfferDto) {
+    return this.roomGatewayService.onNewUser(client, dto);
   }
 
-  @SubscribeMessage(EVENT.MAKE_ANSWER)
-  handleMakeAnswer(client: Socket, dto: MakeAnswerDto) {
-    return this.roomGatewayService.onMakeAnswer(client, dto);
+  @SubscribeMessage(EVENT.SEND_ANSWER)
+  handleSendAnswer(client: Socket, dto: SendAnswerDto) {
+    return this.roomGatewayService.onSendAnswer(client, dto);
   }
 
-  @SubscribeMessage(EVENT.ICE_CANDIDATE)
-  handleIceCandidate(client: Socket, dto: IceCandidateDto) {
-    return this.roomGatewayService.onIceCandidate(client, dto);
+  @SubscribeMessage(EVENT.SEND_ICE_CANDIDATE)
+  handleSendIceCandidate(client: Socket, dto: SendIceCandidateDto) {
+    return this.roomGatewayService.onSendIceCandidate(client, dto);
   }
 }
