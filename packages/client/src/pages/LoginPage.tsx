@@ -7,6 +7,7 @@ import styled from '@emotion/styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import useGetMe from '~/hooks/queries/user/useGetMe';
+import { PROPERTIES } from '~/constants';
 
 interface IFormInput {
   email: string;
@@ -47,6 +48,16 @@ const LoginPage = () => {
     resolver: yupResolver(schema),
     mode: 'onChange',
   });
+
+  const handleGithubLogin = () => {
+    navigate('/loading');
+    window.location.href = PROPERTIES.GITHUB_LOGIN_URL;
+  };
+  const handleKakaoLogin = () => {
+    navigate('/loading');
+    window.location.href = PROPERTIES.KAKAO_LOGIN_URL;
+  };
+
   return (
     <Container>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -62,6 +73,12 @@ const LoginPage = () => {
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
         <Button shadow size="auto" type="submit">
           LOGIN
+        </Button>
+        <Button shadow size="auto" color="warning" onClick={handleGithubLogin}>
+          GITHUB LOGIN
+        </Button>
+        <Button shadow size="auto" color="warning" onClick={handleKakaoLogin}>
+          KAKAO LOGIN
         </Button>
         <Button
           shadow

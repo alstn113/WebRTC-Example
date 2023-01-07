@@ -7,6 +7,8 @@ export const Container = styled.div`
   width: 100%;
   height: 80px;
   background: #000;
-  font-size: 2.5rem;
-  color: #fff;
+  a {
+    font-size: 2.5rem;
+    color: #fff;
+  }
 `;
