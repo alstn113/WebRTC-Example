@@ -7,7 +7,7 @@ interface ConnectedUserInfo {
 }
 
 type States = {
-  userStream: { [key: string]: MediaStream | null };
+  userStreams: { [key: string]: MediaStream | null };
   connectedUsers: ConnectedUserInfo[];
 };
 
@@ -19,12 +19,12 @@ type Actions = {
 };
 
 const useConnectedUsersStore = create<States & Actions>((set) => ({
-  userStream: {},
+  userStreams: {},
   connectedUsers: [],
   setUserStream: ({ sid, stream }) =>
     set(
       produce((draft: States) => {
-        draft.userStream[sid] = stream;
+        draft.userStreams[sid] = stream;
       }),
     ),
   setConnectedUsers: (connectedUsers) =>
