@@ -14,7 +14,7 @@ class RoomSocket {
     });
   }
 
-  initRoomSocket(roomId: string) {
+  initRoomSocket() {
     if (roomSocket.socket === null) {
       roomSocket.generateRoomSocket();
     }

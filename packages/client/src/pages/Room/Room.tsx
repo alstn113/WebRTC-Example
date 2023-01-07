@@ -21,7 +21,7 @@ const Room = () => {
   const user = queryClient.getQueryData<User>(useGetMe.getKey());
 
   useEffect(() => {
-    roomSocket.initRoomSocket(roomId);
+    roomSocket.initRoomSocket();
 
     return () => {
       roomSocket.leaveRoom(roomId);
