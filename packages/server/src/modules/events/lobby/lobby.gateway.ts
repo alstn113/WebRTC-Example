@@ -39,12 +39,12 @@ export class LobbyGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   /** Lobby Chat */
 
   @SubscribeMessage(EVENT.JOIN_LOBBY)
-  handleJoinRoom(client: Socket) {
+  handleJoinLobby(client: Socket) {
     return this.lobbyGatewayService.onJoinLobby(client);
   }
 
-  @SubscribeMessage(EVENT.LEAVE_ROOM)
-  handleLeaveRoom(client: Socket) {
+  @SubscribeMessage(EVENT.LEAVE_LOBBY)
+  handleLeaveLobby(client: Socket) {
     return this.lobbyGatewayService.onLeaveLobby(client);
   }
 

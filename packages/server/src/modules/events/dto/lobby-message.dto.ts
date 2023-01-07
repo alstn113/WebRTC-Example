@@ -1,5 +1,5 @@
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 @ApiTags('/socket/room')
 export class LobbyMessageDto {
@@ -10,4 +10,11 @@ export class LobbyMessageDto {
   @IsString()
   @IsNotEmpty()
   message: string;
+
+  @ApiProperty({
+    type: Function,
+    description: 'callback function',
+  })
+  @IsOptional()
+  done: any;
 }

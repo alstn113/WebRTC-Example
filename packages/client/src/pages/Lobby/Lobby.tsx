@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '~/components/common';
+import { EVENT } from '~/constants';
 import lobbySocket from '~/libs/sockets/lobbySocket';
-import { uuid } from 'uuidv4';
+
 const Lobby = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [messageInput, setMessageInput] = useState<string>('');
@@ -10,16 +11,12 @@ const Lobby = () => {
 
   const handleSubmitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    lobbySocket.sendMessage(messageInput);
+    lobbySocket.sendMessage({ message: messageInput });
     setMessageInput('');
   };
 
   useEffect(() => {
     lobbySocket.initLobbySocket();
-
-    lobbySocket.receiveMessage((data: { message: string }) => {
-      setMessages([...messages, data.message]);
-    });
 
     return () => {
       lobbySocket.leaveLobby();
@@ -27,6 +24,7 @@ const Lobby = () => {
   }, []);
 
   useEffect(() => {
+    lobbySocket.receiveMessage((message: string) => setMessages([...messages, message]));
     chatListRef.current?.scrollTo(0, chatListRef.current.scrollHeight);
   }, [messages]);
 
@@ -35,7 +33,7 @@ const Lobby = () => {
       <ContentsWrapper>
         <ChatContainer ref={chatListRef}>
           {messages.map((message) => {
-            return <div key={uuid()}>{message}</div>;
+            return <div key={crypto.randomUUID()}>{message}</div>;
           })}
         </ChatContainer>
         <OnlineUserContainer>온라인</OnlineUserContainer>
@@ -75,8 +73,8 @@ const ChatInput = styled.input`
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
   width: 590px;
   height: 100%;
 `;

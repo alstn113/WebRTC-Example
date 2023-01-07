@@ -13,7 +13,7 @@ const Chat = ({ roomId }: Props) => {
   const chatListRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     roomSocket.socket?.on(EVENT.CHAT_MESSAGE, (data) => {
-      setMessages([...messages, data]);
+      setMessages([...messages, data.message]);
     });
     chatListRef.current?.scrollTo(0, chatListRef.current.scrollHeight);
   }, [messages]);

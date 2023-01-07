@@ -44,15 +44,17 @@ export class LobbyGatewayService {
   /** Lobby Chat */
 
   onJoinLobby(client: Socket) {
-    client.emit(EVENT.CHAT_MESSAGE, `Joined room ${client.data.user.email}!`);
+    client.emit(EVENT.CHAT_MESSAGE, { message: `Joined lobby ${client.data.user.email}!` });
   }
 
   onLeaveLobby(client: Socket) {
-    client.emit(EVENT.CHAT_MESSAGE, `Left room ${client.data.user.email}`);
+    client.emit(EVENT.CHAT_MESSAGE, { message: `Left lobby ${client.data.user.email}` });
   }
 
   onSendMessage(client: Socket, dto: LobbyMessageDto) {
-    // send to all clients in room
-    this.server.emit(EVENT.CHAT_MESSAGE, `${client.data.user.email}: ${dto.message}`);
+    // send to all clients in lobby
+    this.server.emit(EVENT.CHAT_MESSAGE, {
+      message: `${client.data.user.email}: ${dto.message}`,
+    });
   }
 }

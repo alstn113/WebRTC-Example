@@ -21,13 +21,13 @@ class LobbySocket {
     lobbySocket.socket?.connect();
   }
 
-  receiveMessage(callback: any) {
-    lobbySocket.socket?.on(EVENT.CHAT_MESSAGE, (data) => {
-      callback(data);
+  receiveMessage(done: any) {
+    lobbySocket.socket?.on(EVENT.CHAT_MESSAGE, (data: { message: string }) => {
+      done(data.message);
     });
   }
 
-  sendMessage(message: string) {
+  sendMessage({ message }: { message: string }) {
     lobbySocket.socket?.emit(EVENT.CHAT_MESSAGE, {
       message,
     });

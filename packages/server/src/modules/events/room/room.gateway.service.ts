@@ -57,9 +57,9 @@ export class RoomGatewayService {
   onJoinRoom(client: Socket, dto: JoinRoomDto) {
     // send to all clients in room except sender
     client.join(dto.roomId);
-    client
-      .to(dto.roomId)
-      .emit(EVENT.CHAT_MESSAGE, `Joined room ${dto.roomId} ${client.data.user.email}!`);
+    client.to(dto.roomId).emit(EVENT.CHAT_MESSAGE, {
+      message: `Joined room ${dto.roomId} ${client.data.user.email}!`,
+    });
     client.to(dto.roomId).emit(EVENT.CALL_USER, {
       sid: client.id,
     });
@@ -70,14 +70,14 @@ export class RoomGatewayService {
     client.leave(dto.roomId);
     client
       .to(dto.roomId)
-      .emit(EVENT.CHAT_MESSAGE, `Left room ${dto.roomId}! ${client.data.user.email}`);
+      .emit(EVENT.CHAT_MESSAGE, { message: `Left room ${dto.roomId}! ${client.data.user.email}` });
   }
 
   onSendMessage(client: Socket, dto: RoomMessageDto) {
     // send to all clients in room
     this.server
       .to(dto.roomId)
-      .emit(EVENT.CHAT_MESSAGE, `${client.data.user.email}: ${dto.message}`);
+      .emit(EVENT.CHAT_MESSAGE, { message: `${client.data.user.email}: ${dto.message}` });
   }
 
   /** WebRTC */
