@@ -32,13 +32,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 3rem;
 `;
 
 const ButtonWrapper = styled.div`
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 3rem;
 `;
 
 export default Home;

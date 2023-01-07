@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { useQueryClient } from '@tanstack/react-query';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import useGetRoomList from '~/hooks/queries/room/useGetRoomList';
 import useGetMe from '~/hooks/queries/user/useGetMe';
@@ -18,22 +19,29 @@ const RoomListContent = () => {
     return navigate(`/room/${roomId}`);
   };
   return (
-    <Container>
-      {data?.map((room) => {
-        return (
-          <Card key={room.id} onClick={() => handleCheckAuth(room.id)}>
-            <h1>{room.title}</h1>
-            <h2>{room.description}</h2>
-          </Card>
-        );
-      })}
-    </Container>
+    <AnimatePresence>
+      <Container
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        {data?.map((room) => {
+          return (
+            <Card key={room.id} onClick={() => handleCheckAuth(room.id)}>
+              <h1>{room.title}</h1>
+              <h2>{room.description}</h2>
+            </Card>
+          );
+        })}
+      </Container>
+    </AnimatePresence>
   );
 };
 
 export default RoomListContent;
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   display: flex;
   flex-direction: row;
   align-items: center;
