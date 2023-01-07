@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 import { EVENT } from '~/constants';
 import roomSocket from '~/libs/sockets/roomSocket';
-import useMediaStreamStore from '~/libs/stores/useMediaStreamStore';
 
 interface Props {
   roomId: string;
@@ -12,15 +11,14 @@ const VideoContents = ({ roomId }: Props) => {
   const remoteVideoRef = useRef<HTMLVideoElement>(null);
   const pcRef = useRef<RTCPeerConnection>();
   const socket = roomSocket.socket;
-  const { setMediaStream, isMicOn, isVideoOn } = useMediaStreamStore();
 
   const setVideoTracks = async () => {
     console.log('setVideoTracks');
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: isVideoOn,
-        audio: isMicOn,
+        video: true,
+        audio: false,
       });
       if (localVideoRef.current) {
         // remove howling sound
@@ -33,8 +31,6 @@ const VideoContents = ({ roomId }: Props) => {
         if (!pcRef.current) return;
         pcRef.current.addTrack(track, stream);
       });
-
-      setMediaStream(stream);
 
       pcRef.current.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
         if (event.candidate) {
@@ -163,7 +159,7 @@ const VideoContents = ({ roomId }: Props) => {
 
       if (pcRef.current) pcRef.current.close();
     };
-  }, [isMicOn, isVideoOn]);
+  }, []);
 
   return (
     <VideoContainer>
