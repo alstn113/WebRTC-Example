@@ -5,3 +5,9 @@ export const FullHeightScreen = styled.div`
   min-height: 100vh;
   padding-bottom: 80px;
 `;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+`;

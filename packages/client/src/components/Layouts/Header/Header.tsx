@@ -1,10 +1,17 @@
-import { Link } from 'react-router-dom';
 import * as S from './Header.styles';
 
-const Header = () => {
+interface Props {
+  title?: React.ReactNode;
+  headerLeft?: React.ReactNode;
+  headerRight?: React.ReactNode;
+}
+
+const Header = ({ title = 'WebRTC App', headerLeft, headerRight }: Props) => {
   return (
     <S.Container>
-      <Link to={'/'}>WebRTC-app</Link>
+      {headerLeft && <S.HeaderSide position="left">{headerLeft}</S.HeaderSide>}
+      <S.Title>{title}</S.Title>
+      {headerRight && <S.HeaderSide position="right">{headerRight}</S.HeaderSide>}
     </S.Container>
   );
 };
