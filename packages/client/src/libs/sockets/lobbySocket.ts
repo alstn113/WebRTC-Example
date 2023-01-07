@@ -21,6 +21,12 @@ class LobbySocket {
     lobbySocket.socket?.connect();
   }
 
+  receiveMessage(callback: any) {
+    lobbySocket.socket?.on(EVENT.CHAT_MESSAGE, (data) => {
+      callback(data);
+    });
+  }
+
   sendMessage(message: string) {
     lobbySocket.socket?.emit(EVENT.CHAT_MESSAGE, {
       message,
