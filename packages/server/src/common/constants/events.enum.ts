@@ -15,11 +15,13 @@ export const EVENT = {
   CHAT_MESSAGE: 'chat_message',
 
   /** WebRTC */
-  CALL_USER: 'call_user',
-  MAKE_ANSWER: 'make_answer',
-  ICE_CANDIDATE: 'ice_candidate',
-  CALL_MADE: 'call_made',
-  ANSWER_MADE: 'answer_made',
+  NEW_USER: 'new_user',
+  SEND_OFFER: 'send_offer',
+  RECEIVE_OFFER: 'receive_offer',
+  SEND_ANSWER: 'send_answer',
+  RECEIVE_ANSWER: 'receive_answer',
+  SEND_ICE_CANDIDATE: 'send_ice_candidate',
+  RECEIVE_ICE_CANDIDATE: 'receive_ice_candidate',
 } as const;
 
 export type Event = typeof EVENT[keyof typeof EVENT];

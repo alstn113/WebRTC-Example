@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { EVENT } from '~/constants';
-import PeerConnection from '~/libs/sockets/PeerConnection';
 import roomSocket from '~/libs/sockets/roomSocket';
 import useConnectedUsersStore from '~/libs/stores/useConnectedUsersStore';
 import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
@@ -26,6 +24,7 @@ const usePeerConnection = () => {
   };
   useEffect(() => {
     const createPeerConnection = (sid: string) => {
+      console.log('[createPeerConnection]');
       try {
         const peerConnection = new RTCPeerConnection(RTCConfig);
         peerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => {
@@ -55,6 +54,7 @@ const usePeerConnection = () => {
     };
 
     const createOffer = async (sid: string) => {
+      console.log('[createOffer]');
       try {
         const peerConnection = createPeerConnection(sid);
         if (!peerConnection) return;
@@ -78,6 +78,7 @@ const usePeerConnection = () => {
       sid: string;
       offer: RTCSessionDescriptionInit;
     }) => {
+      console.log('[createAnswer]');
       try {
         const peerConnection = createPeerConnection(sid);
         if (!peerConnection) return;
@@ -97,6 +98,7 @@ const usePeerConnection = () => {
     };
 
     const onNewUser = async ({ sid, uid }: { sid: string; uid: string }) => {
+      console.log('[onNewUser]');
       try {
         addConnectedUser({ sid, uid });
         await createOffer(sid);
@@ -112,6 +114,7 @@ const usePeerConnection = () => {
       sid: string;
       offer: RTCSessionDescriptionInit;
     }) => {
+      console.log('[onReceivedOffer]');
       try {
         await createAnswer({ sid, offer });
       } catch (error) {
@@ -126,6 +129,7 @@ const usePeerConnection = () => {
       sid: string;
       answer: RTCSessionDescriptionInit;
     }) => {
+      console.log('[onReceivedAnswer]');
       try {
         const peerConnection = peerConnections[sid];
         if (!peerConnection) return;
@@ -143,6 +147,7 @@ const usePeerConnection = () => {
       sid: string;
       candidate: RTCIceCandidateInit;
     }) => {
+      console.log('[onReceivedIceCandidate]');
       try {
         const peerConnection = peerConnections[sid];
         if (!peerConnection) return;
@@ -163,7 +168,7 @@ const usePeerConnection = () => {
       roomSocket.socket?.off(EVENT.RECEIVE_ANSWER, onReceivedAnswer);
       roomSocket.socket?.off(EVENT.RECEIVE_ICE_CANDIDATE, onReceivedIceCandidate);
     };
-  }, []);
+  }, [myMediaStream, peerConnections]);
 };
 
 export default usePeerConnection;
