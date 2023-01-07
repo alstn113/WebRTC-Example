@@ -8,12 +8,13 @@ import Header from '../Header/Header';
 import { FullHeightScreen } from './MainLayout.styles';
 import * as S from './MainLayout.styles';
 import useLogout from '~/hooks/queries/auth/useLogout';
+import useGoBack from '~/hooks/useGoBack';
 
 const MainLayout = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const user = queryClient.getQueryData<User>(useGetMe.getKey());
-
+  const onGoBack = useGoBack();
   const { mutate } = useLogout({
     onSuccess: () => {
       queryClient.refetchQueries(useGetMe.getKey()).then(() => {
@@ -36,6 +37,11 @@ const MainLayout = () => {
             ) : (
               <Button onClick={() => navigate('/login')}>로그인</Button>
             )
+          }
+          headerLeft={
+            <Button shadow color="error" onClick={onGoBack}>
+              Back
+            </Button>
           }
         />
         <Outlet />

@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 const useGoBack = () => {
   const navigate = useNavigate();
-  useCallback(() => {
+  const goBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
+  return goBack;
 };
 
 export default useGoBack;

@@ -10,12 +10,12 @@ export const Container = styled.header`
   height: 60px;
   padding: 0 16px;
   z-index: ${zIndexes.Header};
-  color: ${palette.white};
   background-color: ${palette.black};
   border-radius: 0 0 16px 16px;
 `;
 
 export const Title = styled.div`
+  color: ${palette.white};
   font-size: 30px;
   font-weight: 900;
   text-shadow: 0 2px 4px white;
