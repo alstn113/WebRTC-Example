@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "[⭐️ Running pre-commit hook ⭐️]" # 이거는 그냥 장식용
+echo "[⭐️ Running pre-commit hook ⭐️]" 
 
 yarn lint-staged
+git add .
