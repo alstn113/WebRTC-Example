@@ -1,7 +1,6 @@
 import styled from '@emotion/styled';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from '~/components/common';
-import { EVENT } from '~/constants';
 import lobbySocket from '~/libs/sockets/lobbySocket';
 
 const Lobby = () => {
@@ -24,7 +23,7 @@ const Lobby = () => {
   }, []);
 
   useEffect(() => {
-    lobbySocket.receiveMessage((message: string) => setMessages([...messages, message]));
+    lobbySocket.receiveMessage({ done: (message: string) => setMessages([...messages, message]) });
     chatListRef.current?.scrollTo(0, chatListRef.current.scrollHeight);
   }, [messages]);
 

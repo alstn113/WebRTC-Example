@@ -21,7 +21,7 @@ class LobbySocket {
     lobbySocket.socket?.connect();
   }
 
-  receiveMessage(done: any) {
+  receiveMessage({ done }: { done: any }) {
     lobbySocket.socket?.on(EVENT.CHAT_MESSAGE, (data: { message: string }) => {
       done(data.message);
     });
