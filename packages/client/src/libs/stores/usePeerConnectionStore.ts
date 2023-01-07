@@ -2,8 +2,7 @@ import produce from 'immer';
 import create from 'zustand';
 
 type States = {
-  sid: string | null;
-  peerConnection: RTCPeerConnection | null;
+  peerConnections: { [key: string]: RTCPeerConnection | null };
 };
 
 type Actions = {
@@ -12,26 +11,23 @@ type Actions = {
     peerConnection,
   }: {
     sid: string;
-    peerConnection: RTCPeerConnection | null;
+    peerConnection: RTCPeerConnection;
   }) => void;
   setEmpty: () => void;
 };
 
 const usePeerConnectionStore = create<States & Actions>((set) => ({
-  sid: null,
-  peerConnection: null,
+  peerConnections: {},
   setPeerConnection: ({ sid, peerConnection }) =>
     set(
       produce((draft: States) => {
-        draft.sid = sid;
-        draft.peerConnection = peerConnection;
+        draft.peerConnections[sid] = peerConnection;
       }),
     ),
   setEmpty: () =>
     set(
       produce((draft: States) => {
-        draft.sid = null;
-        draft.peerConnection = null;
+        draft.peerConnections = {};
       }),
     ),
 }));
