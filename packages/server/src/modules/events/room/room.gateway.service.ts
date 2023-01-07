@@ -14,14 +14,14 @@ import {
 } from '../dto';
 
 @Injectable()
-export class RoomsGatewayService {
+export class RoomGatewayService {
   constructor(
     private readonly authService: AuthService,
     private readonly userRepository: UsersRepository,
   ) {}
 
   private server: Server;
-  private logger = new Logger('RoomsGateway');
+  private logger = new Logger('RoomGateway');
 
   /** Default Setting */
 

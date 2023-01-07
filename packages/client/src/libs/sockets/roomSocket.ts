@@ -9,7 +9,7 @@ class RoomSocket {
   }
 
   private generateRoomSocket() {
-    this.socket = io(`${PROPERTIES.BASE_URL}/socket/rooms`, {
+    this.socket = io(`${PROPERTIES.BASE_URL}/socket/room`, {
       transports: ['websocket', 'polling'], // use WebSocket first, if available
     });
   }
@@ -19,19 +19,6 @@ class RoomSocket {
       roomSocket.generateRoomSocket();
     }
     roomSocket.socket?.connect();
-
-    // --- 여기는 확인용으로 임시로 넣어둠 ---
-    // roomSocket.socket?.on('connect', () => {
-    //   console.log('connected');
-    // });
-    // roomSocket.socket?.on('disconnect', () => {
-    //   console.log('disconnected');
-    // });
-    // roomSocket.socket?.emit(EVENT.JOIN_ROOM, { roomId });
-    // roomSocket.socket?.on(EVENT.CHAT_MESSAGE, (data) => {
-    //   console.log(data);
-    // });
-    // --------------------------------
   }
 
   sendMessage(roomId: string, message: string) {
@@ -45,7 +32,6 @@ class RoomSocket {
     this.socket?.emit(EVENT.LEAVE_ROOM, { roomId });
     this.socket?.off(EVENT.JOIN_ROOM);
     this.socket?.off(EVENT.LEAVE_ROOM);
-    this.socket?.off(EVENT.CHAT_MESSAGE);
     this.socket?.off(EVENT.CHAT_MESSAGE);
     this.socket?.disconnect();
   }
