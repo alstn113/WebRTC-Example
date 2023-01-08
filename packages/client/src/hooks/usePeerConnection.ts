@@ -6,16 +6,10 @@ import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
 import usePeerConnectionStore from '~/libs/stores/usePeerConnectionStore';
 
 const usePeerConnection = () => {
-  const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
+  const { myMediaStream } = useMyMediaStreamStore();
   const { userStreams, connectedUsers, setUserStream, addConnectedUser, findUserBySid } =
     useConnectedUsersStore();
   const { peerConnections, setPeerConnection } = usePeerConnectionStore();
-
-  const stopMediaStream = () => {
-    if (!myMediaStream) return;
-    myMediaStream.getTracks().forEach((track) => track.stop());
-    setMyMediaStream(null);
-  };
 
   const RTCConfig = {
     iceServers: [
@@ -177,7 +171,6 @@ const usePeerConnection = () => {
       roomSocket.socket?.off(EVENT.RECEIVE_OFFER, onReceivedOffer);
       roomSocket.socket?.off(EVENT.RECEIVE_ANSWER, onReceivedAnswer);
       roomSocket.socket?.off(EVENT.RECEIVE_ICE_CANDIDATE, onReceivedIceCandidate);
-      stopMediaStream();
     };
   }, [myMediaStream, peerConnections, connectedUsers, userStreams]);
 };

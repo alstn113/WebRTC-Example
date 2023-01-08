@@ -13,6 +13,7 @@ type Actions = {
   addConnectedUser: (connectedUser: ConnectedUserInfo) => void;
   deleteConnectedUser: (sid: string) => void;
   findUserBySid: (sid: string) => ConnectedUserInfo | undefined;
+  findUserByUid: (sid: string) => ConnectedUserInfo | undefined;
 };
 
 const useConnectedUsersStore = create<States & Actions>((set, get) => ({
@@ -45,6 +46,10 @@ const useConnectedUsersStore = create<States & Actions>((set, get) => ({
   findUserBySid: (sid) => {
     const { connectedUsers } = get();
     return connectedUsers.find((user) => user.sid === sid);
+  },
+  findUserByUid: (uid) => {
+    const { connectedUsers } = get();
+    return connectedUsers.find((user) => user.uid === uid);
   },
 }));
 

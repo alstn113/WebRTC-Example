@@ -10,14 +10,47 @@ import roomSocket from '~/libs/sockets/roomSocket';
 import RoomContent from './RoomContent';
 import VideoContents from './VideoContents';
 import usePeerConnection from '~/hooks/usePeerConnection';
+import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
+import useConnectedUsersStore from '~/libs/stores/useConnectedUsersStore';
+import { EVENT } from '~/constants';
 
 const Room = () => {
   const { roomId } = useParams() as { roomId: string };
+  const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
+  const { deleteConnectedUser, findUserByUid, addConnectedUser } = useConnectedUsersStore();
+
+  const stopMediaStream = () => {
+    if (!myMediaStream) return;
+    myMediaStream.getTracks().forEach((track) => track.stop());
+    setMyMediaStream(null);
+  };
 
   useEffect(() => {
     roomSocket.initRoomSocket(roomId);
+    roomSocket.socket?.on(
+      EVENT.EXISTING_ROOM_USERS,
+      ({
+        users,
+        current,
+      }: {
+        users: { sid: string; uid: string }[];
+        current: { sid: string; uid: string };
+      }) => {
+        users.forEach((user) => {
+          const isAlreadyInRoom = findUserByUid(user.uid);
+          if (isAlreadyInRoom) return;
+          addConnectedUser({
+            sid: user.sid,
+            uid: user.uid,
+          });
+        });
+      },
+    );
+    //TODO: left user socket 만들고 connectedUsersStore deleteUser 해줘야함
+
     return () => {
       roomSocket.leaveRoom(roomId);
+      stopMediaStream();
     };
   }, [roomId]);
 
