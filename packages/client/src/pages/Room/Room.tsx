@@ -9,6 +9,7 @@ import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import roomSocket from '~/libs/sockets/roomSocket';
 import RoomContent from './RoomContent';
 import VideoContents from './VideoContents';
+import usePeerConnection from '~/hooks/usePeerConnection';
 
 const Room = () => {
   const { roomId } = useParams() as { roomId: string };
@@ -19,6 +20,8 @@ const Room = () => {
       roomSocket.leaveRoom(roomId);
     };
   }, [roomId]);
+
+  usePeerConnection();
 
   return (
     <AsyncBoundary

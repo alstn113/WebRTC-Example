@@ -38,9 +38,9 @@ export class RoomGatewayService {
 
       client.data.id = user.id;
       client.data.email = user.email;
-      this.logger.verbose(
-        `Connected user / server_id: ${client.id}  client_id: ${client.data.email} ${client.data.id}, `,
-      );
+      // this.logger.verbose(
+      //   `Connected user / server_id: ${client.id}  client_id: ${client.data.email} ${client.data.id}, `,
+      // );
     } catch (error) {
       this.logger.error(error.message);
       client.disconnect(true);

@@ -4,6 +4,7 @@ export const EVENT = {
   JOINED_ROOM: 'joined_room',
   LEAVE_ROOM: 'leave_room',
   LEFT_ROOM: 'left_room',
+  EXISTING_ROOM_USERS: 'existing_room_users',
 
   /** Socket Lobby */
   JOIN_LOBBY: 'join_lobby',

@@ -20,7 +20,7 @@ class RoomSocket {
     }
     roomSocket.socket?.connect();
     this.socket?.emit(EVENT.JOIN_ROOM, { roomId });
-    console.log(`initRoomSocket roomId`);
+    console.log(`initRoomSocket`);
   }
 
   sendMessage(roomId: string, message: string) {

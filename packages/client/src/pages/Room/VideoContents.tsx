@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import useGetMe from '~/hooks/queries/user/useGetMe';
-import usePeerConnection from '~/hooks/usePeerConnection';
 import useConnectedUsersStore from '~/libs/stores/useConnectedUsersStore';
 import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
+import usePeerConnectionStore from '~/libs/stores/usePeerConnectionStore';
 import { User } from '~/libs/types';
 import VideoScreen from './VideoScreen';
 
@@ -14,6 +14,7 @@ interface Props {
 const VideoContents = ({ roomId }: Props) => {
   const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
   const { userStreams, connectedUsers } = useConnectedUsersStore();
+  const { peerConnections } = usePeerConnectionStore();
 
   const queryClient = useQueryClient();
   const user = queryClient.getQueryData<User>(useGetMe.getKey());
@@ -36,8 +37,6 @@ const VideoContents = ({ roomId }: Props) => {
     setMediaTracks();
   }, []);
 
-  usePeerConnection();
-
   return (
     <VideoContainer>
       <FlexColumn>
@@ -52,6 +51,9 @@ const VideoContents = ({ roomId }: Props) => {
             <BlackScreen />
           )}
         </FlexRow>
+        <Test>Connected Users: {JSON.stringify(connectedUsers)}</Test>
+        <Test>User Streams: {JSON.stringify(userStreams)}</Test>
+        <Test>peerConnections: {JSON.stringify(peerConnections)}</Test>
         <FlexRow>
           {connectedUsers[1] ? (
             <VideoScreen
@@ -77,6 +79,9 @@ const VideoContents = ({ roomId }: Props) => {
 
 export default VideoContents;
 
+const Test = styled.div`
+  font-size: 0.8rem;
+`;
 const VideoContainer = styled.div`
   display: flex;
   justify-content: center;
