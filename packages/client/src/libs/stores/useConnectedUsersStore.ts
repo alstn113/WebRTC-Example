@@ -12,6 +12,7 @@ type Actions = {
   setConnectedUsers: (connectedUsers: ConnectedUserInfo[]) => void;
   addConnectedUser: (connectedUser: ConnectedUserInfo) => void;
   deleteConnectedUser: (sid: string) => void;
+  findUserBySid: (sid: string) => ConnectedUserInfo | undefined;
 };
 
 const useConnectedUsersStore = create<States & Actions>((set, get) => ({
@@ -41,6 +42,10 @@ const useConnectedUsersStore = create<States & Actions>((set, get) => ({
         draft.connectedUsers = draft.connectedUsers.filter((user) => user.sid !== sid);
       }),
     ),
+  findUserBySid: (sid) => {
+    const { connectedUsers } = get();
+    return connectedUsers.find((user) => user.sid === sid);
+  },
 }));
 
 export default useConnectedUsersStore;

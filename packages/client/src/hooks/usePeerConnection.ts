@@ -7,7 +7,8 @@ import usePeerConnectionStore from '~/libs/stores/usePeerConnectionStore';
 
 const usePeerConnection = () => {
   const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
-  const { userStreams, connectedUsers, setUserStream, addConnectedUser } = useConnectedUsersStore();
+  const { userStreams, connectedUsers, setUserStream, addConnectedUser, findUserBySid } =
+    useConnectedUsersStore();
   const { peerConnections, setPeerConnection } = usePeerConnectionStore();
 
   const stopMediaStream = () => {
@@ -106,7 +107,12 @@ const usePeerConnection = () => {
     const onNewUser = async ({ sid, uid }: { sid: string; uid: string }) => {
       console.log('[onNewUser]');
       try {
-        addConnectedUser({ sid, uid });
+        const existingUser = findUserBySid(sid);
+        if (!existingUser) {
+          addConnectedUser({ sid, uid });
+        } else {
+          console.log('[onNewUser] already connected');
+        }
         await createOffer(sid);
       } catch (error) {
         console.error('[OnNewUser Error]', error);
@@ -155,10 +161,8 @@ const usePeerConnection = () => {
     }) => {
       console.log('[onReceivedIceCandidate]');
       try {
-        const peerConnection = peerConnections[sid];
-        if (!peerConnection) return;
-
-        peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
+        if (!peerConnections[sid]) return;
+        peerConnections[sid]?.addIceCandidate(new RTCIceCandidate(candidate));
       } catch (error) {
         console.error('[OnReceivedIceCandidate Error]', error);
       }

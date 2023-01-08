@@ -41,7 +41,9 @@ export class RoomGatewayService {
         email: user.email,
       };
 
-      // this.logger.verbose(`Connected user client_id: ${user.id}, server_id: ${client.id}`);
+      this.logger.verbose(
+        `Connected user / server_id: ${client.id}  client_id: ${user.email} ${user.id}, `,
+      );
     } catch (error) {
       this.logger.error(error.message);
       client.disconnect(true);
@@ -64,6 +66,7 @@ export class RoomGatewayService {
       sid: client.id,
       uid: client.data.user.id,
     });
+    console.log(`onJoinRoom sid: ${client.id}, roomId: ${dto.roomId}`);
   }
 
   onLeaveRoom(client: Socket, dto: LeaveRoomDto) {
@@ -88,17 +91,20 @@ export class RoomGatewayService {
       offer: dto.offer,
       sid: client.id,
     });
+    console.log(`onNewUser sid: ${client.id}, to: ${dto.to}`);
   }
   onSendAnswer(client: Socket, dto: SendAnswerDto) {
     client.to(dto.to).emit(EVENT.RECEIVE_ANSWER, {
       answer: dto.answer,
       sid: client.id,
     });
+    console.log(`onSendAnswer sid: ${client.id}, to: ${dto.to}`);
   }
   onSendIceCandidate(client: Socket, dto: SendIceCandidateDto) {
     client.to(dto.to).emit(EVENT.RECEIVE_ICE_CANDIDATE, {
       candidate: dto.candidate,
       sid: client.id,
     });
+    console.log(`onSendIceCandidate sid: ${client.id}, to: ${dto.to}`);
   }
 }
