@@ -1,24 +1,18 @@
 import styled from '@emotion/styled';
-import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
-import { Button } from '~/components/common';
 import ErrorFallback from '~/components/ErrorFallback';
 import MediaStreamSetting from '~/components/Room/MediaStreamSetting';
 import { MESSAGE } from '~/constants/messages';
 import useGetRoom from '~/hooks/queries/room/useGetRoom';
-import useGetMe from '~/hooks/queries/user/useGetMe';
 import roomSocket from '~/libs/sockets/roomSocket';
-import { User } from '~/libs/types';
 import Chat from './Chat';
 import RoomContent from './RoomContent';
 import VideoContents from './VideoContents';
 
 const Room = () => {
   const { roomId } = useParams() as { roomId: string };
-  const queryClient = useQueryClient();
-  const user = queryClient.getQueryData<User>(useGetMe.getKey());
 
   useEffect(() => {
     roomSocket.initRoomSocket();
@@ -36,7 +30,6 @@ const Room = () => {
     >
       <Container>
         <RoomContent roomId={roomId} />
-        <Button color="secondary">{user?.user?.email}</Button>
         <ContentsWrapper>
           <VideoContents roomId={roomId} />
           {/* <Chat roomId={roomId} /> */}

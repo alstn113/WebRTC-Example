@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import useGetMe from '~/hooks/queries/user/useGetMe';
 import usePeerConnection from '~/hooks/usePeerConnection';
 import useConnectedUsersStore from '~/libs/stores/useConnectedUsersStore';
@@ -24,15 +24,15 @@ const VideoContents = ({ roomId }: Props) => {
     return userStreams[user.sid];
   };
 
-  const setMediaTracks = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: false,
-    });
-    setMyMediaStream(stream);
-  };
-
   useEffect(() => {
+    const setMediaTracks = async () => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false,
+      });
+      setMyMediaStream(stream);
+    };
+
     setMediaTracks();
   }, []);
 
@@ -85,7 +85,7 @@ const VideoContainer = styled.div`
 
 const BlackScreen = styled.div`
   width: 300px;
-  height: 300px;
+  height: 250px;
   background-color: rgba(0, 0, 0, 0.1);
 `;
 

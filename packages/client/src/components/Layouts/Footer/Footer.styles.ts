@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Container = styled.div`
-  height: 80px; // same as FullHeightScreen padding-bottom
+  height: 50px; // same as FullHeightScreen padding-bottom
   position: absolute;
   transform: translateY(-100%);
   display: flex;

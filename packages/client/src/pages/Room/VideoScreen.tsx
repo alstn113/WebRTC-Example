@@ -23,7 +23,7 @@ const VideoScreen = ({ connectedUser, stream }: Props) => {
 
 const Container = styled.video`
   width: 300px;
-  height: 300px;
+  height: 250px;
   background-color: #000;
 `;
 

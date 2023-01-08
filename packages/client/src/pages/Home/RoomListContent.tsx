@@ -53,8 +53,8 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 200px;
-  height: 150px;
+  width: 250px;
+  height: 200px;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: 0 12px 20px 6px rgba(0, 0, 0, 0.1);
