@@ -1,10 +1,6 @@
 import produce from 'immer';
 import create from 'zustand';
-
-interface ConnectedUserInfo {
-  sid: string;
-  uid: string;
-}
+import { ConnectedUserInfo } from '../types';
 
 type States = {
   userStreams: { [key: string]: MediaStream | null };

@@ -7,17 +7,17 @@ import usePeerConnectionStore from '~/libs/stores/usePeerConnectionStore';
 
 const usePeerConnection = () => {
   const { myMediaStream } = useMyMediaStreamStore();
-  const { setUserStream, addConnectedUser } = useConnectedUsersStore();
+  const { userStreams, connectedUsers, setUserStream, addConnectedUser } = useConnectedUsersStore();
   const { peerConnections, setPeerConnection } = usePeerConnectionStore();
   const RTCConfig = {
     iceServers: [
       {
         urls: [
           'stun:stun.l.google.com:19302',
-          'stun:stun1.l.google.com:19302',
-          'stun:stun2.l.google.com:19302',
-          'stun:stun3.l.google.com:19302',
-          'stun:stun4.l.google.com:19302',
+          // 'stun:stun1.l.google.com:19302',
+          // 'stun:stun2.l.google.com:19302',
+          // 'stun:stun3.l.google.com:19302',
+          // 'stun:stun4.l.google.com:19302',
         ],
       },
     ],
@@ -37,8 +37,8 @@ const usePeerConnection = () => {
         };
 
         peerConnection.ontrack = (event: RTCTrackEvent) => {
-          const stream = event.streams[0];
-          setUserStream({ sid, stream });
+          console.log('adding track', event.streams[0].id);
+          setUserStream({ sid, stream: event.streams[0] });
         };
 
         myMediaStream?.getTracks().forEach((stream) => {
@@ -65,8 +65,7 @@ const usePeerConnection = () => {
         });
 
         await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-
-        return offer;
+        roomSocket.socket?.emit(EVENT.NEW_USER, { to: sid, offer });
       } catch (error) {
         console.error('[CreateOffer Error]', error);
       }
@@ -102,8 +101,7 @@ const usePeerConnection = () => {
       console.log('[onNewUser]');
       try {
         addConnectedUser({ sid, uid });
-        const offer = await createOffer(sid);
-        roomSocket.socket?.emit(EVENT.NEW_USER, { to: sid, offer });
+        await createOffer(sid);
       } catch (error) {
         console.error('[OnNewUser Error]', error);
       }
@@ -170,7 +168,7 @@ const usePeerConnection = () => {
       roomSocket.socket?.off(EVENT.RECEIVE_ANSWER, onReceivedAnswer);
       roomSocket.socket?.off(EVENT.RECEIVE_ICE_CANDIDATE, onReceivedIceCandidate);
     };
-  }, [myMediaStream, peerConnections]);
+  }, [myMediaStream, peerConnections, connectedUsers, userStreams]);
 };
 
 export default usePeerConnection;

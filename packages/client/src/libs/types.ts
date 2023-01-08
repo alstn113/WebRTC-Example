@@ -22,3 +22,8 @@ export interface AuthParams {
   email: string;
   password: string;
 }
+
+export interface ConnectedUserInfo {
+  sid: string;
+  uid: string;
+}

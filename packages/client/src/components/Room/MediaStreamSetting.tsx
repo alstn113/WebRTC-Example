@@ -1,24 +1,25 @@
 import styled from '@emotion/styled';
-import useMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
+import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
 import { Button } from '../common';
 
 const MediaStreamSetting = () => {
-  const { isMicOn, isVideoOn, setIsMicOn, setIsVideoOn, mediaStream } = useMediaStreamStore();
+  const { isMyMicOn, isMyVideoOn, setIsMyMicOn, setIsMyVideoOn, myMediaStream } =
+    useMyMediaStreamStore();
   const handleMicToggle = () => {
-    mediaStream?.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
-    setIsMicOn(!isMicOn);
+    myMediaStream?.getAudioTracks().forEach((track) => (track.enabled = !track.enabled));
+    setIsMyMicOn(!isMyMicOn);
   };
   const handleVideoToggle = () => {
-    mediaStream?.getVideoTracks().forEach((track) => (track.enabled = !track.enabled));
-    setIsVideoOn(!isVideoOn);
+    myMediaStream?.getVideoTracks().forEach((track) => (track.enabled = !track.enabled));
+    setIsMyVideoOn(!isMyVideoOn);
   };
   return (
     <SettingWrapper>
       <Button shadow color="primary" onClick={handleMicToggle}>
-        MIC: {isMicOn ? 'ON' : 'OFF'}
+        MIC: {isMyMicOn ? 'ON' : 'OFF'}
       </Button>
       <Button shadow color="primary" onClick={handleVideoToggle}>
-        VIDEO: {isVideoOn ? 'ON' : 'OFF'}
+        VIDEO: {isMyVideoOn ? 'ON' : 'OFF'}
       </Button>
     </SettingWrapper>
   );

@@ -22,7 +22,7 @@ const Room = () => {
 
   useEffect(() => {
     roomSocket.initRoomSocket();
-
+    roomSocket.joinRoom(roomId);
     return () => {
       roomSocket.leaveRoom(roomId);
     };
@@ -39,7 +39,7 @@ const Room = () => {
         <Button color="secondary">{user?.user?.email}</Button>
         <ContentsWrapper>
           <VideoContents roomId={roomId} />
-          <Chat roomId={roomId} />
+          {/* <Chat roomId={roomId} /> */}
         </ContentsWrapper>
         <MediaStreamSetting />
       </Container>
