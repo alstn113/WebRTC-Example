@@ -9,6 +9,7 @@ type States = {
 
 type Actions = {
   setUserStream: ({ sid, stream }: { sid: string; stream: MediaStream }) => void;
+  setUserStreamEmpty: () => void;
   setConnectedUsers: (connectedUsers: ConnectedUserInfo[]) => void;
   addConnectedUser: (connectedUser: ConnectedUserInfo) => void;
   deleteConnectedUser: (sid: string) => void;
@@ -25,6 +26,13 @@ const useConnectedUsersStore = create<States & Actions>((set, get) => ({
         draft.userStreams[sid] = stream;
       }),
     ),
+  setUserStreamEmpty: () =>
+    set(
+      produce((draft: States) => {
+        draft.userStreams = {};
+      }),
+    ),
+
   setConnectedUsers: (connectedUsers) =>
     set(
       produce((draft: States) => {

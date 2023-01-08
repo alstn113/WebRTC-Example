@@ -11,9 +11,9 @@ type Actions = {
     peerConnection,
   }: {
     sid: string;
-    peerConnection: RTCPeerConnection;
+    peerConnection: RTCPeerConnection | null;
   }) => void;
-  setEmpty: () => void;
+  setPeerConnectionsEmpty: () => void;
 };
 
 const usePeerConnectionStore = create<States & Actions>((set) => ({
@@ -24,7 +24,7 @@ const usePeerConnectionStore = create<States & Actions>((set) => ({
         draft.peerConnections[sid] = peerConnection;
       }),
     ),
-  setEmpty: () =>
+  setPeerConnectionsEmpty: () =>
     set(
       produce((draft: States) => {
         draft.peerConnections = {};

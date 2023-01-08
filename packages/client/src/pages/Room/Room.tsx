@@ -13,11 +13,20 @@ import usePeerConnection from '~/hooks/usePeerConnection';
 import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
 import useConnectedUsersStore from '~/libs/stores/useConnectedUsersStore';
 import { EVENT } from '~/constants';
+import usePeerConnectionStore from '~/libs/stores/usePeerConnectionStore';
 
 const Room = () => {
   const { roomId } = useParams() as { roomId: string };
   const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
-  const { deleteConnectedUser, findUserByUid, addConnectedUser } = useConnectedUsersStore();
+  const {
+    deleteConnectedUser,
+    findUserByUid,
+    addConnectedUser,
+    findUserBySid,
+    setConnectedUsers,
+    setUserStreamEmpty,
+  } = useConnectedUsersStore();
+  const { setPeerConnection, setPeerConnectionsEmpty } = usePeerConnectionStore();
 
   const stopMediaStream = () => {
     if (!myMediaStream) return;
@@ -46,11 +55,21 @@ const Room = () => {
         });
       },
     );
+
+    roomSocket.socket?.on(EVENT.LEFT_ROOM, ({ sid }: { sid: string }) => {
+      const userInfo = findUserBySid(sid);
+      if (!userInfo) return;
+      setPeerConnection({ sid, peerConnection: null });
+      deleteConnectedUser(sid);
+    });
     //TODO: left user socket 만들고 connectedUsersStore deleteUser 해줘야함
 
     return () => {
       roomSocket.leaveRoom(roomId);
       stopMediaStream();
+      setConnectedUsers([]);
+      setPeerConnectionsEmpty();
+      setUserStreamEmpty();
     };
   }, [roomId]);
 

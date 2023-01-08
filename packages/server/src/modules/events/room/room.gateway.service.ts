@@ -71,7 +71,9 @@ export class RoomGatewayService {
     client.to(dto.roomId).emit(EVENT.CHAT_MESSAGE, {
       message: `Joined room ${dto.roomId} ${client.data.email}!`,
     });
-    client.to(dto.roomId).emit(EVENT.EXISTING_ROOM_USERS, {
+
+    // 이 클라이언트에게만 보냄.
+    client.emit(EVENT.EXISTING_ROOM_USERS, {
       users: existingRoomUsers,
       current: { sid: client.id, uid: client.data.id },
     });
@@ -87,6 +89,10 @@ export class RoomGatewayService {
     client
       .to(dto.roomId)
       .emit(EVENT.CHAT_MESSAGE, { message: `Left room ${dto.roomId}! ${client.data.email}` });
+    // notify other users in the room except sender
+    client.to(dto.roomId).emit(EVENT.LEFT_ROOM, {
+      sid: client.id,
+    });
   }
 
   onSendMessage(client: Socket, dto: RoomMessageDto) {

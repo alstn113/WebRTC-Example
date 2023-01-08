@@ -18,13 +18,33 @@ const VideoScreen = ({ connectedUser, stream }: Props) => {
     }
   }, [stream]);
 
-  return <Container autoPlay playsInline ref={videoRef} />;
+  return (
+    <VideoScreenWrapper>
+      <Container autoPlay playsInline ref={videoRef} />
+      <UserInfo>{connectedUser.uid}</UserInfo>
+    </VideoScreenWrapper>
+  );
 };
 
 const Container = styled.video`
   width: 300px;
   height: 250px;
   background-color: #000;
+`;
+
+const VideoScreenWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const UserInfo = styled.div`
+  font-size: 1rem;
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  text-align: center;
 `;
 
 export default VideoScreen;
