@@ -12,7 +12,7 @@ interface Props {
   roomId: string;
 }
 const VideoContents = ({ roomId }: Props) => {
-  const { myMediaStream } = useMyMediaStreamStore();
+  const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
   const { userStreams, connectedUsers } = useConnectedUsersStore();
 
   const queryClient = useQueryClient();
@@ -23,6 +23,18 @@ const VideoContents = ({ roomId }: Props) => {
     if (!user) return null;
     return userStreams[user.sid];
   };
+
+  const setMediaTracks = async () => {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false,
+    });
+    setMyMediaStream(stream);
+  };
+
+  useEffect(() => {
+    setMediaTracks();
+  }, []);
 
   usePeerConnection();
 

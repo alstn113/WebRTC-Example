@@ -1,8 +1,5 @@
 import styled from '@emotion/styled';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRef } from 'react';
-import useGetMe from '~/hooks/queries/user/useGetMe';
-import { ConnectedUserInfo, User } from '~/libs/types';
+import { useEffect, useRef } from 'react';
 
 interface Props {
   connectedUser: {
@@ -13,12 +10,15 @@ interface Props {
 }
 
 const VideoScreen = ({ connectedUser, stream }: Props) => {
-  const queryClient = useQueryClient();
-  const user = queryClient.getQueryData<User>(useGetMe.getKey());
-
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
-  return <Container>VideoScreen</Container>;
+  useEffect(() => {
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [stream]);
+
+  return <Container autoPlay playsInline ref={videoRef} />;
 };
 
 const Container = styled.video`
