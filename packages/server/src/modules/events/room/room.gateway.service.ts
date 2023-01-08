@@ -53,11 +53,27 @@ export class RoomGatewayService {
 
   /** Socket Chat */
 
-  onJoinRoom(client: Socket, dto: JoinRoomDto) {
+  async onJoinRoom(client: Socket, dto: JoinRoomDto) {
+    const getAllRoomUsers = async () => {
+      const roomSockets = await this.server.in(dto.roomId).fetchSockets();
+      return roomSockets.map((roomUser) => {
+        return {
+          sid: roomUser.id,
+          uid: roomUser.data.id,
+        };
+      });
+    };
+
+    const existingRoomUsers = await getAllRoomUsers();
+
     // send to all clients in room except sender
-    client.join(dto.roomId);
+    await client.join(dto.roomId);
     client.to(dto.roomId).emit(EVENT.CHAT_MESSAGE, {
       message: `Joined room ${dto.roomId} ${client.data.email}!`,
+    });
+    client.to(dto.roomId).emit(EVENT.EXISTING_ROOM_USERS, {
+      users: existingRoomUsers,
+      current: { sid: client.id, uid: client.data.id },
     });
     client.to(dto.roomId).emit(EVENT.NEW_USER, {
       sid: client.id,
@@ -88,12 +104,14 @@ export class RoomGatewayService {
       sid: client.id,
     });
   }
+
   onSendAnswer(client: Socket, dto: SendAnswerDto) {
     client.to(dto.to).emit(EVENT.RECEIVE_ANSWER, {
       answer: dto.answer,
       sid: client.id,
     });
   }
+
   onSendIceCandidate(client: Socket, dto: SendIceCandidateDto) {
     client.to(dto.to).emit(EVENT.RECEIVE_ICE_CANDIDATE, {
       candidate: dto.candidate,
