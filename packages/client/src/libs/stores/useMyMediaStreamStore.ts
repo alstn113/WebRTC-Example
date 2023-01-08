@@ -22,7 +22,7 @@ type Actions = {
 const useMyMediaStreamStore = create<States & Actions>((set) => ({
   myMediaStream: null,
   isMyMicOn: true,
-  isMyVideoOn: false,
+  isMyVideoOn: true,
   myVideoInputDevice: null,
   myAudioInputDevice: null,
   myAudioOutputDevice: null,

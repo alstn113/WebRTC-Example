@@ -27,10 +27,8 @@ export class LobbyGatewayService {
       const accessTokenPayload = await this.authService.verifyToken(accessToken, 'access_token');
       const user = await this.userRepository.findUserById(accessTokenPayload.userId);
 
-      client.data.user = {
-        id: user.id,
-        email: user.email,
-      };
+      client.data.id = user.id;
+      client.data.email = user.email;
     } catch (error) {
       this.logger.error(error.message);
       client.disconnect(true);
@@ -44,17 +42,17 @@ export class LobbyGatewayService {
   /** Lobby Chat */
 
   onJoinLobby(client: Socket) {
-    client.emit(EVENT.CHAT_MESSAGE, { message: `Joined lobby ${client.data.user.email}!` });
+    client.emit(EVENT.CHAT_MESSAGE, { message: `Joined lobby ${client.data.email}!` });
   }
 
   onLeaveLobby(client: Socket) {
-    client.emit(EVENT.CHAT_MESSAGE, { message: `Left lobby ${client.data.user.email}` });
+    client.emit(EVENT.CHAT_MESSAGE, { message: `Left lobby ${client.data.email}` });
   }
 
   onSendMessage(client: Socket, dto: LobbyMessageDto) {
     // send to all clients in lobby
     this.server.emit(EVENT.CHAT_MESSAGE, {
-      message: `${client.data.user.email}: ${dto.message}`,
+      message: `${client.data.email}: ${dto.message}`,
     });
   }
 }

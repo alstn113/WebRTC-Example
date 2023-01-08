@@ -28,15 +28,15 @@ export class RoomGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   /** Default Setting */
 
   afterInit(server: Server) {
-    return this.roomGatewayService.onGatewayInit(server);
+    return this.roomGatewayService.onAfterInit(server);
   }
 
   handleConnection(client: Socket) {
-    return this.roomGatewayService.onGatewayConnection(client);
+    return this.roomGatewayService.onConnection(client);
   }
 
   handleDisconnect(client: Socket) {
-    return this.roomGatewayService.onGatewayDisconnect(client);
+    return this.roomGatewayService.onDisconnect(client);
   }
 
   /** Socket Chat */
