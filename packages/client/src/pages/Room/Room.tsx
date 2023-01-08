@@ -3,11 +3,10 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import AsyncBoundary from '~/components/AsyncBoundary';
 import ErrorFallback from '~/components/ErrorFallback';
-import MediaStreamSetting from '~/components/Room/MediaStreamSetting';
+import MediaStreamSetting from '~/pages/Room/MediaStreamSetting';
 import { MESSAGE } from '~/constants/messages';
 import useGetRoom from '~/hooks/queries/room/useGetRoom';
 import roomSocket from '~/libs/sockets/roomSocket';
-import Chat from './Chat';
 import RoomContent from './RoomContent';
 import VideoContents from './VideoContents';
 
@@ -32,7 +31,6 @@ const Room = () => {
         <RoomContent roomId={roomId} />
         <ContentsWrapper>
           <VideoContents roomId={roomId} />
-          {/* <Chat roomId={roomId} /> */}
         </ContentsWrapper>
         <MediaStreamSetting />
       </Container>

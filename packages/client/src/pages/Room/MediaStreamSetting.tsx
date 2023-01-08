@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
-import { Button } from '../common';
+import { Button } from '../../components/common';
 
 const MediaStreamSetting = () => {
   const { isMyMicOn, isMyVideoOn, setIsMyMicOn, setIsMyVideoOn, myMediaStream } =
