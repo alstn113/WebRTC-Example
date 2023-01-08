@@ -14,7 +14,7 @@ type Actions = {
   deleteConnectedUser: (sid: string) => void;
 };
 
-const useConnectedUsersStore = create<States & Actions>((set) => ({
+const useConnectedUsersStore = create<States & Actions>((set, get) => ({
   userStreams: {},
   connectedUsers: [],
   setUserStream: ({ sid, stream }) =>
