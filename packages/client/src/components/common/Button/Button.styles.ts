@@ -23,7 +23,7 @@ export const Container = styled.button<{
       border-radius: 0.5rem;
       padding: 0.5rem 1rem;
       min-width: 50px;
-      line-height: 15px;
+      line-height: 18px;
       font-size: 13px;
     `}
   ${({ size }) =>

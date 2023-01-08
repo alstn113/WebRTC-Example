@@ -6,9 +6,16 @@ import useMyMediaStreamStore from '~/libs/stores/useMyMediaStreamStore';
 import usePeerConnectionStore from '~/libs/stores/usePeerConnectionStore';
 
 const usePeerConnection = () => {
-  const { myMediaStream } = useMyMediaStreamStore();
+  const { myMediaStream, setMyMediaStream } = useMyMediaStreamStore();
   const { userStreams, connectedUsers, setUserStream, addConnectedUser } = useConnectedUsersStore();
   const { peerConnections, setPeerConnection } = usePeerConnectionStore();
+
+  const stopMediaStream = () => {
+    if (!myMediaStream) return;
+    myMediaStream.getTracks().forEach((track) => track.stop());
+    setMyMediaStream(null);
+  };
+
   const RTCConfig = {
     iceServers: [
       {
@@ -37,7 +44,6 @@ const usePeerConnection = () => {
         };
 
         peerConnection.ontrack = (event: RTCTrackEvent) => {
-          console.log('adding track', event.streams[0].id);
           setUserStream({ sid, stream: event.streams[0] });
         };
 
@@ -167,6 +173,7 @@ const usePeerConnection = () => {
       roomSocket.socket?.off(EVENT.RECEIVE_OFFER, onReceivedOffer);
       roomSocket.socket?.off(EVENT.RECEIVE_ANSWER, onReceivedAnswer);
       roomSocket.socket?.off(EVENT.RECEIVE_ICE_CANDIDATE, onReceivedIceCandidate);
+      stopMediaStream();
     };
   }, [myMediaStream, peerConnections, connectedUsers, userStreams]);
 };

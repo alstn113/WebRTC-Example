@@ -14,8 +14,7 @@ const Room = () => {
   const { roomId } = useParams() as { roomId: string };
 
   useEffect(() => {
-    roomSocket.initRoomSocket();
-    roomSocket.joinRoom(roomId);
+    roomSocket.initRoomSocket(roomId);
     return () => {
       roomSocket.leaveRoom(roomId);
     };

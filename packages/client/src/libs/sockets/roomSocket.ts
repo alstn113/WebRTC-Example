@@ -14,15 +14,13 @@ class RoomSocket {
     });
   }
 
-  initRoomSocket() {
+  initRoomSocket(roomId: string) {
     if (roomSocket.socket === null) {
       roomSocket.generateRoomSocket();
     }
     roomSocket.socket?.connect();
-  }
-
-  joinRoom(roomId: string) {
     this.socket?.emit(EVENT.JOIN_ROOM, { roomId });
+    console.log(`initRoomSocket roomId`);
   }
 
   sendMessage(roomId: string, message: string) {
@@ -38,7 +36,7 @@ class RoomSocket {
     this.socket?.off(EVENT.LEAVE_ROOM);
     this.socket?.off(EVENT.CHAT_MESSAGE);
     this.socket?.disconnect();
-    console.log(`leaveRoom roomId-${roomId}`);
+    console.log(`leaveRoom roomId`);
   }
 }
 

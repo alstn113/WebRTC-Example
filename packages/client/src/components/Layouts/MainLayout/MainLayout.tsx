@@ -29,17 +29,21 @@ const MainLayout = () => {
           headerRight={
             user?.user ? (
               <S.ButtonWrapper>
-                <Button shadow>{user?.user?.email}</Button>
-                <Button shadow color="error" onClick={() => mutate()}>
+                <Button size="sm" shadow>
+                  {user?.user?.email}
+                </Button>
+                <Button size="sm" shadow color="error" onClick={() => mutate()}>
                   로그아웃
                 </Button>
               </S.ButtonWrapper>
             ) : (
-              <Button onClick={() => navigate('/login')}>로그인</Button>
+              <Button size="sm" onClick={() => navigate('/login')}>
+                로그인
+              </Button>
             )
           }
           headerLeft={
-            <Button shadow color="error" onClick={onGoBack}>
+            <Button size="sm" shadow color="error" onClick={onGoBack}>
               Back
             </Button>
           }
