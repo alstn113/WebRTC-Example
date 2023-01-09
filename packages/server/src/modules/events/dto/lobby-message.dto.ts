@@ -1,7 +1,7 @@
 import { ApiProperty, ApiTags } from '@nestjs/swagger';
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-@ApiTags('/socket/room')
+@ApiTags('/socket/lobby')
 export class LobbyMessageDto {
   @ApiProperty({
     type: String,

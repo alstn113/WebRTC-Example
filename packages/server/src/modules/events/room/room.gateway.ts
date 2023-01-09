@@ -14,6 +14,7 @@ import {
   LeaveRoomDto,
   RoomMessageDto,
   SendAnswerDto,
+  MediaStateChangeDto,
 } from '../dto';
 import { RoomGatewayService } from './room.gateway.service';
 
@@ -74,7 +75,7 @@ export class RoomGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   @SubscribeMessage(EVENT.MEDIA_STATE_CHANGE)
-  handleMediaStateChange() {
-    return;
+  handleMediaStateChange(client: Socket, dto: MediaStateChangeDto) {
+    return this.roomGatewayService.onMediaStateChange(client, dto);
   }
 }

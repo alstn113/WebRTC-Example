@@ -11,6 +11,7 @@ import {
   LeaveRoomDto,
   SendAnswerDto,
   RoomMessageDto,
+  MediaStateChangeDto,
 } from '../dto';
 
 @Injectable()
@@ -123,5 +124,16 @@ export class RoomGatewayService {
       candidate: dto.candidate,
       sid: client.id,
     });
+  }
+
+  onMediaStateChange(client: Socket, dto: MediaStateChangeDto) {
+    if (['video', 'audio'].includes(dto.type)) {
+      return client.to(dto.roomId).emit(EVENT.MEDIA_STATE_CHANGE, {
+        uid: client.data.id,
+        type: dto.type,
+        enable: dto.enable,
+      });
+    }
+    this.logger.error(`[Media State Change] Invalid Media Type: ${dto.type}`);
   }
 }

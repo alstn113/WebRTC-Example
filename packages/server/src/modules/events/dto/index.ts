@@ -12,3 +12,4 @@ export * from './lobby-message.dto';
 export * from './send-answer.dto';
 export * from './send-offer.dto';
 export * from './send-ice-candidate.dto';
+export * from './media-state-change.dto';
