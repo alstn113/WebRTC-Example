@@ -15,10 +15,15 @@ const MediaStreamSetting = () => {
   };
   return (
     <SettingWrapper>
-      <Button shadow color="primary" onClick={handleMicToggle}>
+      <Button shadow size="sm" color={isMyMicOn ? 'primary' : 'error'} onClick={handleMicToggle}>
         MIC: {isMyMicOn ? 'ON' : 'OFF'}
       </Button>
-      <Button shadow color="primary" onClick={handleVideoToggle}>
+      <Button
+        shadow
+        size="sm"
+        color={isMyVideoOn ? 'primary' : 'error'}
+        onClick={handleVideoToggle}
+      >
         VIDEO: {isMyVideoOn ? 'ON' : 'OFF'}
       </Button>
     </SettingWrapper>

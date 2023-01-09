@@ -38,6 +38,7 @@ class LobbySocket {
     this.socket?.off(EVENT.JOIN_LOBBY);
     this.socket?.off(EVENT.LEAVE_LOBBY);
     this.socket?.off(EVENT.CHAT_MESSAGE);
+    this.socket?.disconnect();
     console.log('leaveLobby');
   }
 }
