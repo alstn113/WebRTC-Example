@@ -22,6 +22,7 @@ export const EVENT = {
   RECEIVE_ANSWER: 'receive_answer',
   SEND_ICE_CANDIDATE: 'send_ice_candidate',
   RECEIVE_ICE_CANDIDATE: 'receive_ice_candidate',
+  MEDIA_STATE_CHANGE: 'media_state_change',
 } as const;
 
 export type Event = typeof EVENT[keyof typeof EVENT];

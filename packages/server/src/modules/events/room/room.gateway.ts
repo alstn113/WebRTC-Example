@@ -72,4 +72,9 @@ export class RoomGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   handleSendIceCandidate(client: Socket, dto: SendIceCandidateDto) {
     return this.roomGatewayService.onSendIceCandidate(client, dto);
   }
+
+  @SubscribeMessage(EVENT.MEDIA_STATE_CHANGE)
+  handleMediaStateChange() {
+    return;
+  }
 }
