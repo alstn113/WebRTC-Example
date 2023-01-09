@@ -99,7 +99,7 @@ const usePeerConnection = () => {
     };
 
     const onNewUser = async ({ sid, uid }: { sid: string; uid: string }) => {
-      console.log('[onNewUser]');
+      console.log('[onNewUser]', sid, uid);
       try {
         const existingUser = findUserBySid(sid);
         if (!existingUser) {

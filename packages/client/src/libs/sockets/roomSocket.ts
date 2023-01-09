@@ -36,7 +36,6 @@ class RoomSocket {
     this.socket?.off(EVENT.LEAVE_ROOM);
     this.socket?.off(EVENT.CHAT_MESSAGE);
     this.socket?.off(EVENT.EXISTING_ROOM_USERS);
-    this.socket?.disconnect();
     console.log(`leaveRoom roomId`);
   }
 }
