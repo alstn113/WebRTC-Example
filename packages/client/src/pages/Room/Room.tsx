@@ -30,6 +30,7 @@ const Room = () => {
 
   const stopMediaStream = () => {
     if (!myMediaStream) return;
+    console.log('stopMediaStream');
     myMediaStream.getTracks().forEach((track) => track.stop());
     setMyMediaStream(null);
   };
@@ -71,7 +72,8 @@ const Room = () => {
       setPeerConnectionsEmpty();
       setUserStreamEmpty();
     };
-  }, [roomId]);
+    // myMediaStream!
+  }, [roomId, myMediaStream]);
 
   usePeerConnection();
 
