@@ -37,13 +37,11 @@
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "helmet": "^6.0.1",
-    "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
     "passport-kakao": "^1.0.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "socket.io": "^4.5.4",
     "swagger-ui-express": "^4.6.0",
     "uuidv4": "^6.2.13"
   },
